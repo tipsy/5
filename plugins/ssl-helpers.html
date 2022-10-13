@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54137818-11"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-54137818-11', {'anonymize_ip': true});
+</script>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen+Mono|Roboto+Slab:500,700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="SSL Plugin - Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:site_name" content="Javalin">
+    <meta property="og:url" content="https://javalin.io">
+    <meta property="og:description" content="Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:image" content="https://javalin.io/img/javalin.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="liMtSlffOZROWLqoiOZdSx-luH9_Siq5-Ot6xqHZwq8">
+    <title>
+        SSL Plugin - Javalin - A lightweight Java and Kotlin web framework
+    </title>
+    <meta name="description" content="Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <link rel="canonical" href="https://zugazagoitia.github.io/plugins/ssl-helpers">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>/* Styles that affect the length of the document */
+p code,
+li code {
+    font-size: 90%;
+    letter-spacing: -0.5px;
+    border: 1px solid #ccd;
+    background: #f5f5f7;
+    padding: 1px 3px;
+}
+
+.multitab-code pre {
+    margin-top: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.multitab-code div[data-tab] {
+    display: none;
+}
+
+:target {
+    scroll-margin-top: 108px;
+}
+
+.anchorjs-link {
+    transition: all .25s linear;
+  }
+  
+*:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+ }</style>
+</head>
+<body>
+    <a id="fork-me" href="https://github.com/javalin/javalin" target="_blank">
+    <img style="position:fixed;top:0;right:0;border:0;z-index:99999" src="data:image/png;base64,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" alt="Fork me on GitHub">
+</a>
+    <header class="top-nav-header">
+        <nav class="width-limit">
+            <a id="logo" href="/" aria-label="Javalin">
+                <img src="/img/logo.svg" alt="Javalin">
+            </a>
+            <ul>
+                <li><a href="/documentation">Docs</a></li>
+                <li><a href="/tutorials">Tutorials</a></li>
+                <li><a href="/plugins">Plugins</a></li>
+                <li><a href="/community">Community</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="width-limit has-right-menu">
+                <div id="spy-nav" class="right-menu">
+  <ul>
+    <li><a href="#how-does-it-work">How does it work?</a></li>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#configuration-options">Configuration options</a>
+      <ul>
+        <li><a href="#connection-options">Connection options</a></li>
+        <li><a href="#key-loading-options">Key loading options</a></li>
+      </ul>
+    </li>
+    <li><a href="#advanced-configuration">Advanced configuration</a></li>
+    <li><a href="#good-to-know">Good to know</a></li>
+  </ul>
+</div>
+
+<h1 class="no-margin-top">SSL Plugin</h1>
+
+<p>The SSL plugin provides a simple way to configure SSL and HTTP/2 for Javalin, just the same way you would configure Javalin itself!</p>
+
+<h2 id="how-does-it-work">How does it work?</h2>
+
+<p>The plugin provides a <code class="language-plaintext highlighter-rouge">SslConfig</code> class that can be used to configure this plugin, which can be later registered with Javalin. This class can be configured using a lambda the same way you would configure Javalin itself.</p>
+
+<div class="multitab-code" data-tab="1">
+<ul>
+    <li data-tab="1">Java</li>
+    <li data-tab="2">Kotlin</li>
+</ul>
+<div data-tab="1">
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">SSLPlugin</span> <span class="n">plugin</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SSLPlugin</span><span class="o">(</span><span class="n">conf</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">conf</span><span class="o">.</span><span class="na">loadPemFromPath</span><span class="o">(</span><span class="s">"certs/cert.pem"</span><span class="o">,</span> <span class="s">"certs/key.pem"</span><span class="o">);</span>
+<span class="o">});</span>
+
+<span class="nc">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">javalinConfig</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">javalinConfig</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">plugin</span><span class="o">);</span>
+<span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+</code></pre></div>    </div>
+  </div>
+<div data-tab="2">
+    <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">plugin</span> <span class="p">=</span> <span class="nc">SSLPlugin</span> <span class="p">{</span> <span class="n">conf</span> <span class="p">-&gt;</span>
+    <span class="n">conf</span><span class="p">.</span><span class="nf">loadPemFromPath</span><span class="p">(</span><span class="s">"/path/to/cert.pem"</span><span class="p">,</span> <span class="s">"/path/to/key.pem"</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nc">Javalin</span><span class="p">.</span><span class="nf">create</span> <span class="p">{</span> <span class="n">javalinConfig</span> <span class="p">-&gt;</span>
+    <span class="n">javalinConfig</span><span class="p">.</span><span class="n">plugins</span><span class="p">.</span><span class="nf">register</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span>
+<span class="p">}.</span><span class="nf">start</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p>By default two connectors are created, one for HTTP and one for HTTPS. The HTTP connector is <strong>NOT</strong> configured to redirect all requests to the HTTPS connector
+(this can be achieved using the bundled plugin: <code class="language-plaintext highlighter-rouge">javalinConfig.plugins.enableSslRedirects();</code>). 
+The default port for HTTP is 80 and for HTTPS is 443.</p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>Add the dependency:</p>
+
+<div class="multitab-code dependencies" data-tab="1">
+<ul>
+    <li data-tab="1">Maven</li>
+    <li data-tab="2">Gradle</li>
+</ul>
+
+<div data-tab="1">
+    <pre><code class="language-markup">&lt;dependency&gt;
+    &lt;groupId&gt;io.javalin.community.ssl&lt;/groupId&gt;
+    &lt;artifactId&gt;ssl-plugin&lt;/artifactId&gt;
+    &lt;version&gt;5.0.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+    <p>Not familiar with Maven? Read our <a href="/tutorials/maven-setup">Maven tutorial</a>.</p>
+  </div>
+
+<div data-tab="2">
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">implementation</span> <span class="nl">group:</span> <span class="err">'</span><span class="n">io</span><span class="o">.</span><span class="na">javalin</span><span class="o">.</span><span class="na">community</span><span class="o">.</span><span class="na">ssl</span><span class="err">'</span><span class="o">,</span> <span class="nl">name:</span> <span class="err">'</span><span class="n">ssl</span><span class="o">-</span><span class="n">plugin</span><span class="err">'</span><span class="o">,</span> <span class="nl">version:</span> <span class="err">'</span><span class="mf">5.0</span><span class="o">.</span><span class="mi">1</span><span class="err">'</span>
+</code></pre></div>    </div>
+    <p>Not familiar with Gradle? Read our <a href="/tutorials/gradle-setup">Gradle tutorial</a>.</p>
+  </div>
+
+</div>
+
+<style>
+.bundle-hint p {
+    margin-top: 8px;
+    font-size: 14px;
+}
+</style>
+
+<p>Configure the plugin:</p>
+
+<div class="multitab-code" data-tab="1">
+<ul>
+    <li data-tab="1">Java</li>
+    <li data-tab="2">Kotlin</li>
+</ul>
+<div data-tab="1">
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">SSLPlugin</span> <span class="n">plugin</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SSLPlugin</span><span class="o">(</span><span class="n">conf</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">conf</span><span class="o">.</span><span class="na">loadPemFromPath</span><span class="o">(</span><span class="s">"/path/to/cert.pem"</span><span class="o">,</span> <span class="s">"/path/to/key.pem"</span><span class="o">);</span>
+    <span class="c1">// additional configuration options</span>
+<span class="o">});</span>
+</code></pre></div>    </div>
+  </div>
+<div data-tab="2">
+    <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">plugin</span> <span class="p">=</span> <span class="nc">SSLPlugin</span> <span class="p">{</span> <span class="n">conf</span> <span class="p">-&gt;</span>
+    <span class="n">conf</span><span class="p">.</span><span class="nf">loadPemFromPath</span><span class="p">(</span><span class="s">"/path/to/cert.pem"</span><span class="p">,</span> <span class="s">"/path/to/key.pem"</span><span class="p">)</span>
+    <span class="c1">// additional configuration options</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p>And register the plugin with Javalin:</p>
+
+<div class="multitab-code" data-tab="1">
+<ul>
+    <li data-tab="1">Java</li>
+    <li data-tab="2">Kotlin</li>
+</ul>
+<div data-tab="1">
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">javalinConfig</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">javalinConfig</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">plugin</span><span class="o">);</span>
+<span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+</code></pre></div>    </div>
+  </div>
+<div data-tab="2">
+    <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Javalin</span><span class="p">.</span><span class="nf">create</span> <span class="p">{</span> <span class="n">javalinConfig</span> <span class="p">-&gt;</span>
+    <span class="n">javalinConfig</span><span class="p">.</span><span class="n">plugins</span><span class="p">.</span><span class="nf">register</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span>
+<span class="p">}.</span><span class="nf">start</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p>As easy as that!</p>
+
+<h2 id="configuration-options">Configuration options</h2>
+
+<h3 id="connection-options">Connection options</h3>
+
+<p>Options such as the port and the host can be configured using the following variables:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">host</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>                           <span class="c1">// Host to bind to, by default it will bind to all interfaces.</span>
+<span class="n">insecure</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>                       <span class="c1">// Toggle the default http (insecure) connector.</span>
+<span class="n">secure</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>                         <span class="c1">// Toggle the default https (secure) connector.</span>
+<span class="n">http2</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>                          <span class="c1">// Toggle HTTP/2 Support</span>
+
+<span class="n">insecurePort</span> <span class="o">=</span> <span class="mi">80</span><span class="o">;</span>                     <span class="c1">// Port to use on the http (insecure) connector.</span>
+<span class="n">securePort</span> <span class="o">=</span> <span class="mi">443</span><span class="o">;</span>                      <span class="c1">// Port to use on the SSL (secure) connector.</span>
+
+<span class="n">sniHostCheck</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>                   <span class="c1">// Enable SNI hostname verification.</span>
+<span class="n">tlsConfig</span> <span class="o">=</span> <span class="nc">TLSConfig</span><span class="o">.</span><span class="na">INTERMEDIATE</span><span class="o">;</span>    <span class="c1">// Set the TLS configuration.</span>
+    
+</code></pre></div></div>
+<p>The <code class="language-plaintext highlighter-rouge">TLSConfig</code> enum provides a set of predefined configurations for the TLS protocol. The default configuration is <code class="language-plaintext highlighter-rouge">TLSConfig.INTERMEDIATE</code>, which is based on the latest Mozilla’s guidelines. The following configurations are available:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">TLSConfig</span><span class="o">.</span><span class="na">OLD</span>
+<span class="nc">TLSConfig</span><span class="o">.</span><span class="na">INTERMEDIATE</span>
+<span class="nc">TLSConfig</span><span class="o">.</span><span class="na">MODERN</span>
+</code></pre></div></div>
+<p>You can also create your own custom configuration by using the <code class="language-plaintext highlighter-rouge">TLSConfig</code> constructor.</p>
+
+<h3 id="key-loading-options">Key loading options</h3>
+
+<p>The plugin provides a set of methods to load the certificate and key from different sources. The following methods are available:</p>
+
+<p>PEM certificate and key:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pemFromPath</span><span class="o">(</span><span class="s">"/path/to/cert.pem"</span><span class="o">,</span> <span class="s">"/path/to/key.pem"</span><span class="o">);</span>                   <span class="c1">// load from paths.</span>
+<span class="n">pemFromPath</span><span class="o">(</span><span class="s">"/path/to/cert.pem"</span><span class="o">,</span> <span class="s">"/path/to/key.pem"</span><span class="o">,</span> <span class="s">"keyPassword"</span><span class="o">);</span>    <span class="c1">// load from paths with the given key password.</span>
+<span class="n">pemFromClasspath</span><span class="o">(</span><span class="s">"certName.pem"</span><span class="o">,</span> <span class="s">"keyName.pem"</span><span class="o">);</span>                        <span class="c1">// load from files in the classpath.</span>
+<span class="n">pemFromClasspath</span><span class="o">(</span><span class="s">"certName.pem"</span><span class="o">,</span> <span class="s">"keyName.pem"</span><span class="o">,</span> <span class="s">"keyPassword"</span><span class="o">);</span>         <span class="c1">// load from files in the classpath with the given key password.</span>
+<span class="n">pemFromInputStream</span><span class="o">(</span><span class="n">certInputStream</span><span class="o">,</span> <span class="n">keyInputStream</span><span class="o">);</span>                    <span class="c1">// load from input streams.</span>
+<span class="n">pemFromInputStream</span><span class="o">(</span><span class="n">certInputStream</span><span class="o">,</span> <span class="n">keyInputStream</span><span class="o">,</span> <span class="s">"keyPassword"</span><span class="o">);</span>     <span class="c1">// load from input streams with the given key password.</span>
+<span class="n">pemFromString</span><span class="o">(</span><span class="n">certString</span><span class="o">,</span> <span class="n">keyString</span><span class="o">);</span>                                   <span class="c1">// load from strings.</span>
+<span class="n">pemFromString</span><span class="o">(</span><span class="n">certString</span><span class="o">,</span> <span class="n">keyString</span><span class="o">,</span> <span class="s">"keyPassword"</span><span class="o">);</span>                    <span class="c1">// load from strings with the given key password.</span>
+</code></pre></div></div>
+<p>PKCS#12/JKS keystores:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">keystoreFromPath</span><span class="o">(</span><span class="s">"/path/to/keystore.jks"</span><span class="o">,</span> <span class="s">"keystorePassword"</span><span class="o">);</span>          <span class="c1">// load the keystore from the given path</span>
+<span class="n">keystoreFromClasspath</span><span class="o">(</span><span class="s">"keyStoreName.p12"</span><span class="o">,</span> <span class="s">"keystorePassword"</span><span class="o">);</span>          <span class="c1">// load the keystore from the given path in the classpath.</span>
+<span class="n">keystoreFromInputStream</span><span class="o">(</span><span class="n">keystoreInputStream</span><span class="o">,</span> <span class="s">"keystorePassword"</span><span class="o">);</span>       <span class="c1">// load the keystore from the given input stream.</span>
+</code></pre></div></div>
+
+<p>Each of these methods are mutually exclusive, so only one of them can be used at a time.</p>
+
+<h2 id="advanced-configuration">Advanced configuration</h2>
+
+<p>Once the plugin is configured, there is a <code class="language-plaintext highlighter-rouge">SSLPlugin#patch</code> method that can be used to patch the Jetty server. This method receives a <code class="language-plaintext highlighter-rouge">Server</code> as a parameter and adds the configured connectors to it. This method can be used to apply the SSL configuration to a server that is not created by Javalin.</p>
+
+<h2 id="good-to-know">Good to know</h2>
+
+<ul>
+  <li>
+    <p>This plugin can be used to enable HTTP/2 without the need to use a certificate. To do so, just set the <code class="language-plaintext highlighter-rouge">secure</code> option to <code class="language-plaintext highlighter-rouge">false</code> and the <code class="language-plaintext highlighter-rouge">http2</code> option to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+  </li>
+  <li>
+    <p>HTTP/3 is not supported yet, but it is planned to be added in the future. The IETF is still working on the final specification, so it is not prudent to implement it yet.</p>
+  </li>
+  <li>
+    <p>Client certificates are not supported yet, and it is <strong>not</strong> planned to be added in the future. If you need this feature, please open an issue in the <a href="https://github.com/javalin/javalin-ssl">GitHub repository</a></p>
+  </li>
+  <li>
+    <p>Jetty 11 ships with SNI verification enabled by default, if hostname spoofing is a not concern, you can disable it by setting the <code class="language-plaintext highlighter-rouge">sniHostCheck</code> option to <code class="language-plaintext highlighter-rouge">false</code>. This option is enabled by default for security reasons, but it can be disabled if you are using a reverse proxy that handles the hostname verification. Jetty might respond with an <code class="language-plaintext highlighter-rouge">HTTP ERROR 400 Invalid SNI</code> if the hostname verification fails.</p>
+  </li>
+  <li>
+    <p>Live reload of certificates is not supported yet, and it <strong>is</strong> planned to be added in the future.</p>
+  </li>
+</ul>
+
+        <script src="/js/anchor.min.js"></script>
+        <script>
+            anchors.options.placement = 'left';
+            anchors.add();
+        </script>
+
+    </main>
+    <footer>
+        Javalin is a Java and Kotlin web framework, open sourced under the
+        <a href="https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)">Apache 2</a> license
+        | <a href="/download">Download</a>
+        | <a href="/about">About</a>
+        | <a href="/news">News</a>
+        | <a href="/about#contact">Contact</a>
+        | <a href="/for-educators">For educators</a>
+    </footer>
+    <div id="star-begging">
+    <style>
+        #star-begging {
+            transition: transform .25s;
+            transform: scale(0);
+            border-radius: 8px;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            padding: 20px 40px 16px 20px;
+            background: #fff;
+            box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15);
+            z-index: 9999998;
+        }
+        #star-begging.in {
+            transform: scale(1);
+        }
+        #star-begging.out {
+            transform: translateX(400px);
+        }
+        #star-begging p {
+            font-size: 16px;
+            margin: 0 0 15px;
+        }
+        #star-begging .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            height: 40px;
+            width: 40px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-family: arial, sans-serif;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+    </style>
+    <p>
+        Like Javalin?
+        <br>Star us 😊
+    </p>
+    <span class="close">×</span>
+    <iframe id="starFrame" class="githubStar" title="github-stars"
+            src="https://ghbtns.com/github-btn.html?user=javalin&amp;repo=javalin&amp;type=star&amp;count=true&size=large"
+            frameborder="0" scrolling="0" width="150px" height="30px">
+    </iframe>
+    <script>
+        if (localStorage.getItem("dismissed") !== "true" && document.getElementById("notification-banner") === null) {
+            setTimeout(function () {
+                document.querySelector("#star-begging").classList.add("in");
+            }, 15000);
+            document.querySelector("#star-begging .close").addEventListener("click", function () {
+                document.querySelector("#star-begging").classList.add("out");
+                localStorage.setItem("dismissed", "true");
+            });
+        }
+    </script>
+</div>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>

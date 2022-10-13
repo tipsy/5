@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54137818-11"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-54137818-11', {'anonymize_ip': true});
+</script>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen+Mono|Roboto+Slab:500,700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Documenting endpoints with OpenAPI 3 - Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:site_name" content="Javalin">
+    <meta property="og:url" content="https://javalin.io">
+    <meta property="og:description" content="What you will learn">
+    <meta property="og:image" content="https://javalin.io/img/javalin.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="liMtSlffOZROWLqoiOZdSx-luH9_Siq5-Ot6xqHZwq8">
+    <title>
+        Documenting endpoints with OpenAPI 3 - Javalin - A lightweight Java and Kotlin web framework
+    </title>
+    <meta name="description" content="What you will learn">
+    <link rel="canonical" href="https://zugazagoitia.github.io/tutorials/openapi-example">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>/* Styles that affect the length of the document */
+p code,
+li code {
+    font-size: 90%;
+    letter-spacing: -0.5px;
+    border: 1px solid #ccd;
+    background: #f5f5f7;
+    padding: 1px 3px;
+}
+
+.multitab-code pre {
+    margin-top: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.multitab-code div[data-tab] {
+    display: none;
+}
+
+:target {
+    scroll-margin-top: 108px;
+}
+
+.anchorjs-link {
+    transition: all .25s linear;
+  }
+  
+*:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+ }</style>
+</head>
+<body>
+    <a id="fork-me" href="https://github.com/javalin/javalin" target="_blank">
+    <img style="position:fixed;top:0;right:0;border:0;z-index:99999" src="data:image/png;base64,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" alt="Fork me on GitHub">
+</a>
+    <header class="top-nav-header">
+        <nav class="width-limit">
+            <a id="logo" href="/" aria-label="Javalin">
+                <img src="/img/logo.svg" alt="Javalin">
+            </a>
+            <ul>
+                <li><a href="/documentation">Docs</a></li>
+                <li><a href="/tutorials">Tutorials</a></li>
+                <li><a href="/plugins">Plugins</a></li>
+                <li><a href="/community">Community</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="width-limit">
+        <article class="tutorial" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="tutorial-header">
+        <h1 class="no-margin-top" itemprop="name headline">Documenting endpoints with OpenAPI 3</h1>
+        <p class="notification">
+            <time datetime="2020-01-03T00:00:00+00:00" itemprop="datePublished">Jan 3, 2020</time>
+             
+                • Written by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><a href="https://www.linkedin.com/in/davidaase" target="_blank">David Åse</a></span></span>
+            
+            <span id="timeToRead">Reading time: <b>0-0 min</b></span>
+             
+            <br>
+            <em class="github-link">
+                The source code for this tutorial can be found on 
+                <a href="https://github.com/javalin/javalin-samples/tree/main/javalin5/javalin-openapi-example" target="_blank">GitHub</a>.
+                Please fork/clone and look while you read.
+            </em>
+            
+        </p>
+        
+    </div>
+    <div class="post-content" itemprop="articleBody">
+        <h2 id="what-you-will-learn">What you will learn</h2>
+
+<p>This tutorial will teach you how to use the <a href="/plugins/openapi">Javalin OpenAPI plugin</a>
+to create an OpenAPI spec (previously known as a “Swagger spec”). The OpenAPI spec is
+an API description format for REST APIs, which is readable for both humans and machines.
+A spec can be used to generate web based documentation and API clients for all major languages,
+saving a lot of time for API consumers.</p>
+
+<p>We will build a <code class="language-plaintext highlighter-rouge">User</code> CRUD API with five operations and generate an OpenAPI spec for it.
+The example snippets contain both Java and Kotlin code,
+and a project for each language is available on
+<a href="https://github.com/javalin/javalin-samples/tree/main/javalin5/javalin-openapi-example">GitHub</a>.</p>
+
+<h2 id="dependencies">Dependencies</h2>
+
+<p>First, we need to create a Maven project with our dependencies: <a href="/tutorials/maven-setup">(→ Tutorial)</a></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependencies&gt;</span>
+     <span class="nt">&lt;dependency&gt;</span>
+         <span class="nt">&lt;groupId&gt;</span>io.javalin<span class="nt">&lt;/groupId&gt;</span>
+         <span class="nt">&lt;artifactId&gt;</span>javalin-bundle<span class="nt">&lt;/artifactId&gt;</span>
+         <span class="nt">&lt;version&gt;</span>5.0.1<span class="nt">&lt;/version&gt;</span>
+     <span class="nt">&lt;/dependency&gt;</span>
+     <span class="nt">&lt;dependency&gt;</span>
+         <span class="nt">&lt;groupId&gt;</span>io.javalin.community.openapi<span class="nt">&lt;/groupId&gt;</span>
+         <span class="nt">&lt;artifactId&gt;</span>javalin-openapi-plugin<span class="nt">&lt;/artifactId&gt;</span>
+         <span class="nt">&lt;version&gt;</span>5.0.1<span class="nt">&lt;/version&gt;</span>
+     <span class="nt">&lt;/dependency&gt;</span>
+     <span class="nt">&lt;dependency&gt;</span>
+         <span class="nt">&lt;groupId&gt;</span>io.javalin.community.openapi<span class="nt">&lt;/groupId&gt;</span>
+         <span class="nt">&lt;artifactId&gt;</span>javalin-swagger-plugin<span class="nt">&lt;/artifactId&gt;</span>
+         <span class="nt">&lt;version&gt;</span>5.0.1<span class="nt">&lt;/version&gt;</span>
+     <span class="nt">&lt;/dependency&gt;</span>
+     <span class="nt">&lt;dependency&gt;</span>
+         <span class="nt">&lt;groupId&gt;</span>io.javalin.community.openapi<span class="nt">&lt;/groupId&gt;</span>
+         <span class="nt">&lt;artifactId&gt;</span>javalin-redoc-plugin<span class="nt">&lt;/artifactId&gt;</span>
+         <span class="nt">&lt;version&gt;</span>5.0.1<span class="nt">&lt;/version&gt;</span>
+     <span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">javalin-bundle</code> dependency includes Javalin, Jackson and a logger.</p>
+
+<p>You can view the full POM on GitHub.</p>
+
+<h2 id="building-the-api">Building the API</h2>
+
+<p>Let’s define our Main class. This is where we will be putting our server and our OpenAPI config:</p>
+
+<div class="multitab-code" data-tab="1">
+<ul>
+    <li data-tab="1">Kotlin</li>
+    <li data-tab="2">Java</li>
+</ul>
+<div data-tab="1">
+    <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="nn">io.javalin.example.kotlin</span>
+
+<span class="k">import</span> <span class="nn">io.javalin.Javalin</span>
+<span class="k">import</span> <span class="nn">io.javalin.apibuilder.ApiBuilder.*</span>
+<span class="k">import</span> <span class="nn">io.javalin.example.kotlin.user.UserController</span>
+<span class="k">import</span> <span class="nn">io.javalin.openapi.plugin.OpenApiConfiguration</span>
+<span class="k">import</span> <span class="nn">io.javalin.openapi.plugin.OpenApiPlugin</span>
+<span class="k">import</span> <span class="nn">io.javalin.openapi.plugin.redoc.ReDocConfiguration</span>
+<span class="k">import</span> <span class="nn">io.javalin.openapi.plugin.redoc.ReDocPlugin</span>
+<span class="k">import</span> <span class="nn">io.javalin.openapi.plugin.swagger.SwaggerConfiguration</span>
+<span class="k">import</span> <span class="nn">io.javalin.openapi.plugin.swagger.SwaggerPlugin</span>
+
+<span class="k">fun</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="nc">Javalin</span><span class="p">.</span><span class="nf">create</span> <span class="p">{</span> <span class="n">config</span> <span class="p">-&gt;</span>
+        <span class="n">config</span><span class="p">.</span><span class="n">plugins</span><span class="p">.</span><span class="nf">register</span><span class="p">(</span><span class="nc">OpenApiPlugin</span><span class="p">(</span><span class="nc">OpenApiConfiguration</span><span class="p">().</span><span class="nf">apply</span> <span class="p">{</span>
+            <span class="n">info</span><span class="p">.</span><span class="n">title</span> <span class="p">=</span> <span class="s">"Javalin OpenAIP example"</span>
+        <span class="p">}))</span>
+        <span class="n">config</span><span class="p">.</span><span class="n">plugins</span><span class="p">.</span><span class="nf">register</span><span class="p">(</span><span class="nc">SwaggerPlugin</span><span class="p">(</span><span class="nc">SwaggerConfiguration</span><span class="p">()))</span>
+        <span class="n">config</span><span class="p">.</span><span class="n">plugins</span><span class="p">.</span><span class="nf">register</span><span class="p">(</span><span class="nc">ReDocPlugin</span><span class="p">(</span><span class="nc">ReDocConfiguration</span><span class="p">()))</span>
+    <span class="p">}.</span><span class="nf">routes</span> <span class="p">{</span>
+        <span class="nf">path</span><span class="p">(</span><span class="s">"users"</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">get</span><span class="p">(</span><span class="nc">UserController</span><span class="o">::</span><span class="n">getAll</span><span class="p">)</span>
+            <span class="nf">post</span><span class="p">(</span><span class="nc">UserController</span><span class="o">::</span><span class="n">create</span><span class="p">)</span>
+            <span class="nf">path</span><span class="p">(</span><span class="s">"{userId}"</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">get</span><span class="p">(</span><span class="nc">UserController</span><span class="o">::</span><span class="n">getOne</span><span class="p">)</span>
+                <span class="nf">patch</span><span class="p">(</span><span class="nc">UserController</span><span class="o">::</span><span class="n">update</span><span class="p">)</span>
+                <span class="nf">delete</span><span class="p">(</span><span class="nc">UserController</span><span class="o">::</span><span class="n">delete</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}.</span><span class="nf">start</span><span class="p">(</span><span class="mi">7001</span><span class="p">)</span>
+
+    <span class="nf">println</span><span class="p">(</span><span class="s">"Check out ReDoc docs at http://localhost:7001/redoc"</span><span class="p">)</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"Check out Swagger UI docs at http://localhost:7001/swagger"</span><span class="p">)</span>
+
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </div>
+<div data-tab="2">
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">io.javalin.example.java</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">io.javalin.Javalin</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.example.java.user.UserController</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.openapi.plugin.OpenApiConfiguration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.openapi.plugin.OpenApiPlugin</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.openapi.plugin.redoc.ReDocConfiguration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.openapi.plugin.redoc.ReDocPlugin</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.openapi.plugin.swagger.SwaggerConfiguration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.openapi.plugin.swagger.SwaggerPlugin</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">io</span><span class="o">.</span><span class="na">javalin</span><span class="o">.</span><span class="na">apibuilder</span><span class="o">.</span><span class="na">ApiBuilder</span><span class="o">.*;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="nc">OpenApiConfiguration</span> <span class="n">openApiConfiguration</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">OpenApiConfiguration</span><span class="o">();</span>
+            <span class="n">openApiConfiguration</span><span class="o">.</span><span class="na">getInfo</span><span class="o">().</span><span class="na">setTitle</span><span class="o">(</span><span class="s">"Javalin OpenAPI example"</span><span class="o">);</span>
+            <span class="n">config</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="k">new</span> <span class="nc">OpenApiPlugin</span><span class="o">(</span><span class="n">openApiConfiguration</span><span class="o">));</span>
+            <span class="n">config</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="k">new</span> <span class="nc">SwaggerPlugin</span><span class="o">(</span><span class="k">new</span> <span class="nc">SwaggerConfiguration</span><span class="o">()));</span>
+            <span class="n">config</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="k">new</span> <span class="nc">ReDocPlugin</span><span class="o">(</span><span class="k">new</span> <span class="nc">ReDocConfiguration</span><span class="o">()));</span>
+        <span class="o">}).</span><span class="na">routes</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">path</span><span class="o">(</span><span class="s">"users"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="n">get</span><span class="o">(</span><span class="nl">UserController:</span><span class="o">:</span><span class="n">getAll</span><span class="o">);</span>
+                <span class="n">post</span><span class="o">(</span><span class="nl">UserController:</span><span class="o">:</span><span class="n">create</span><span class="o">);</span>
+                <span class="n">path</span><span class="o">(</span><span class="s">"{userId}"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                    <span class="n">get</span><span class="o">(</span><span class="nl">UserController:</span><span class="o">:</span><span class="n">getOne</span><span class="o">);</span>
+                    <span class="n">patch</span><span class="o">(</span><span class="nl">UserController:</span><span class="o">:</span><span class="n">update</span><span class="o">);</span>
+                    <span class="n">delete</span><span class="o">(</span><span class="nl">UserController:</span><span class="o">:</span><span class="n">delete</span><span class="o">);</span>
+                <span class="o">});</span>
+            <span class="o">});</span>
+        <span class="o">}).</span><span class="na">start</span><span class="o">(</span><span class="mi">7002</span><span class="o">);</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Check out ReDoc docs at http://localhost:7002/redoc"</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Check out Swagger UI docs at http://localhost:7002/swagger-ui"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p>We enable the OpenAPI plugin by calling <code class="language-plaintext highlighter-rouge">config.plugins.register</code>,
+and we do all our configuration in that method. As mentioned earlier, we will register
+both ReDoc and Swagger UI (to generate web UIs for our API),
+but you’ll most likely only use one of these in production.</p>
+
+<p>The API definition in the snippet above references something called <code class="language-plaintext highlighter-rouge">UserController</code>,
+which doesn’t exist. Let’s create a skeleton:</p>
+
+<div class="multitab-code" data-tab="1">
+<ul>
+    <li data-tab="1">Kotlin</li>
+    <li data-tab="2">Java</li>
+</ul>
+<div data-tab="1">
+    <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="nn">io.javalin.example.kotlin.user</span>
+
+<span class="k">import</span> <span class="nn">io.javalin.http.Context</span>
+
+<span class="kd">object</span> <span class="nc">UserController</span> <span class="p">{</span>
+
+    <span class="k">fun</span> <span class="nf">create</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="nc">Context</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">getAll</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="nc">Context</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">getOne</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="nc">Context</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">update</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="nc">Context</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">delete</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="nc">Context</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </div>
+<div data-tab="2">
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">io.javalin.example.java.user</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">io.javalin.http.Context</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserController</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="nc">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">getAll</span><span class="o">(</span><span class="nc">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">getOne</span><span class="o">(</span><span class="nc">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">update</span><span class="o">(</span><span class="nc">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">delete</span><span class="o">(</span><span class="nc">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p>This defines a simple CRUD API for <code class="language-plaintext highlighter-rouge">User</code> objects.</p>
+
+<h2 id="adding-annotations">Adding annotations</h2>
+
+<p>To improve the documentation we can add annotations to the handlers.</p>
+
+<p>Let’s start with <code class="language-plaintext highlighter-rouge">Get users</code>:</p>
+
+<div class="multitab-code" data-tab="1">
+<ul>
+    <li data-tab="1">Kotlin</li>
+    <li data-tab="2">Java</li>
+</ul>
+<div data-tab="1">
+    <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@OpenApi</span><span class="p">(</span>
+    <span class="n">summary</span> <span class="p">=</span> <span class="s">"Get all users"</span><span class="p">,</span>
+    <span class="n">operationId</span> <span class="p">=</span> <span class="s">"getAllUsers"</span><span class="p">,</span>
+    <span class="n">tags</span> <span class="p">=</span> <span class="p">[</span><span class="s">"User"</span><span class="p">],</span>
+    <span class="n">responses</span> <span class="p">=</span> <span class="p">[</span><span class="nc">OpenApiResponse</span><span class="p">(</span><span class="s">"200"</span><span class="p">,</span> <span class="p">[</span><span class="nc">OpenApiContent</span><span class="p">(</span><span class="nc">Array</span><span class="p">&lt;</span><span class="nc">User</span><span class="p">&gt;</span><span class="o">::</span><span class="k">class</span><span class="p">)])],</span>
+    <span class="n">path</span> <span class="p">=</span> <span class="s">"/users"</span><span class="p">,</span>
+    <span class="n">methods</span> <span class="p">=</span> <span class="p">[</span><span class="nc">HttpMethod</span><span class="p">.</span><span class="nc">GET</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="k">fun</span> <span class="nf">getAll</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="nc">Context</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ctx</span><span class="p">.</span><span class="nf">json</span><span class="p">(</span><span class="nc">UserService</span><span class="p">.</span><span class="nf">getAll</span><span class="p">())</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </div>
+<div data-tab="2">
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@OpenApi</span><span class="o">(</span>
+    <span class="n">summary</span> <span class="o">=</span> <span class="s">"Get all users"</span><span class="o">,</span>
+    <span class="n">operationId</span> <span class="o">=</span> <span class="s">"getAllUsers"</span><span class="o">,</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">"/users"</span><span class="o">,</span>
+    <span class="n">methods</span> <span class="o">=</span> <span class="nc">HttpMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">,</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="o">{</span><span class="s">"User"</span><span class="o">},</span>
+    <span class="n">responses</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="nd">@OpenApiResponse</span><span class="o">(</span><span class="n">status</span> <span class="o">=</span> <span class="s">"200"</span><span class="o">,</span> <span class="n">content</span> <span class="o">=</span> <span class="o">{</span><span class="nd">@OpenApiContent</span><span class="o">(</span><span class="n">from</span> <span class="o">=</span> <span class="nc">User</span><span class="o">[].</span><span class="na">class</span><span class="o">)})</span>
+    <span class="o">}</span>
+<span class="o">)</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">getAll</span><span class="o">(</span><span class="nc">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="na">json</span><span class="o">(</span><span class="nc">UserService</span><span class="o">.</span><span class="na">getAll</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<div class="comment">
+  <p>We’ve created a <code class="language-plaintext highlighter-rouge">UserService</code> and a <code class="language-plaintext highlighter-rouge">User</code> class.
+This is not too relevant for OpenAPI, so we’re not showing them in the tutorial,
+but everything is available on <a href="https://github.com/tipsy/javalin-openapi-example">GitHub</a>.</p>
+</div>
+
+<p>Let’s go through the different properties:</p>
+
+<ul>
+  <li><strong>summary</strong> - Will be used as a title, both in web docs and in client docs</li>
+  <li><strong>operationId</strong> - If you generate a client from the OpenAPI spec, this will be the method name</li>
+  <li><strong>tags</strong> - Used to group endpoints</li>
+  <li><strong>responses</strong> - Describes the status codes and data models the endpoint can respond with.
+This particular endpoint can only answer with an array of <code class="language-plaintext highlighter-rouge">User</code> objects.</li>
+</ul>
+
+<p>Let’s see what our docs look like if we start the server:</p>
+
+<p><img src="/img/posts/openapi/one-annotation.png" alt="OpenAPI screenshot" class="bordered-image" /></p>
+
+<p>Cool! We have a <code class="language-plaintext highlighter-rouge">User</code> category and a Schema for <code class="language-plaintext highlighter-rouge">User</code>.
+We can explore the <code class="language-plaintext highlighter-rouge">Get all users</code> endpoint further by clicking on it:</p>
+
+<p><img src="/img/posts/openapi/get-users-endpoint.png" alt="OpenAPI screenshot" class="bordered-image" /></p>
+
+<p>We see that it takes no parameters, and that it will respond with a 200 and an array of <code class="language-plaintext highlighter-rouge">User</code> objects.</p>
+
+<p>If you’ve cloned the repo, you can try clicking the <code class="language-plaintext highlighter-rouge">Try it out</code> button now,
+which will give you an array of four users.</p>
+
+<p>Let’s document the <code class="language-plaintext highlighter-rouge">Update user</code> endpoint, which takes some input and has multiple responses:</p>
+
+<div class="multitab-code" data-tab="1">
+<ul>
+    <li data-tab="1">Kotlin</li>
+    <li data-tab="2">Java</li>
+</ul>
+<div data-tab="1">
+    <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@OpenApi</span><span class="p">(</span>
+    <span class="n">summary</span> <span class="p">=</span> <span class="s">"Update user by ID"</span><span class="p">,</span>
+    <span class="n">operationId</span> <span class="p">=</span> <span class="s">"updateUserById"</span><span class="p">,</span>
+    <span class="n">tags</span> <span class="p">=</span> <span class="p">[</span><span class="s">"User"</span><span class="p">],</span>
+    <span class="n">pathParams</span> <span class="p">=</span> <span class="p">[</span><span class="nc">OpenApiParam</span><span class="p">(</span><span class="s">"userId"</span><span class="p">,</span> <span class="nc">Int</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="s">"The user ID"</span><span class="p">)],</span>
+    <span class="n">requestBody</span> <span class="p">=</span> <span class="nc">OpenApiRequestBody</span><span class="p">([</span><span class="nc">OpenApiContent</span><span class="p">(</span><span class="nc">NewUserRequest</span><span class="o">::</span><span class="k">class</span><span class="p">)]),</span>
+    <span class="n">responses</span> <span class="p">=</span> <span class="p">[</span>
+        <span class="nc">OpenApiResponse</span><span class="p">(</span><span class="s">"204"</span><span class="p">),</span>
+        <span class="nc">OpenApiResponse</span><span class="p">(</span><span class="s">"400"</span><span class="p">,</span> <span class="p">[</span><span class="nc">OpenApiContent</span><span class="p">(</span><span class="nc">ErrorResponse</span><span class="o">::</span><span class="k">class</span><span class="p">)]),</span>
+        <span class="nc">OpenApiResponse</span><span class="p">(</span><span class="s">"404"</span><span class="p">,</span> <span class="p">[</span><span class="nc">OpenApiContent</span><span class="p">(</span><span class="nc">ErrorResponse</span><span class="o">::</span><span class="k">class</span><span class="p">)])</span>
+    <span class="p">],</span>
+    <span class="n">path</span> <span class="p">=</span> <span class="s">"/users/{userId}"</span><span class="p">,</span>
+    <span class="n">methods</span> <span class="p">=</span> <span class="p">[</span><span class="nc">HttpMethod</span><span class="p">.</span><span class="nc">PUT</span><span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div>    </div>
+  </div>
+<div data-tab="2">
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@OpenApi</span><span class="o">(</span>
+    <span class="n">summary</span> <span class="o">=</span> <span class="s">"Update user by ID"</span><span class="o">,</span>
+    <span class="n">operationId</span> <span class="o">=</span> <span class="s">"updateUserById"</span><span class="o">,</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">"/users/:userId"</span><span class="o">,</span>
+    <span class="n">methods</span> <span class="o">=</span> <span class="nc">HttpMethod</span><span class="o">.</span><span class="na">PATCH</span><span class="o">,</span>
+    <span class="n">pathParams</span> <span class="o">=</span> <span class="o">{</span><span class="nd">@OpenApiParam</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"userId"</span><span class="o">,</span> <span class="n">type</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">description</span> <span class="o">=</span> <span class="s">"The user ID"</span><span class="o">)},</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="o">{</span><span class="s">"User"</span><span class="o">},</span>
+    <span class="n">requestBody</span> <span class="o">=</span> <span class="nd">@OpenApiRequestBody</span><span class="o">(</span><span class="n">content</span> <span class="o">=</span> <span class="o">{</span><span class="nd">@OpenApiContent</span><span class="o">(</span><span class="n">from</span> <span class="o">=</span> <span class="nc">NewUserRequest</span><span class="o">.</span><span class="na">class</span><span class="o">)}),</span>
+    <span class="n">responses</span> <span class="o">=</span> <span class="o">{</span>
+        <span class="nd">@OpenApiResponse</span><span class="o">(</span><span class="n">status</span> <span class="o">=</span> <span class="s">"204"</span><span class="o">),</span>
+        <span class="nd">@OpenApiResponse</span><span class="o">(</span><span class="n">status</span> <span class="o">=</span> <span class="s">"400"</span><span class="o">,</span> <span class="n">content</span> <span class="o">=</span> <span class="o">{</span><span class="nd">@OpenApiContent</span><span class="o">(</span><span class="n">from</span> <span class="o">=</span> <span class="nc">ErrorResponse</span><span class="o">.</span><span class="na">class</span><span class="o">)}),</span>
+        <span class="nd">@OpenApiResponse</span><span class="o">(</span><span class="n">status</span> <span class="o">=</span> <span class="s">"404"</span><span class="o">,</span> <span class="n">content</span> <span class="o">=</span> <span class="o">{</span><span class="nd">@OpenApiContent</span><span class="o">(</span><span class="n">from</span> <span class="o">=</span> <span class="nc">ErrorResponse</span><span class="o">.</span><span class="na">class</span><span class="o">)})</span>
+    <span class="o">}</span>
+<span class="o">)</span>
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p>Compared to the endpoint we documented earlier, this one has two more properties:</p>
+
+<ul>
+  <li><strong>pathParams</strong> - These define Javalin path-parameters. There is also <code class="language-plaintext highlighter-rouge">queryParams</code> and <code class="language-plaintext highlighter-rouge">formParams</code>.</li>
+  <li><strong>requestBody</strong> - This endpoint expects a JSON object as the request body</li>
+</ul>
+
+<p>This endpoint also has two more responses:</p>
+<ul>
+  <li>If you provide an invalid <code class="language-plaintext highlighter-rouge">userId</code> or <code class="language-plaintext highlighter-rouge">NewUserRequest</code> object you will get a 400.</li>
+  <li>If you try to update a non-existent user you will get a 404.</li>
+</ul>
+
+<h2 id="thats-pretty-much-it">That’s pretty much it!</h2>
+
+<p>The <a href="https://github.com/tipsy/javalin-openapi-example">example repo</a>
+contains a fully working API, so if you clone it you can play around with the <code class="language-plaintext highlighter-rouge">Try it out</code>
+button for each endpoint.</p>
+
+<h2 id="addendum">Addendum</h2>
+
+<p>Since we now have a OpenAPI spec it’s easy to generate clients, and this addendum will show you how.
+Client generation works the same for Kotlin, Java, or any other languages. Simply add a Maven plugin:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.openapitools<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>openapi-generator-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>4.2.2<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;executions&gt;</span>
+        <span class="nt">&lt;execution&gt;</span>
+            <span class="nt">&lt;goals&gt;</span>
+                <span class="nt">&lt;goal&gt;</span>generate<span class="nt">&lt;/goal&gt;</span>
+            <span class="nt">&lt;/goals&gt;</span>
+            <span class="nt">&lt;configuration&gt;</span>
+                <span class="nt">&lt;inputSpec&gt;</span>${project.basedir}/src/main/resources/api.json<span class="nt">&lt;/inputSpec&gt;</span>
+                <span class="nt">&lt;language&gt;</span>kotlin<span class="nt">&lt;/language&gt;</span>
+                <span class="nt">&lt;configOptions&gt;</span>
+                    <span class="nt">&lt;sourceFolder&gt;</span>src/gen/java/main<span class="nt">&lt;/sourceFolder&gt;</span>
+                <span class="nt">&lt;/configOptions&gt;</span>
+            <span class="nt">&lt;/configuration&gt;</span>
+        <span class="nt">&lt;/execution&gt;</span>
+    <span class="nt">&lt;/executions&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</code></pre></div></div>
+
+<p>You will have to download and save your spec somewhere, and depending on what options you use (language, serializer, etc)
+and how your project is set up, you will have to add dependencies to your POM.</p>
+
+<p>I only generated a client for Kotlin since the clients have different dependencies
+but you can just switch <code class="language-plaintext highlighter-rouge">kotlin</code> to <code class="language-plaintext highlighter-rouge">java</code> in the plugin config above to get a Java client.</p>
+
+<p>Using the client is very straightforward in Kotlin:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="nn">io.javalin.example.kotlin.client</span>
+
+<span class="k">import</span> <span class="nn">org.openapitools.client.apis.UserApi</span>
+<span class="k">import</span> <span class="nn">org.openapitools.client.infrastructure.ClientException</span>
+<span class="k">import</span> <span class="nn">org.openapitools.client.infrastructure.ServerException</span>
+<span class="k">import</span> <span class="nn">org.openapitools.client.models.NewUserRequest</span>
+
+<span class="c1">// This file uses a client which is auto-generated from OpenAPI spec.</span>
+<span class="c1">// To use it, first start Main.kt so the server is running.</span>
+
+<span class="k">private</span> <span class="kd">val</span> <span class="py">apiInstance</span> <span class="p">=</span> <span class="nc">UserApi</span><span class="p">(</span><span class="s">"http://localhost:7001"</span><span class="p">)</span>
+
+<span class="k">fun</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">apiInstance</span><span class="p">.</span><span class="nf">getAllUsers</span><span class="p">().</span><span class="nf">forEach</span> <span class="p">{</span> <span class="nf">println</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">ServerException</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"5xx response calling UserApi#getAllUsers"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">newUserRequest</span> <span class="p">=</span> <span class="nc">NewUserRequest</span><span class="p">(</span><span class="s">"Elaine"</span><span class="p">,</span> <span class="s">"Elaine@elaine.kt"</span><span class="p">)</span>
+        <span class="n">apiInstance</span><span class="p">.</span><span class="nf">createUser</span><span class="p">(</span><span class="n">newUserRequest</span><span class="p">)</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"Added new user: ${newUserRequest.name}"</span><span class="p">)</span>
+        <span class="n">apiInstance</span><span class="p">.</span><span class="nf">getAllUsers</span><span class="p">().</span><span class="nf">forEach</span> <span class="p">{</span> <span class="nf">println</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">ClientException</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"4xx response calling UserApi#createUser"</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">ServerException</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"5xx response calling UserApi#createUser"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>That’s it. The OpenAPI generator
+(<a href="https://github.com/OpenAPITools/openapi-generator">https://github.com/OpenAPITools/openapi-generator</a>)
+supports a ton of different languages, and will generate markdown docs for for the clients too.</p>
+
+<p>Have fun!</p>
+
+    </div>
+    <h3>Thanks for reading</h3>
+    If you find any errors, please <a href="https://github.com/javalin/javalin.github.io/blob/master/_posts/tutorials/2020-01-03-javalin-openapi-example.md">edit this page on GitHub</a>.
+    <br>
+    
+        The full source code for this tutorial can also be found on <a href="https://github.com/javalin/javalin-samples/tree/main/javalin5/javalin-openapi-example">GitHub</a>.
+    
+</article>
+<style>
+    .social {
+        margin: 30px 0;
+        display: flex;
+    }
+    .social-btn {
+        text-align: center;
+        min-width: 240px;
+        padding: 10px 16px 8px;
+        font-size: 14px;
+        font-family: 'Roboto Slab', sans-serif;
+        font-weight: 600;
+        color: #fff;
+        background: #000;
+        border-radius: 50px;
+        box-shadow: 2px 2px red, -2px -2px cyan;
+    }
+    .social-btn + .social-btn {
+        margin-left: 24px;
+    }
+    .social-btn:hover {
+        background: #008ab4;
+    }
+    .social-btn img {
+        width: 24px;
+        display: inline;
+        vertical-align: middle;
+        margin-right: 12px;
+    }
+    @media (max-width: 480px) {
+        .social {
+            justify-content: space-between;
+        }
+        .social-btn {
+            min-width: 0;
+            width: calc(50% - 12px);
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+        .social-btn + .social-btn {
+            margin-left: 0;
+        }
+    }
+</style>
+<div class="social">
+    <a class="social-btn" href="https://twitter.com/intent/tweet?text=Documenting endpoints with OpenAPI 3&url=https://zugazagoitia.github.io/tutorials/openapi-example&via=javalin_io&related=javalin_io"
+       rel="nofollow"
+       title="Share on Twitter">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAM1BMVEUAAAD///////////////////////////////////////////////////////////////+3leKCAAAAEHRSTlMA8BDQwKCAMOBwYECwUCCQ27fl2AAAAW1JREFUWMPtltuOwyAMRLG5QxL8/1+7G6lKFApMaJ5W2/NIPCPAnlL15R+xRSM7ZPMnci5yYvxrNRt3VMRtpPdBLqR9MWkhPkpI80BPUpFy2dfiUbKK9B02kjbmrCkycNAdfeCqpuOQOnrye2teRS9LrxqEjn4tQSS/io7Fxg1Kn/MWjxX7dgw30NvGNkO9CQP1O8v7oGEDq07i9Uu+YxAvs1J91GmDBtdQLVKjYz6/YINNWujiVgsMet3CqAr7yICKn3XQF4N9gizJDAsIDMSBLkIyyDzkmjqmWb0GoYUUBVKLWFUF6yk9gccDYtU7bKabWBNv9yKoDunmTcSW2Im+uwNi1cBP5+DjUSAGrzgiVcLZSBmlHjnQBv7L4AOMYEdwiAGcFgK/A5BN9/WsMCs90nsjT/SrGd0fI3UJIIIdovtlAUnWftA5KwiKakg2Y7ljfPn9tzWkUw5GsHV059UEOVpDR2wXl1l9+RP8AHA4c7ljId3mAAAAAElFTkSuQmCC">Share on Twitter
+    </a>
+    <a class="social-btn" href="https://facebook.com/sharer.php?u=https://zugazagoitia.github.io/tutorials/openapi-example"
+       rel="nofollow"
+       title="Share on Facebook">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUAAAD///////////////////////////////////////////////////////////87TQQwAAAAD3RSTlMAwIDwEEDgMKBgINBwUJA4su2wAAAAy0lEQVRIx2MYJICr+T9WkOQAVTD/Pw5gDpHn/I8TXAAriMetwAqsQB63gh9gBf/xgAFT8E0QCPJxK/ixACTqj1PB5wCwKD9OBbsY8Cv4XEBAwU8GAgoECCmYABTB5QuEUI2S0n4cCn6DRBzxhORHkMh5Qgr0h7eCjw6I/BiPTcEnBgRgxKbgK5ICPkIKmGij4C+yIwn5gg2bgm9ICuIHa2SNKqCZgs9gBf2YClBTkDNuBSlgBeyYCtDKzGJcCtKhyY+lH7sCIweGwQEAY2jNUu1+zZgAAAAASUVORK5CYII=">Share on Facebook
+    </a>
+</div>
+
+
+    </main>
+    <footer>
+        Javalin is a Java and Kotlin web framework, open sourced under the
+        <a href="https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)">Apache 2</a> license
+        | <a href="/download">Download</a>
+        | <a href="/about">About</a>
+        | <a href="/news">News</a>
+        | <a href="/about#contact">Contact</a>
+        | <a href="/for-educators">For educators</a>
+    </footer>
+    <div id="star-begging">
+    <style>
+        #star-begging {
+            transition: transform .25s;
+            transform: scale(0);
+            border-radius: 8px;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            padding: 20px 40px 16px 20px;
+            background: #fff;
+            box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15);
+            z-index: 9999998;
+        }
+        #star-begging.in {
+            transform: scale(1);
+        }
+        #star-begging.out {
+            transform: translateX(400px);
+        }
+        #star-begging p {
+            font-size: 16px;
+            margin: 0 0 15px;
+        }
+        #star-begging .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            height: 40px;
+            width: 40px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-family: arial, sans-serif;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+    </style>
+    <p>
+        Like Javalin?
+        <br>Star us 😊
+    </p>
+    <span class="close">×</span>
+    <iframe id="starFrame" class="githubStar" title="github-stars"
+            src="https://ghbtns.com/github-btn.html?user=javalin&amp;repo=javalin&amp;type=star&amp;count=true&size=large"
+            frameborder="0" scrolling="0" width="150px" height="30px">
+    </iframe>
+    <script>
+        if (localStorage.getItem("dismissed") !== "true" && document.getElementById("notification-banner") === null) {
+            setTimeout(function () {
+                document.querySelector("#star-begging").classList.add("in");
+            }, 15000);
+            document.querySelector("#star-begging .close").addEventListener("click", function () {
+                document.querySelector("#star-begging").classList.add("out");
+                localStorage.setItem("dismissed", "true");
+            });
+        }
+    </script>
+</div>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>

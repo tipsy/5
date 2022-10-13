@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54137818-11"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-54137818-11', {'anonymize_ip': true});
+</script>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen+Mono|Roboto+Slab:500,700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Javalin with Java Platform Module System (JPMS) and Gradle - Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:site_name" content="Javalin">
+    <meta property="og:url" content="https://javalin.io">
+    <meta property="og:description" content="What You Will LearnIn this tutorial we will learn how to create a simple RESTful API based on Javalin and the Java Platform Module System (JPMS or Jigsaw) wi...">
+    <meta property="og:image" content="https://javalin.io/img/javalin.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="liMtSlffOZROWLqoiOZdSx-luH9_Siq5-Ot6xqHZwq8">
+    <title>
+        Javalin with Java Platform Module System (JPMS) and Gradle - Javalin - A lightweight Java and Kotlin web framework
+    </title>
+    <meta name="description" content="What You Will LearnIn this tutorial we will learn how to create a simple RESTful API based on Javalin and the Java Platform Module System (JPMS or Jigsaw) wi...">
+    <link rel="canonical" href="https://zugazagoitia.github.io/tutorials/javalin-with-jpms-and-gradle">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>/* Styles that affect the length of the document */
+p code,
+li code {
+    font-size: 90%;
+    letter-spacing: -0.5px;
+    border: 1px solid #ccd;
+    background: #f5f5f7;
+    padding: 1px 3px;
+}
+
+.multitab-code pre {
+    margin-top: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.multitab-code div[data-tab] {
+    display: none;
+}
+
+:target {
+    scroll-margin-top: 108px;
+}
+
+.anchorjs-link {
+    transition: all .25s linear;
+  }
+  
+*:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+ }</style>
+</head>
+<body>
+    <a id="fork-me" href="https://github.com/javalin/javalin" target="_blank">
+    <img style="position:fixed;top:0;right:0;border:0;z-index:99999" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAACVCAMAAABmfEh9AAAAllBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPEhwAAAAFBgkAAAARFR8fIiwRFB4YHCUQEx0RFB4SFiERFB8QEx3s7e4eIStPUlpKTFUvMjwOEhs8P0hfYmlXWmE5PUUZHSfd3uAnKjTAwcRnanB2eH5CRU6TlZqxs7bP0NKFh4yUlpqipKiUlpujpKiipKdzB4/DAAAAFXRSTlMAAwgBDREiKBYbL5wdQBjb3ZzclY3cWcIvAAAGZ0lEQVR42u2c3W7bMAyF02bL2q5bu7WLqDhW7Si24p902/u/3EglljxXQX1jixclsIv0QvhAHvAQZLJFF8vl1dX19afn/Ub9ej+2L5ufd6v725vPn66vr66ulsvFBOGoPj/LLJHvY8kkf/j2ZTUtlqe6ed6+JCOytX/ZPCLW/aRYnur2aZeo3QisjXogrO+TYjmq1ROqZgQWlvpxaiyisljf71dP+yQfJflk8mwtfbK+/NhnmxGSx1L/nBhraZP1ySbr7sc2O4xrEIMiTpqsu6+7zWGU5PNpi0hUfaxRkl9jqR9nxZLjJJ8d5s3W/mWU5Dfq56xY4z1x3iJuxnrinFg/xnrizJLfJZeLuMboJK9mbxDyIpPjkpvD48ySz4NQLpwnzopFY2CYqfzti7ibXfLZIQQlSoBjT1sRJL8bUgmCaiyWHwOjemKXqVIWYDwWljqmJ56h6jSVfyR+YOGJlCpbvipNhXBUbgycVfKqR3UuX0JUGNE8kcZA2VEphMLyZdIYabGieeJX74mYKyNEmiYaQCuLFdMTcy8sIUSuwWT6lYpI4SUfwRM9Vk1lbLQYYO3m90TVyxa1hgqqVEmHFdkTCaLRWQVa5rrAdMla+WzNPwYeXLaUBihyVBfUUhaAVh1zDNx1yZJllpLk20IWzqjjeaJXfK5J8ghVuQYRzxNdtpoOKt0674kjeVqNdFjqBAUatLJUMT3x0GtbCFXAqymVK2GkMZA80WH9gaqFLbVSGwxWI1ZbRhSFEAGsaKsRy7GFVlgsZT8yWI1YqkKtiUrpo+sPzhPjrEYsFv4jKGiMw/JjYCxPpCCotoDSYnFYjVgqRV3eQNNhRfdEwtoSVK51A+2wiBsVbww0BAWZBC08VuTVCAkroXQl8DdFLD6eaMCmK9+bTLzxxIdonqgIqixpGJTRPdGNgYIknwG0GZT4kcW5gLBQ8g0UugRzVhaLMVCIFF5lAXq7tsHhXGCxdCNlUboJItYYSEXMlOvxJTRK9AabqOeCg+ywslbYSExyIovuiQRxnpuPAICDDY/VSId1hCKrQHVtnsVqZJ1AIdMSTJqc2zyL1YiBhBr9voLOfTisRkqoMg2mAizksEHk8TwRxU5QhdGwdZKPey6wA7PZViQurOW6i/irESEMQckGc+UjqidaAtEiVAGtEJ7KST6KJ67dDuLYdfrWyp7BamTdnqFkDRj2vMJgNbI2lDFKmW6zGtqe5OOcC7z7EFSxRbhae6r1PoviiV71BhpJh6iyPCk++oXMUmm0HwyB8bvlcC74dXJqZLLZSkD/3yDirUYkNGmaN3maJsJkwmJFXo2c+kPdApi0hDaV557K4FyATFAilM6roupafTRPlJ3eZXGCMgAVZuuo4nnifuM9UQmCkgWQY1fQSPpjrNWIz5Y6QVVlhVBaifieaLFKldZ01SeoPBVSRfXEXYclEqgt1On0oxHrwmrEUU05BjptQZNQprStZf/uIwee6F6bYwwsa0nly7UmKHHxWyOeap4x0ICmFg9WWvSX4DcpHdWUReydC2StTpe7WuZdkw+sRgYPTrcacZonKF2i2nOkCntij2omTxQERWovpNsmvfl1weC56TzR33wwS9S5ZFoqGrjK3hioHk5Yg9em9ESnLZUa6lwlNFIc7br5/3PB7c3gsUk90WurAWnNOq3cDrzvibfDxyYdAx1WDcZ0UKStwbngPvDcHOeCGk5QUGSOynviKvDaHGOgqBHKb2wGP6i5Cz43xwldpd3GJnAuWIRj+hO6MABJKvu58p4YemtiT/RYr0b3Tyte8oGX5pK8qAGg9WL3sV1cjum/NVKabjk5iMvPTbwa6e//IlBdWo14qAhU75wLkCkC1bs/qIlFFfZEBlSBMZADVcgTGVCFJM+A6o3kk5wDVWg1woAq4IkcqEKeyIAq4Ik7BlSBMZADVWgMZEAV8EQOVCFPZEAV8EQOVAFP5EAV8kQGVIHVCAeqt5LfSAZUAU/kQBX6JiUDqtBqhAFVwBM5UIU8kQHVW8krDlShcwEDqoAncqAaYqEncqAaYpEnMqD6D2v15QnHQA5Ufaz71eqJxsAFg/BY35HriXbIHMJhEdftM+6QWUSHRVw3+L+VLXhEh4VcGM8LJnHGQjCKBZcgLOKysWATiEXBjAqxiMvGglEsMfhRWS4bC3bBk+ojPuIjPiIc/wAQkAE6ZqHsywAAAABJRU5ErkJggg==" alt="Fork me on GitHub">
+</a>
+    <header class="top-nav-header">
+        <nav class="width-limit">
+            <a id="logo" href="/" aria-label="Javalin">
+                <img src="/img/logo.svg" alt="Javalin">
+            </a>
+            <ul>
+                <li><a href="/documentation">Docs</a></li>
+                <li><a href="/tutorials">Tutorials</a></li>
+                <li><a href="/plugins">Plugins</a></li>
+                <li><a href="/community">Community</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="width-limit">
+        <article class="tutorial" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="tutorial-header">
+        <h1 class="no-margin-top" itemprop="name headline">Javalin with Java Platform Module System (JPMS) and Gradle</h1>
+        <p class="notification">
+            <time datetime="2022-08-03T00:00:00+00:00" itemprop="datePublished">Aug 3, 2022</time>
+             
+                • Written by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><a href="https://www.linkedin.com/in/bernhard-baumgartner-ba5a4b80/" target="_blank">Bernhard Baumgartner</a></span></span>
+            
+            <span id="timeToRead">Reading time: <b>0-0 min</b></span>
+             
+            <br>
+            <em class="github-link">
+                The source code for this tutorial can be found on 
+                <a href="https://github.com/baumgarb/javalin-with-jpms-and-gradle" target="_blank">GitHub</a>.
+                Please fork/clone and look while you read.
+            </em>
+            
+        </p>
+        
+    </div>
+    <div class="post-content" itemprop="articleBody">
+        <h2 id="what-you-will-learn">What You Will Learn</h2>
+<p>In this tutorial we will learn how to create a simple RESTful API based on Javalin and the Java Platform Module System (JPMS or Jigsaw) with Gradle as build and dependency management tool.</p>
+
+<p>We will use the <a href="https://www.oracle.com/corporate/features/understanding-java-9-modules.html">Java Platform Module System</a> which among other benefits greatly improves the ability to encapsulate implementation details in big Java projects. Moreover, we will utilize the built-in dependency loading / resolving mechanisms which come with JPMS and Java’s <a href="https://docs.oracle.com/javase/9/docs/api/java/util/ServiceLoader.html">ServiceLoader</a>. Also, we’ll show how to use <a href="https://gradle.org">Gradle</a> as the underlying build and dependency management tooling to showcase how neat Gradle and JPMS can work together.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 1. Be sure to have Java 9 or above</span>
+java <span class="nt">-version</span>
+
+<span class="c"># 2. Be sure to have Gradle set up and available on your machine</span>
+gradle <span class="nt">-v</span>
+</code></pre></div></div>
+
+<h2 id="operating-system-and-ide">Operating system and IDE</h2>
+<p>This tutorial provides commands for both Windows and Linux machines. Where necessary, I will provide the commands for each of these operating systems in case they differ. For Windows users, pls note, that I’ll only provide commands that work in PowerShell and PowerShell Core. I’ll not provide commands for <code class="language-plaintext highlighter-rouge">cmd.exe</code>, though.</p>
+
+<p>With regards to IDE, for this tutorial I decided to work as bare bone as possible. You will be able to follow along if you meet all prerequisites mentioned above and if you have a simple text editor on your machine. Feel free, though, to use your favourite IDE.</p>
+
+<h2 id="1-setup-project">1. Setup project</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 1. Linux: create a new directory for our project wherever you host your projects</span>
+<span class="nb">mkdir </span>javalin-with-jpms-and-gradle
+
+<span class="c"># 1. Windows: previous 'mkdir' should also work on Windows by now, but in case not you should be good with</span>
+New-Item <span class="nt">-Type</span> Directory javalin-with-jpms-and-gradle
+
+<span class="c"># 2. Change to new directory</span>
+<span class="nb">cd </span>javalin-with-jpms-and-gradle
+
+<span class="c"># 3. Create new project based on Gradle's "basic" template</span>
+gradle init <span class="nt">--type</span> basic <span class="nt">--dsl</span> groovy <span class="nt">--project-name</span> javalin-with-jpms-and-gradle
+</code></pre></div></div>
+
+<p>The content of the newly initialized project should look something along the lines of</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>javalin-with-jpms-and-gradle/
+├── .gitattributes
+├── .gitignore
+├── .gradle/
+├── build.gradle
+├── gradle/
+├── gradlew
+├── gradlew.bat
+└── settings.gradle
+</code></pre></div></div>
+
+<h2 id="create-empty-directories-for-subprojects">Create empty directories for subprojects</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 1. Create directory for models subproject</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> models/src/main/java/org/example/models
+
+<span class="c"># 2. Create directory for services subproject</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> services/src/main/java/org/example/services
+
+<span class="c"># 3. Create directory for api subproject</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> api/src/main/java/org/example/api
+
+<span class="c"># Windows: if 'mkdir' does not work then go with the 'New-Item` pendant for all previous three commands</span>
+New-Item <span class="nt">-Type</span> Directory &lt;directory tree&gt;
+</code></pre></div></div>
+
+<h2 id="configure-gradle-subprojects-and-make-api-runnable-application">Configure Gradle subprojects and make API runnable application</h2>
+<p>Open <code class="language-plaintext highlighter-rouge">settings.gradle</code> in the project’s root directory and include the three subprojects:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rootProject</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="s1">'javalin-with-jpms-and-gradle'</span>
+
+<span class="c1">// Include the subprojects as follows</span>
+<span class="n">include</span> <span class="s1">'models'</span>
+<span class="n">include</span> <span class="s1">'services'</span>
+<span class="n">include</span> <span class="s1">'api'</span>
+</code></pre></div></div>
+
+<p>Now open <code class="language-plaintext highlighter-rouge">build.gradle</code> in the project’s root directory and make sure the contents look as follows:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Let's setup Maven Central as repository for all dependencies of all subprojects</span>
+<span class="n">subprojects</span> <span class="o">{</span>
+    <span class="n">repositories</span> <span class="o">{</span>
+        <span class="n">mavenCentral</span><span class="o">()</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now create a new <code class="language-plaintext highlighter-rouge">build.gradle</code> in the root of both subprojects, <code class="language-plaintext highlighter-rouge">models</code> and <code class="language-plaintext highlighter-rouge">services</code> with the following content:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span> <span class="s1">'java-library'</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now create a new <code class="language-plaintext highlighter-rouge">build.gradle</code> in the root of the <code class="language-plaintext highlighter-rouge">api</code> subproject with the following content:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span> <span class="s1">'application'</span>
+<span class="o">}</span>
+
+<span class="n">application</span> <span class="o">{</span>
+    <span class="c1">// Don't worry, we're about to create this class in a sec :-)</span>
+    <span class="n">mainClass</span> <span class="o">=</span> <span class="s2">"org.example.api.MyAPI"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now let’s create the <code class="language-plaintext highlighter-rouge">MyAPI</code> class in our <code class="language-plaintext highlighter-rouge">api</code> subproject with the following content:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.example.api</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyAPI</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"API's kind of alive already :-)"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The contents of your project’s directory should look as follows at this point:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>javalin-with-jpms-and-gradle/
+├── .gitattributes
+├── .gitignore
+├── .gradle/
+├── api/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   ├── org/
+│   │   │   │   │   ├── example/
+│   │   │   │   │   │   ├── api/
+│   │   │   │   │   │   │   └── MyAPI.java           &lt;-- contains static void main where Javalin will be fired up eventually
+|   └── build.gradle                                 &lt;-- build.gradle for API
+├── build.gradle
+├── gradle/
+├── gradlew
+├── gradlew.bat
+├── models/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   ├── org/
+│   │   │   │   │   ├── example/
+│   │   │   │   │   │   └── models/
+|   └── build.gradle                                 &lt;-- build.gradle for models
+├── services/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   ├── org/
+│   │   │   │   │   ├── example/
+│   │   │   │   │   │   └── services/
+|   └── build.gradle                                 &lt;-- build.gradle for services
+└── settings.gradle
+</code></pre></div></div>
+
+<p>At this point you should now be able to run the <code class="language-plaintext highlighter-rouge">api</code> project via Gradle as follows:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Linux: invoke Gradle's 'run' task that comes with the 'application' plugin</span>
+./gradlew :api:run
+
+<span class="c"># Windows</span>
+.<span class="se">\g</span>radlew.bat :api:run
+
+<span class="c"># You should see an output like</span>
+<span class="o">&gt;</span> Task :api:run
+API<span class="s1">'s kind of alive already :-)
+</span></code></pre></div></div>
+
+<h2 id="create-javalin-api-that-returns-a-list-of-persons-without-jpms-for-now">Create Javalin API that returns a list of persons (without JPMS for now)</h2>
+
+<p>Create a <code class="language-plaintext highlighter-rouge">Person.java</code> class in package <code class="language-plaintext highlighter-rouge">org.example.models</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.example.models</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="kt">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">age</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAge</span><span class="o">(</span><span class="kt">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now create a <code class="language-plaintext highlighter-rouge">PersonReader.java</code> interface in package <code class="language-plaintext highlighter-rouge">org.example.services.api</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.example.services.api</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.example.models.Person</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">PersonReader</span> <span class="o">{</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Person</span><span class="o">&gt;</span> <span class="nf">getAll</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now create <code class="language-plaintext highlighter-rouge">InMemoryPersonReader.java</code> implementation of this interface in <code class="language-plaintext highlighter-rouge">org.example.services.inmemory</code>:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.example.services.inmemory</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.example.models.Person</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.services.api.PersonReader</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">InMemoryPersonReader</span> <span class="kd">implements</span> <span class="nc">PersonReader</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Person</span><span class="o">&gt;</span> <span class="nf">getAll</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">List</span><span class="o">.</span><span class="na">of</span><span class="o">(</span>
+            <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="s">"Vincent Vega"</span><span class="o">,</span> <span class="mi">73</span><span class="o">),</span>
+            <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="s">"Jules Winnfield"</span><span class="o">,</span> <span class="mi">12</span><span class="o">)</span>
+        <span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>In order for this to work you will have to add a dependency of the <code class="language-plaintext highlighter-rouge">services</code> subproject to <code class="language-plaintext highlighter-rouge">models</code> in <code class="language-plaintext highlighter-rouge">services/build.gradle</code> as follows:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span> <span class="s1">'java-library'</span>
+<span class="o">}</span>
+
+<span class="n">dependencies</span> <span class="o">{</span>
+    <span class="n">implementation</span> <span class="nf">project</span><span class="o">(</span><span class="s2">":models"</span><span class="o">)</span>            <span class="c1">// &lt;-- add dependency to models subproject</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now open <code class="language-plaintext highlighter-rouge">api/build.gradle</code> and add the following dependencies:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span> <span class="s1">'application'</span>
+<span class="o">}</span>
+
+<span class="n">dependencies</span> <span class="o">{</span>
+    <span class="n">implementation</span> <span class="nf">project</span><span class="o">(</span><span class="s2">":models"</span><span class="o">)</span>     <span class="c1">// We need this dependency for serializing persons to JSON</span>
+    <span class="n">implementation</span> <span class="nf">project</span><span class="o">(</span><span class="s2">":services"</span><span class="o">)</span>   <span class="c1">// We'll make use of the InMemoryPersonReader soon</span>
+    
+    <span class="n">implementation</span> <span class="nl">group:</span> <span class="s1">'io.javalin'</span><span class="o">,</span> <span class="nl">name:</span> <span class="s1">'javalin'</span><span class="o">,</span> <span class="nl">version:</span> <span class="s1">'4.6.4'</span>                             <span class="c1">// Pulling in Javalin</span>
+    <span class="n">implementation</span> <span class="nl">group:</span> <span class="s1">'com.fasterxml.jackson.core'</span><span class="o">,</span> <span class="nl">name:</span> <span class="s1">'jackson-databind'</span><span class="o">,</span> <span class="nl">version:</span> <span class="s1">'2.13.3'</span>   <span class="c1">// For JSON serialization of persons </span>
+    <span class="n">implementation</span> <span class="nl">group:</span> <span class="s1">'org.slf4j'</span><span class="o">,</span> <span class="nl">name:</span> <span class="s1">'slf4j-simple'</span><span class="o">,</span> <span class="nl">version:</span> <span class="s1">'1.7.36'</span>                        <span class="c1">// To see some Javalin logging</span>
+<span class="o">}</span>
+
+<span class="n">application</span> <span class="o">{</span>
+    <span class="n">mainClass</span> <span class="o">=</span> <span class="s2">"org.example.api.MyAPI"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now open up <code class="language-plaintext highlighter-rouge">MyAPI.java</code> and put the following content in there:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.example.api</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.fasterxml.jackson.databind.ObjectMapper</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.Javalin</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.services.inmemory.InMemoryPersonReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.Logger</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.LoggerFactory</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyAPI</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">MyAPI</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">short</span> <span class="n">port</span> <span class="o">=</span> <span class="mi">7312</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">var</span> <span class="n">personReader</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">InMemoryPersonReader</span><span class="o">();</span>
+        <span class="kt">var</span> <span class="n">objMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">();</span>
+        <span class="kt">var</span> <span class="n">result</span> <span class="o">=</span> <span class="n">objMapper</span><span class="o">.</span><span class="na">valueToTree</span><span class="o">(</span><span class="n">personReader</span><span class="o">.</span><span class="na">getAll</span><span class="o">());</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"API: found {} people."</span><span class="o">,</span> <span class="n">personReader</span><span class="o">.</span><span class="na">getAll</span><span class="o">().</span><span class="na">size</span><span class="o">());</span>
+
+        <span class="kt">var</span> <span class="n">app</span> <span class="o">=</span> <span class="nc">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">().</span><span class="na">start</span><span class="o">(</span><span class="n">port</span><span class="o">);</span>
+        <span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/ping"</span><span class="o">,</span> <span class="n">ctx</span> <span class="o">-&gt;</span> <span class="n">ctx</span><span class="o">.</span><span class="na">result</span><span class="o">(</span><span class="s">"pong"</span><span class="o">));</span>
+        <span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/persons"</span><span class="o">,</span> <span class="n">ctx</span> <span class="o">-&gt;</span> <span class="n">ctx</span><span class="o">.</span><span class="na">json</span><span class="o">(</span><span class="n">result</span><span class="o">));</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"API's alive for real :-)))"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Your project directory should now look like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>javalin-with-jpms-and-gradle/
+├── .gitattributes
+├── .gitignore
+├── .gradle/
+├── api/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   ├── org/
+│   │   │   │   │   ├── example/
+│   │   │   │   │   │   ├── api/
+│   │   │   │   │   │   │   └── MyAPI.java           
+|   └── build.gradle                                 
+├── build.gradle
+├── gradle/
+├── gradlew
+├── gradlew.bat
+├── models/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   ├── org/
+│   │   │   │   │   ├── example/
+│   │   │   │   │   │   └── models/
+│   │   │   │   │   │   │   └── Person.java                       &lt;-- new class
+|   └── build.gradle                                 
+├── services/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   ├── org/
+│   │   │   │   │   ├── example/
+│   │   │   │   │   │   ├── services/
+│   │   │   │   │   │   │   ├── api                               &lt;-- new package
+│   │   │   │   │   │   │   │   └── PersonReader.java             &lt;-- new interface
+│   │   │   │   │   │   │   ├── services                          &lt;-- new package
+│   │   │   │   │   │   │   │   └── InMemoryPersonReader.java     &lt;-- new class
+|   └── build.gradle                                 
+└── settings.gradle
+</code></pre></div></div>
+
+<p>If so, then you should now be able to run the API again and you should be able to query the API from another shell / command line window:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Linux: invoke Gradle's 'run' task that comes with the 'application' plugin</span>
+./gradlew :api:run
+
+<span class="c"># Windows</span>
+.<span class="se">\g</span>radlew.bat :api:run
+
+<span class="c"># You should see an output like</span>
+<span class="o">[</span>main] INFO org.example.api.MyAPI - API: found 2 people.
+<span class="o">[</span>main] INFO io.javalin.Javalin - Listening on http://localhost:7312/
+<span class="o">[</span>main] INFO io.javalin.Javalin - Javalin started <span class="k">in </span>315ms <span class="se">\o</span>/
+<span class="o">[</span>main] INFO org.example.api.MyAPI - APIs alive <span class="k">for </span>real :-<span class="o">)))</span>
+
+<span class="c"># Invoking the API in another window via</span>
+curl http://localhost:7312/persons
+
+<span class="c"># should print </span>
+<span class="o">[{</span><span class="s2">"name"</span>:<span class="s2">"Vincent Vega"</span>,<span class="s2">"age"</span>:73<span class="o">}</span>,<span class="o">{</span><span class="s2">"name"</span>:<span class="s2">"Jules Winnfield"</span>,<span class="s2">"age"</span>:12<span class="o">}]</span>
+</code></pre></div></div>
+
+<p>Congrats, Javalin’s up and running 🥳 But now let’s get started with Java Modules and JPMS for real :-)</p>
+
+<h2 id="introducing-java-modules">Introducing Java modules</h2>
+
+<p>Create a module descriptor <code class="language-plaintext highlighter-rouge">models/src/main/java/java-module.info</code> with the following content:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">module</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">models</span> <span class="o">{</span>
+    <span class="c1">// We're exporting the only package we have in this subproject</span>
+    <span class="n">exports</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">models</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Create another module descriptor in the <code class="language-plaintext highlighter-rouge">services</code> subproject <code class="language-plaintext highlighter-rouge">services/src/main/java/java-module.info</code> with the following content:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">module</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">services</span> <span class="o">{</span>
+    <span class="c1">// Export both packages api and inmemory for now</span>
+    <span class="n">exports</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">services</span><span class="o">.</span><span class="na">api</span><span class="o">;</span>
+    <span class="n">exports</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">services</span><span class="o">.</span><span class="na">inmemory</span><span class="o">;</span>
+
+    <span class="c1">// Since we're using the Person class we're requiring the org.example.models module</span>
+    <span class="n">requires</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">models</span><span class="o">;}</span>
+</code></pre></div></div>
+
+<p>And create another module descriptor in the <code class="language-plaintext highlighter-rouge">api</code> subproject <code class="language-plaintext highlighter-rouge">api/src/main/java/java-module.info</code> with the following content:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">module</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">api</span> <span class="o">{</span>
+    <span class="c1">// For Javalin, the ObjectMapper and the Logger &amp; LoggerFactory to work we need to add these require statements</span>
+    <span class="n">requires</span> <span class="n">io</span><span class="o">.</span><span class="na">javalin</span><span class="o">;</span>
+    <span class="n">requires</span> <span class="n">com</span><span class="o">.</span><span class="na">fasterxml</span><span class="o">.</span><span class="na">jackson</span><span class="o">.</span><span class="na">databind</span><span class="o">;</span>
+    <span class="n">requires</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">;</span>
+
+    <span class="c1">// And since we're working with the InMemoryPersonReader we have to add this require statement as well</span>
+    <span class="n">requires</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">services</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Your project directory should now look like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>javalin-with-jpms-and-gradle/
+├── .gitattributes
+├── .gitignore
+├── .gradle/
+├── api/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   ├── org/
+│   │   │   │   │   ├── example/
+│   │   │   │   │   │   ├── api/
+│   │   │   │   │   │   │   └── MyAPI.java   
+│   │   │   │   └── module-info.java                              &lt;-- new module descriptor           
+|   └── build.gradle                                 
+├── build.gradle
+├── gradle/
+├── gradlew
+├── gradlew.bat
+├── models/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   ├── org/
+│   │   │   │   │   ├── example/
+│   │   │   │   │   │   └── models/
+│   │   │   │   │   │   │   └── Person.java                       
+│   │   │   │   └── module-info.java                              &lt;-- new module descriptor           
+|   └── build.gradle                                 
+├── services/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   ├── org/
+│   │   │   │   │   ├── example/
+│   │   │   │   │   │   ├── services/
+│   │   │   │   │   │   │   ├── api                               
+│   │   │   │   │   │   │   │   └── PersonReader.java             
+│   │   │   │   │   │   │   ├── services                          
+│   │   │   │   │   │   │   │   └── InMemoryPersonReader.java     
+│   │   │   │   └── module-info.java                              &lt;-- new module descriptor           
+|   └── build.gradle                                 
+└── settings.gradle
+</code></pre></div></div>
+
+<p>You should now be able to fire up the API again by running</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Linux</span>
+./gradlew :api:run
+
+<span class="c"># Windows</span>
+.<span class="se">\g</span>radlew.bat :api:run
+</code></pre></div></div>
+
+<h2 id="decouple-api-from-services-by-introducing-serviceloader">Decouple API from services by introducing ServiceLoader</h2>
+
+<p>Let’s be honest, the fact that <code class="language-plaintext highlighter-rouge">MyAPI</code> instantiates the <code class="language-plaintext highlighter-rouge">InMemoryPersonReader</code> directly is fairly ugly and a huge code smell. It’s an implementation detail no other module should be bothered with. To decouple the <code class="language-plaintext highlighter-rouge">api</code> from implementation details in the <code class="language-plaintext highlighter-rouge">services</code> module we’re introducing the <code class="language-plaintext highlighter-rouge">ServiceLoader</code> and we’ll make use of the <code class="language-plaintext highlighter-rouge">provides</code> directives in the module descriptor of the <code class="language-plaintext highlighter-rouge">services</code> module.</p>
+
+<p>Open <code class="language-plaintext highlighter-rouge">services/src/main/java/module-info.java</code> and change the content as follows:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">org.example.services.api.PersonReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.services.inmemory.InMemoryPersonReader</span><span class="o">;</span>
+
+<span class="n">module</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">services</span> <span class="o">{</span>
+    <span class="n">exports</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">services</span><span class="o">.</span><span class="na">api</span><span class="o">;</span>
+
+    <span class="n">requires</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">models</span><span class="o">;</span>
+
+    <span class="c1">// We're telling the ServiceLoader that the InMemoryPersonReader provides the implementation for the PersonReader interface</span>
+    <span class="n">provides</span> <span class="nc">PersonReader</span> <span class="n">with</span> <span class="nc">InMemoryPersonReader</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Note also, we’re no longer exporting the package <code class="language-plaintext highlighter-rouge">org.example.services.inmemory</code>. If you were to try to build the API now you’d get a compilation error saying something along the lines of</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>error: package org.example.services.inmemory is not visible
+import org.example.services.inmemory.InMemoryPersonReader;
+                           ^
+  (package org.example.services.inmemory is declared in module org.example.services, which does not export it)
+1 error
+</code></pre></div></div>
+
+<p>Now let’s fix that. Go ahead and open <code class="language-plaintext highlighter-rouge">MyAPI.java</code> again and change its content as follows:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.example.api</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.fasterxml.jackson.databind.ObjectMapper</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.Javalin</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.services.api.PersonReader</span><span class="o">;</span>        <span class="c1">// &lt;-- this is one is new, and we're no longer importing the InMemoryPersonReader</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.Logger</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.LoggerFactory</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.ServiceLoader</span><span class="o">;</span>                      <span class="c1">// &lt;-- importing the ServiceLoader</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyAPI</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">MyAPI</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">short</span> <span class="n">port</span> <span class="o">=</span> <span class="mi">7312</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">var</span> <span class="n">personReader</span> <span class="o">=</span> <span class="nc">ServiceLoader</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="nc">PersonReader</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">findFirst</span><span class="o">().</span><span class="na">get</span><span class="o">();</span>     <span class="c1">// &lt;-- Getting an implementation for the PersonReader interface from the ServiceLoader</span>
+        <span class="kt">var</span> <span class="n">objMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">();</span>
+        <span class="kt">var</span> <span class="n">result</span> <span class="o">=</span> <span class="n">objMapper</span><span class="o">.</span><span class="na">valueToTree</span><span class="o">(</span><span class="n">personReader</span><span class="o">.</span><span class="na">getAll</span><span class="o">());</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"API: found {} people."</span><span class="o">,</span> <span class="n">personReader</span><span class="o">.</span><span class="na">getAll</span><span class="o">().</span><span class="na">size</span><span class="o">());</span>
+
+        <span class="kt">var</span> <span class="n">app</span> <span class="o">=</span> <span class="nc">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">().</span><span class="na">start</span><span class="o">(</span><span class="n">port</span><span class="o">);</span>
+        <span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/ping"</span><span class="o">,</span> <span class="n">ctx</span> <span class="o">-&gt;</span> <span class="n">ctx</span><span class="o">.</span><span class="na">result</span><span class="o">(</span><span class="s">"pong"</span><span class="o">));</span>
+        <span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/persons"</span><span class="o">,</span> <span class="n">ctx</span> <span class="o">-&gt;</span> <span class="n">ctx</span><span class="o">.</span><span class="na">json</span><span class="o">(</span><span class="n">result</span><span class="o">));</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"API's alive for real :-)))"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>At this point your build would work fine, but if you were to run this application you’d end up with the following error:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exception in thread "main" java.util.NoSuchElementException: No value present
+        at java.base/java.util.Optional.get(Optional.java:143)
+        at org.example.api.MyAPI.main(MyAPI.java:16)
+</code></pre></div></div>
+
+<p>Of course, we could (or rather should) improve the error handling around the <code class="language-plaintext highlighter-rouge">Optional&lt;PersonReader&gt;</code> that is returned by the <code class="language-plaintext highlighter-rouge">findFirst()</code> method. Even though this clearly needs to be improved, it will not solve the underlying issue. Instead, we have to tell Gradle’s <code class="language-plaintext highlighter-rouge">application</code> plugin that there’s a <code class="language-plaintext highlighter-rouge">mainModule</code> we want to run besides a <code class="language-plaintext highlighter-rouge">mainClass</code>. Therefore, open <code class="language-plaintext highlighter-rouge">api/build.gradle</code> and change the <code class="language-plaintext highlighter-rouge">application</code> plugin definition as follows:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">application</span> <span class="o">{</span>
+    <span class="n">mainClass</span> <span class="o">=</span> <span class="s2">"org.example.api.MyAPI"</span>
+    <span class="n">mainModule</span> <span class="o">=</span> <span class="s2">"org.example.api"</span>      <span class="c1">// &lt;-- add this line</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Another try to run this application will again end up in an error, but a different one this time:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exception in thread "main" java.util.ServiceConfigurationError: org.example.services.api.PersonReader: module org.example.api does not declare `uses`
+</code></pre></div></div>
+
+<p>We need to make the <code class="language-plaintext highlighter-rouge">api</code> module a service consumer module by explicitly stating that we’re consuming a service of type <code class="language-plaintext highlighter-rouge">PersonReader</code>. For that, open <code class="language-plaintext highlighter-rouge">api/src/main/java/module-info.java</code> and add the following line:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">module</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">api</span> <span class="o">{</span>
+    <span class="n">requires</span> <span class="n">io</span><span class="o">.</span><span class="na">javalin</span><span class="o">;</span>
+    <span class="n">requires</span> <span class="n">com</span><span class="o">.</span><span class="na">fasterxml</span><span class="o">.</span><span class="na">jackson</span><span class="o">.</span><span class="na">databind</span><span class="o">;</span>
+    <span class="n">requires</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">;</span>
+
+    <span class="n">requires</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">services</span><span class="o">;</span>
+
+    <span class="n">uses</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">services</span><span class="o">.</span><span class="na">api</span><span class="o">.</span><span class="na">PersonReader</span><span class="o">;</span>    <span class="c1">// &lt;-- add this line</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>If you try to run the application again you will unfortunately end up in another error. It will say something along the lines of</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[main] INFO org.example.api.MyAPI - API: found 2 people.
+Exception in thread "main" java.lang.NoClassDefFoundError: kotlin/NoWhenBranchMatchedException
+        at io.javalin@4.6.4/io.javalin.core.JavalinConfig$Inner.&lt;init&gt;(JavalinConfig.java:77)
+        at io.javalin@4.6.4/io.javalin.core.JavalinConfig.&lt;init&gt;(JavalinConfig.java:67)
+        at io.javalin@4.6.4/io.javalin.Javalin.&lt;init&gt;(Javalin.java:54)
+        at io.javalin@4.6.4/io.javalin.Javalin.create(Javalin.java:91)
+        at io.javalin@4.6.4/io.javalin.Javalin.create(Javalin.java:78)
+        at org.example.api/org.example.api.MyAPI.main(MyAPI.java:22)
+Caused by: java.lang.ClassNotFoundException: kotlin.NoWhenBranchMatchedException
+        at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+        at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+        at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:520)
+        ... 6 more
+</code></pre></div></div>
+
+<p>Javalin itself is not modularized and does not make use of JPMS at all. Because of that, the module system makes Javalin an automatic module and it infers a ton of <code class="language-plaintext highlighter-rouge">requires</code> statements automatically based on dependencies. You can dive into the module resolution by passing on the <code class="language-plaintext highlighter-rouge">--show-module-resolution</code> to the Java runtime and you will then realize that the module system does not infer a dependency on the <code class="language-plaintext highlighter-rouge">kotlin.stdlib</code>. And this is the module we’re missing here. You can simply fix this issue by changing the <code class="language-plaintext highlighter-rouge">api</code>’s module-descriptor as follows:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">module</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">api</span> <span class="o">{</span>
+    <span class="n">requires</span> <span class="n">io</span><span class="o">.</span><span class="na">javalin</span><span class="o">;</span>
+    <span class="n">requires</span> <span class="n">com</span><span class="o">.</span><span class="na">fasterxml</span><span class="o">.</span><span class="na">jackson</span><span class="o">.</span><span class="na">databind</span><span class="o">;</span>
+    <span class="n">requires</span> <span class="n">org</span><span class="o">.</span><span class="na">slf4j</span><span class="o">;</span>
+    <span class="n">requires</span> <span class="n">kotlin</span><span class="o">.</span><span class="na">stdlib</span><span class="o">;</span>                <span class="c1">// &lt;-- add this line</span>
+
+    <span class="n">requires</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">services</span><span class="o">;</span>
+
+    <span class="n">uses</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">services</span><span class="o">.</span><span class="na">api</span><span class="o">.</span><span class="na">PersonReader</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Try runnning the application again:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Linux</span>
+./gradlew :api:run
+
+<span class="c"># Windows</span>
+.<span class="se">\g</span>radlew.bat :api:run
+
+<span class="c"># You should see an output like</span>
+<span class="o">[</span>main] INFO org.example.api.MyAPI - API: found 2 people.
+<span class="o">[</span>main] INFO io.javalin.Javalin - Listening on http://localhost:7312/
+<span class="o">[</span>main] INFO io.javalin.Javalin - Javalin started <span class="k">in </span>315ms <span class="se">\o</span>/
+<span class="o">[</span>main] INFO org.example.api.MyAPI - APIs alive <span class="k">for </span>real :-<span class="o">)))</span>
+
+<span class="c"># Invoking the API in another window via</span>
+curl http://localhost:7312/persons
+
+<span class="c"># should print </span>
+<span class="o">[{</span><span class="s2">"name"</span>:<span class="s2">"Vincent Vega"</span>,<span class="s2">"age"</span>:73<span class="o">}</span>,<span class="o">{</span><span class="s2">"name"</span>:<span class="s2">"Jules Winnfield"</span>,<span class="s2">"age"</span>:12<span class="o">}]</span>
+</code></pre></div></div>
+
+<p>Congrats, Javalin’s up and running in a modularized project which fully leverages JPMS and its baked in dependency loading / resolving mechanism through Java’s <code class="language-plaintext highlighter-rouge">ServiceLoader</code> 🥳</p>
+
+<h2 id="one-step-further---add-a-constructor-dependency-to-our-inmemorypersonreader">One step further - add a constructor dependency to our InMemoryPersonReader</h2>
+
+<p>Currently, our dependencies are as simple as they can get. So as one last challenge let’s introduce a constructor dependendcy in our beloved <code class="language-plaintext highlighter-rouge">InMemoryPersonReader</code> implementation. For the sake of simplicity, let’s introduce filtering as follows.</p>
+
+<p>Add a new interface <code class="language-plaintext highlighter-rouge">services/src/main/java/org/example/services/api/PersonFilter.java</code> with the following content:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.example.services.api</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.example.models.Person</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">PersonFilter</span> <span class="o">{</span>
+    <span class="kt">boolean</span> <span class="nf">filter</span><span class="o">(</span><span class="nc">Person</span> <span class="n">p</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Let’s create an implementation <code class="language-plaintext highlighter-rouge">services/src/main/java/org/example/services/filter/AtLeastEighteenFilter.java</code> which returns only true if the given person is at least 18 years old:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.example.services.filter</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.example.models.Person</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.services.api.PersonFilter</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AtLeastEighteenFilter</span> <span class="kd">implements</span> <span class="nc">PersonFilter</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">filter</span><span class="o">(</span><span class="nc">Person</span> <span class="n">p</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">p</span><span class="o">.</span><span class="na">getAge</span><span class="o">()</span> <span class="o">&gt;=</span> <span class="mi">18</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now let’s change our <code class="language-plaintext highlighter-rouge">InMemoryPersonReader</code> so that it gets injected a <code class="language-plaintext highlighter-rouge">PersonFilter</code> in its constructor which it applies in all methods. The changes are fairly simple since the <code class="language-plaintext highlighter-rouge">inMemoryPersonReader</code> only provides on <code class="language-plaintext highlighter-rouge">getAll()</code> method. Without a doubt there’s better ways to architect this kind of solution, but for the sake of simplicity let’s change the <code class="language-plaintext highlighter-rouge">InMemoryPersonReader</code> as follows:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.example.services.inmemory</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.example.models.Person</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.services.api.PersonFilter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.services.api.PersonReader</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ServiceLoader</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">InMemoryPersonReader</span> <span class="kd">implements</span> <span class="nc">PersonReader</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">PersonFilter</span> <span class="n">filter</span><span class="o">;</span>
+
+    <span class="c1">// Note the injected filter in our constructor which is stored in our privat member</span>
+    <span class="kd">public</span> <span class="nf">InMemoryPersonReader</span><span class="o">(</span><span class="nc">PersonFilter</span> <span class="n">filter</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">filter</span> <span class="o">=</span> <span class="n">filter</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Person</span><span class="o">&gt;</span> <span class="nf">getAll</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">List</span><span class="o">.</span><span class="na">of</span><span class="o">(</span>
+            <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="s">"Vincent Vega"</span><span class="o">,</span> <span class="mi">73</span><span class="o">),</span>
+            <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="s">"Jules Winnfield"</span><span class="o">,</span> <span class="mi">12</span><span class="o">)</span>
+        <span class="o">);</span>
+        <span class="o">).</span><span class="na">stream</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">filter</span><span class="o">::</span><span class="n">filter</span><span class="o">).</span><span class="na">toList</span><span class="o">();</span> <span class="c1">// And here we apply the filter</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Let’s now modify <code class="language-plaintext highlighter-rouge">/services/src/main/java/module-info.java</code> as follows:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">org.example.services.api.PersonFilter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.services.api.PersonReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.services.filter.AtLeastEighteenFilter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.services.inmemory.InMemoryPersonReader</span><span class="o">;</span>
+
+<span class="n">module</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">services</span> <span class="o">{</span>
+    <span class="n">exports</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">services</span><span class="o">.</span><span class="na">api</span><span class="o">;</span>
+
+    <span class="n">requires</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">models</span><span class="o">;</span>
+
+    <span class="n">provides</span> <span class="nc">PersonReader</span> <span class="n">with</span> <span class="nc">InMemoryPersonReader</span><span class="o">;</span>
+
+    <span class="c1">// Let's register our implementation with the following line</span>
+    <span class="n">provides</span> <span class="nc">PersonFilter</span> <span class="n">with</span> <span class="nc">AtLeastEighteenFilter</span><span class="o">;</span>
+
+    <span class="c1">// And we also have to state that our services module uses a service of type PersonFilter. </span>
+    <span class="c1">// You still have to do this even though the service itself is defined in our own module.</span>
+    <span class="n">uses</span> <span class="nc">PersonFilter</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>If you were to run the api again via <code class="language-plaintext highlighter-rouge">./gradlew :api:run</code> (or <code class="language-plaintext highlighter-rouge">.\gradlew.bat :api:run</code> on Windows) you’d end up with the following exception:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> Task :api:run FAILED
+Exception <span class="k">in </span>thread <span class="s2">"main"</span> java.util.ServiceConfigurationError: org.example.services.api.PersonReader: org.example.services.inmemory.InMemoryPersonReader Unable to get public no-arg constructor
+...
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">ServiceLoader</code> does not provide any kind of out-of-the-box constructor injection. As soon as your implementation class no longer provides a public constructor without formal parameters you have to define a public static method named “provider” with no formal parameters and a return type that is assignable to the service’s interface or class. We’ll add this provider method to our <code class="language-plaintext highlighter-rouge">InMemoryPersonReader</code> as follows:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.example.services.inmemory</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.example.models.Person</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.services.api.PersonFilter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.services.api.PersonReader</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ServiceLoader</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">InMemoryPersonReader</span> <span class="kd">implements</span> <span class="nc">PersonReader</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">PersonFilter</span> <span class="n">filter</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">InMemoryPersonReader</span><span class="o">(</span><span class="nc">PersonFilter</span> <span class="n">filter</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">filter</span> <span class="o">=</span> <span class="n">filter</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Person</span><span class="o">&gt;</span> <span class="nf">getAll</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">List</span><span class="o">.</span><span class="na">of</span><span class="o">(</span>
+            <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="s">"Vincent Vega"</span><span class="o">,</span> <span class="mi">73</span><span class="o">),</span>
+            <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="s">"Jules Winnfield"</span><span class="o">,</span> <span class="mi">12</span><span class="o">)</span>
+        <span class="o">);</span>
+        <span class="o">).</span><span class="na">stream</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">filter</span><span class="o">::</span><span class="n">filter</span><span class="o">).</span><span class="na">toList</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="c1">// See the provider method in action: static method named "provider" not having any formal parameters</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">PersonReader</span> <span class="nf">provider</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">InMemoryPersonReader</span><span class="o">(</span>            <span class="c1">// We need to instantiate the implementation ourselves                                     </span>
+            <span class="nc">ServiceLoader</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="nc">PersonFilter</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>  <span class="c1">// and we also have to resolve the dependencies ourselves via the ServiceLoader</span>
+                <span class="o">.</span><span class="na">findFirst</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">get</span><span class="o">()</span>                              <span class="c1">// For the sake of completeness: in some real code cater for resolving errors :-)</span>
+        <span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>And now off you go - running the application again and curling the API should return only one person:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Linux</span>
+./gradlew :api:run
+
+<span class="c"># Windows</span>
+.<span class="se">\g</span>radlew.bat :api:run
+
+<span class="c"># Invoking the API in another window via</span>
+curl http://localhost:7312/persons
+
+<span class="c"># should now print only one person which is at least 18 years old</span>
+<span class="o">[{</span><span class="s2">"name"</span>:<span class="s2">"Vincent Vega"</span>,<span class="s2">"age"</span>:73<span class="o">}]</span>
+</code></pre></div></div>
+
+<p>For the sake of completeness: the provider method does not necessarily have to reside in the same class that implements the service. You could for example create a dedicated provider class that only declares the provider method for the service provider like so:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Dedicated class only container the provider method</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PersonReaderProvider</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">PersonReader</span> <span class="nf">provider</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">InMemoryPersonReader</span><span class="o">(</span>
+                <span class="nc">ServiceLoader</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="nc">PersonFilter</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">findFirst</span><span class="o">().</span><span class="na">get</span><span class="o">()</span>
+        <span class="o">);</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>But then you need to change the <code class="language-plaintext highlighter-rouge">provides ... with ...</code> statement in the module descriptor as follows:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">module</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">services</span> <span class="o">{</span>
+    <span class="o">...</span>
+
+    <span class="c1">// Comment this one out since we have our dedicated provider now</span>
+    <span class="c1">// provides PersonReader with InMemoryPersonReader;</span>
+
+    <span class="c1">// And tell the module system to use our dedicated provider to get an instance of our service provider</span>
+    <span class="n">provides</span> <span class="nc">PersonReader</span> <span class="n">with</span> <span class="nc">PersonReaderProvider</span><span class="o">;</span>
+
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+
+    </div>
+    <h3>Thanks for reading</h3>
+    If you find any errors, please <a href="https://github.com/javalin/javalin.github.io/blob/master/_posts/tutorials/community/2022-08-03-javalin-with-jpms-and-gradle.md">edit this page on GitHub</a>.
+    <br>
+    
+        The full source code for this tutorial can also be found on <a href="https://github.com/baumgarb/javalin-with-jpms-and-gradle">GitHub</a>.
+    
+</article>
+<style>
+    .social {
+        margin: 30px 0;
+        display: flex;
+    }
+    .social-btn {
+        text-align: center;
+        min-width: 240px;
+        padding: 10px 16px 8px;
+        font-size: 14px;
+        font-family: 'Roboto Slab', sans-serif;
+        font-weight: 600;
+        color: #fff;
+        background: #000;
+        border-radius: 50px;
+        box-shadow: 2px 2px red, -2px -2px cyan;
+    }
+    .social-btn + .social-btn {
+        margin-left: 24px;
+    }
+    .social-btn:hover {
+        background: #008ab4;
+    }
+    .social-btn img {
+        width: 24px;
+        display: inline;
+        vertical-align: middle;
+        margin-right: 12px;
+    }
+    @media (max-width: 480px) {
+        .social {
+            justify-content: space-between;
+        }
+        .social-btn {
+            min-width: 0;
+            width: calc(50% - 12px);
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+        .social-btn + .social-btn {
+            margin-left: 0;
+        }
+    }
+</style>
+<div class="social">
+    <a class="social-btn" href="https://twitter.com/intent/tweet?text=Javalin with Java Platform Module System (JPMS) and Gradle&url=https://zugazagoitia.github.io/tutorials/javalin-with-jpms-and-gradle&via=javalin_io&related=javalin_io"
+       rel="nofollow"
+       title="Share on Twitter">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAM1BMVEUAAAD///////////////////////////////////////////////////////////////+3leKCAAAAEHRSTlMA8BDQwKCAMOBwYECwUCCQ27fl2AAAAW1JREFUWMPtltuOwyAMRLG5QxL8/1+7G6lKFApMaJ5W2/NIPCPAnlL15R+xRSM7ZPMnci5yYvxrNRt3VMRtpPdBLqR9MWkhPkpI80BPUpFy2dfiUbKK9B02kjbmrCkycNAdfeCqpuOQOnrye2teRS9LrxqEjn4tQSS/io7Fxg1Kn/MWjxX7dgw30NvGNkO9CQP1O8v7oGEDq07i9Uu+YxAvs1J91GmDBtdQLVKjYz6/YINNWujiVgsMet3CqAr7yICKn3XQF4N9gizJDAsIDMSBLkIyyDzkmjqmWb0GoYUUBVKLWFUF6yk9gccDYtU7bKabWBNv9yKoDunmTcSW2Im+uwNi1cBP5+DjUSAGrzgiVcLZSBmlHjnQBv7L4AOMYEdwiAGcFgK/A5BN9/WsMCs90nsjT/SrGd0fI3UJIIIdovtlAUnWftA5KwiKakg2Y7ljfPn9tzWkUw5GsHV059UEOVpDR2wXl1l9+RP8AHA4c7ljId3mAAAAAElFTkSuQmCC">Share on Twitter
+    </a>
+    <a class="social-btn" href="https://facebook.com/sharer.php?u=https://zugazagoitia.github.io/tutorials/javalin-with-jpms-and-gradle"
+       rel="nofollow"
+       title="Share on Facebook">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUAAAD///////////////////////////////////////////////////////////87TQQwAAAAD3RSTlMAwIDwEEDgMKBgINBwUJA4su2wAAAAy0lEQVRIx2MYJICr+T9WkOQAVTD/Pw5gDpHn/I8TXAAriMetwAqsQB63gh9gBf/xgAFT8E0QCPJxK/ixACTqj1PB5wCwKD9OBbsY8Cv4XEBAwU8GAgoECCmYABTB5QuEUI2S0n4cCn6DRBzxhORHkMh5Qgr0h7eCjw6I/BiPTcEnBgRgxKbgK5ICPkIKmGij4C+yIwn5gg2bgm9ICuIHa2SNKqCZgs9gBf2YClBTkDNuBSlgBeyYCtDKzGJcCtKhyY+lH7sCIweGwQEAY2jNUu1+zZgAAAAASUVORK5CYII=">Share on Facebook
+    </a>
+</div>
+
+
+    </main>
+    <footer>
+        Javalin is a Java and Kotlin web framework, open sourced under the
+        <a href="https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)">Apache 2</a> license
+        | <a href="/download">Download</a>
+        | <a href="/about">About</a>
+        | <a href="/news">News</a>
+        | <a href="/about#contact">Contact</a>
+        | <a href="/for-educators">For educators</a>
+    </footer>
+    <div id="star-begging">
+    <style>
+        #star-begging {
+            transition: transform .25s;
+            transform: scale(0);
+            border-radius: 8px;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            padding: 20px 40px 16px 20px;
+            background: #fff;
+            box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15);
+            z-index: 9999998;
+        }
+        #star-begging.in {
+            transform: scale(1);
+        }
+        #star-begging.out {
+            transform: translateX(400px);
+        }
+        #star-begging p {
+            font-size: 16px;
+            margin: 0 0 15px;
+        }
+        #star-begging .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            height: 40px;
+            width: 40px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-family: arial, sans-serif;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+    </style>
+    <p>
+        Like Javalin?
+        <br>Star us 😊
+    </p>
+    <span class="close">×</span>
+    <iframe id="starFrame" class="githubStar" title="github-stars"
+            src="https://ghbtns.com/github-btn.html?user=javalin&amp;repo=javalin&amp;type=star&amp;count=true&size=large"
+            frameborder="0" scrolling="0" width="150px" height="30px">
+    </iframe>
+    <script>
+        if (localStorage.getItem("dismissed") !== "true" && document.getElementById("notification-banner") === null) {
+            setTimeout(function () {
+                document.querySelector("#star-begging").classList.add("in");
+            }, 15000);
+            document.querySelector("#star-begging .close").addEventListener("click", function () {
+                document.querySelector("#star-begging").classList.add("out");
+                localStorage.setItem("dismissed", "true");
+            });
+        }
+    </script>
+</div>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>

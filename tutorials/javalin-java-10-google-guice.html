@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54137818-11"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-54137818-11', {'anonymize_ip': true});
+</script>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen+Mono|Roboto+Slab:500,700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Javalin with Java 10 and Google Guice - Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:site_name" content="Javalin">
+    <meta property="og:url" content="https://javalin.io">
+    <meta property="og:description" content="What You Will LearnIn this tutorial we will learn how to create modular application on top of the Javalin.">
+    <meta property="og:image" content="https://javalin.io/img/javalin.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="liMtSlffOZROWLqoiOZdSx-luH9_Siq5-Ot6xqHZwq8">
+    <title>
+        Javalin with Java 10 and Google Guice - Javalin - A lightweight Java and Kotlin web framework
+    </title>
+    <meta name="description" content="What You Will LearnIn this tutorial we will learn how to create modular application on top of the Javalin.">
+    <link rel="canonical" href="https://zugazagoitia.github.io/tutorials/javalin-java-10-google-guice">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>/* Styles that affect the length of the document */
+p code,
+li code {
+    font-size: 90%;
+    letter-spacing: -0.5px;
+    border: 1px solid #ccd;
+    background: #f5f5f7;
+    padding: 1px 3px;
+}
+
+.multitab-code pre {
+    margin-top: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.multitab-code div[data-tab] {
+    display: none;
+}
+
+:target {
+    scroll-margin-top: 108px;
+}
+
+.anchorjs-link {
+    transition: all .25s linear;
+  }
+  
+*:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+ }</style>
+</head>
+<body>
+    <a id="fork-me" href="https://github.com/javalin/javalin" target="_blank">
+    <img style="position:fixed;top:0;right:0;border:0;z-index:99999" src="data:image/png;base64,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" alt="Fork me on GitHub">
+</a>
+    <header class="top-nav-header">
+        <nav class="width-limit">
+            <a id="logo" href="/" aria-label="Javalin">
+                <img src="/img/logo.svg" alt="Javalin">
+            </a>
+            <ul>
+                <li><a href="/documentation">Docs</a></li>
+                <li><a href="/tutorials">Tutorials</a></li>
+                <li><a href="/plugins">Plugins</a></li>
+                <li><a href="/community">Community</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="width-limit">
+        <article class="tutorial" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="tutorial-header">
+        <h1 class="no-margin-top" itemprop="name headline">Javalin with Java 10 and Google Guice</h1>
+        <p class="notification">
+            <time datetime="2018-04-29T00:00:00+00:00" itemprop="datePublished">Apr 29, 2018</time>
+             
+                • Written by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><a href="https://www.linkedin.com/in/kristapsvitolins/" target="_blank">Kristaps Vītoliņš</a></span></span>
+            
+            <span id="timeToRead">Reading time: <b>0-0 min</b></span>
+             
+            <br>
+            <em class="github-link">
+                The source code for this tutorial can be found on 
+                <a href="https://github.com/alzuma/javalin-java-10-guice.git" target="_blank">GitHub</a>.
+                Please fork/clone and look while you read.
+            </em>
+            
+        </p>
+        
+    </div>
+    <div class="post-content" itemprop="articleBody">
+        <h2 id="what-you-will-learn">What You Will Learn</h2>
+<p>In this tutorial we will learn how to create modular application on top of the Javalin.</p>
+
+<p>We will use <a href="https://github.com/google/guice/wiki/Motivation">Google Guice</a> to enable modularity
+and <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html">Java 10</a> to do Java 10 things:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">amazingFramework</span> <span class="o">=</span> <span class="s">"Javalin"</span><span class="o">;</span> <span class="c1">// java10</span>
+<span class="c1">// vs</span>
+<span class="nc">String</span> <span class="n">amazingFramework</span> <span class="o">=</span> <span class="s">"Javalin"</span><span class="o">;</span> <span class="c1">// not java10</span>
+</code></pre></div></div>
+
+<h2 id="dependencies">Dependencies</h2>
+
+<p>Lets create a Maven project with our dependencies <a href="/tutorials/maven-setup">(→ Tutorial)</a>.
+We will be using Javalin for our web-server, slf4j for logging, jackson to render response as JSON and Guice for dependency injection:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependencies&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>io.javalin<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>javalin<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>2.8.0<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>org.slf4j<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>slf4j-simple<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.7.36<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>com.google.inject<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>guice<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>4.2.0<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>com.google.inject.extensions<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>guice-multibindings<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>4.2.0<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>com.fasterxml.jackson.core<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>jackson-databind<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>2.9.5<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div></div>
+
+<p>And add properties for Java 10</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;properties&gt;</span>
+    <span class="nt">&lt;maven.compiler.source&gt;</span>10<span class="nt">&lt;/maven.compiler.source&gt;</span>
+    <span class="nt">&lt;maven.compiler.target&gt;</span>10<span class="nt">&lt;/maven.compiler.target&gt;</span>
+<span class="nt">&lt;/properties&gt;</span>
+</code></pre></div></div>
+
+<h2 id="high-level-architecture">High level architecture</h2>
+
+<ul>
+  <li>Controller
+    <ul>
+      <li>Responsible for request handling. It is a bouncer or face control if you wish, nothing more</li>
+    </ul>
+  </li>
+  <li>Service
+    <ul>
+      <li>Actual business logic executor, may or may not require other services</li>
+    </ul>
+  </li>
+  <li>Repository
+    <ul>
+      <li>Communication with any data storage, nothing more</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="the-java-application">The Java application</h2>
+
+<p>First, lets create a controller in the <code class="language-plaintext highlighter-rouge">io.kidbank.user</code> package.</p>
+
+<p><code class="language-plaintext highlighter-rouge">UserController</code> is responsible for handling the request, while business logic is provided by <code class="language-plaintext highlighter-rouge">UserService</code>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">io.kidbank.user</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">io.javalin.Context</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.kidbank.user.services.UserService</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.inject.Inject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.inject.Singleton</span><span class="o">;</span>
+
+<span class="nd">@Singleton</span>
+<span class="kd">class</span> <span class="nc">UserController</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">UserService</span> <span class="n">userService</span><span class="o">;</span>
+
+    <span class="nd">@Inject</span>
+    <span class="kd">public</span> <span class="nf">UserController</span><span class="o">(</span><span class="nc">UserService</span> <span class="n">userService</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">userService</span> <span class="o">=</span> <span class="n">userService</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">index</span><span class="o">(</span><span class="nc">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="na">json</span><span class="o">(</span><span class="n">userService</span><span class="o">.</span><span class="na">getAllUsersUppercase</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now that we have controller, we should bind endpoints to <code class="language-plaintext highlighter-rouge">UserController</code>. The <code class="language-plaintext highlighter-rouge">Routing</code> class
+helps us to resolve the <code class="language-plaintext highlighter-rouge">UserController</code> from Google Guice. It guarantees that there is a method
+<code class="language-plaintext highlighter-rouge">bindRoutes()</code>, which we will use later on.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">io.kidbank.user</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">io.alzuma.Routing</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.Javalin</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.inject.Inject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.inject.Singleton</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">io</span><span class="o">.</span><span class="na">javalin</span><span class="o">.</span><span class="na">apibuilder</span><span class="o">.</span><span class="na">ApiBuilder</span><span class="o">.</span><span class="na">get</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">io</span><span class="o">.</span><span class="na">javalin</span><span class="o">.</span><span class="na">apibuilder</span><span class="o">.</span><span class="na">ApiBuilder</span><span class="o">.</span><span class="na">path</span><span class="o">;</span>
+
+<span class="nd">@Singleton</span>
+<span class="kd">class</span> <span class="nc">UserRouting</span> <span class="kd">extends</span> <span class="nc">Routing</span><span class="o">&lt;</span><span class="nc">UserController</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Javalin</span> <span class="n">javalin</span><span class="o">;</span>
+    <span class="nd">@Inject</span>
+    <span class="kd">public</span> <span class="nf">UserRouting</span><span class="o">(</span><span class="nc">Javalin</span> <span class="n">javalin</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">javalin</span> <span class="o">=</span> <span class="n">javalin</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">bindRoutes</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">javalin</span><span class="o">.</span><span class="na">routes</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">path</span><span class="o">(</span><span class="s">"api/kidbank/users"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="n">get</span><span class="o">(</span><span class="n">ctx</span> <span class="o">-&gt;</span> <span class="n">getController</span><span class="o">().</span><span class="na">index</span><span class="o">(</span><span class="n">ctx</span><span class="o">));</span>
+            <span class="o">});</span>
+        <span class="o">});</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Install and bind all dependencies for <code class="language-plaintext highlighter-rouge">io.kidbank.user</code> package.</p>
+
+<p>Take a look at <code class="language-plaintext highlighter-rouge">Multibinder</code>, it is a Google Guice extension. This is how we
+enable multiple routings in application. To add more routings, just add <code class="language-plaintext highlighter-rouge">Multibinder.newSetBinder(...)</code>.</p>
+
+<p>Later on we will inject all routes, to bind them in <code class="language-plaintext highlighter-rouge">Javalin</code> web-server.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">io.kidbank.user</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.inject.AbstractModule</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.inject.multibindings.Multibinder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.alzuma.Routing</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.kidbank.user.repositories.UserRepositoryModule</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.kidbank.user.services.UserServiceModule</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserModule</span> <span class="kd">extends</span> <span class="nc">AbstractModule</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">bind</span><span class="o">(</span><span class="nc">UserController</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">install</span><span class="o">(</span><span class="k">new</span> <span class="nc">UserServiceModule</span><span class="o">());</span>
+        <span class="n">install</span><span class="o">(</span><span class="k">new</span> <span class="nc">UserRepositoryModule</span><span class="o">());</span>
+        <span class="nc">Multibinder</span><span class="o">.</span><span class="na">newSetBinder</span><span class="o">(</span><span class="n">binder</span><span class="o">(),</span> <span class="nc">Routing</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">addBinding</span><span class="o">().</span><span class="na">to</span><span class="o">(</span><span class="nc">UserRouting</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Bind <code class="language-plaintext highlighter-rouge">Javalin</code> with routes and start the web-server. This isn’t a black magic, just injection, keep that in mind.</p>
+
+<p>Take a closer look at <code class="language-plaintext highlighter-rouge">private Set&lt;Routing&gt; routes</code>. This is where Google Guice injects all <code class="language-plaintext highlighter-rouge">Routes</code> which were
+bound by <code class="language-plaintext highlighter-rouge">Multibinder</code>.</p>
+
+<p>Remeber, we were talking about <code class="language-plaintext highlighter-rouge">Routing</code> class and the guarantees it provides. Based on that, we can call the method <code class="language-plaintext highlighter-rouge">bindRoutes()</code>
+on each record in <code class="language-plaintext highlighter-rouge">Set&lt;Routing&gt;</code>. And poof, we fill <code class="language-plaintext highlighter-rouge">Javalin</code> with routes.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">io.kidbank</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.inject.Inject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.alzuma.AppEntrypoint</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.alzuma.Routing</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.Javalin</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.inject.Singleton</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Set</span><span class="o">;</span>
+
+<span class="nd">@Singleton</span>
+<span class="kd">class</span> <span class="nc">WebEntrypoint</span> <span class="kd">implements</span> <span class="nc">AppEntrypoint</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Javalin</span> <span class="n">app</span><span class="o">;</span>
+
+    <span class="nd">@Inject</span><span class="o">(</span><span class="n">optional</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Routing</span><span class="o">&gt;</span> <span class="n">routes</span> <span class="o">=</span> <span class="nc">Collections</span><span class="o">.</span><span class="na">emptySet</span><span class="o">();</span>
+
+    <span class="nd">@Inject</span>
+    <span class="kd">public</span> <span class="nf">WebEntrypoint</span><span class="o">(</span><span class="nc">Javalin</span> <span class="n">app</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">app</span> <span class="o">=</span> <span class="n">app</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">boot</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">bindRoutes</span><span class="o">();</span>
+        <span class="n">app</span><span class="o">.</span><span class="na">port</span><span class="o">(</span><span class="mi">7000</span><span class="o">);</span>
+        <span class="n">app</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">bindRoutes</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">routes</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">r</span> <span class="o">-&gt;</span> <span class="n">r</span><span class="o">.</span><span class="na">bindRoutes</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Create <code class="language-plaintext highlighter-rouge">WebModule</code> for our <code class="language-plaintext highlighter-rouge">Kid bank</code> project. Inside the module we define that our project “Runs As” web-server.</p>
+
+<p>Now we will use <code class="language-plaintext highlighter-rouge">MapBinder</code>. It is a similar to what we did with <code class="language-plaintext highlighter-rouge">Routing</code>, but instead of <code class="language-plaintext highlighter-rouge">Multibinder</code> we use a <code class="language-plaintext highlighter-rouge">MapBinder</code> so that we can store multiple “Runs As” into <code class="language-plaintext highlighter-rouge">HashMap&lt;EntrypointType, AppEntrypoint&gt;</code></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">io.kidbank</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.inject.AbstractModule</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.inject.multibindings.MapBinder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.alzuma.AppEntrypoint</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.alzuma.EntrypointType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.Javalin</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jetbrains.annotations.NotNull</span><span class="o">;</span>
+
+<span class="kd">class</span> <span class="nc">WebModule</span> <span class="kd">extends</span> <span class="nc">AbstractModule</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Javalin</span> <span class="n">app</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nf">WebModule</span><span class="o">(</span><span class="nc">Javalin</span> <span class="n">app</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">app</span> <span class="o">=</span> <span class="n">app</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@NotNull</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">WebModule</span> <span class="nf">create</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">WebModule</span><span class="o">(</span><span class="nc">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">bind</span><span class="o">(</span><span class="nc">Javalin</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">toInstance</span><span class="o">(</span><span class="n">app</span><span class="o">);</span>
+        <span class="nc">MapBinder</span><span class="o">.</span><span class="na">newMapBinder</span><span class="o">(</span><span class="n">binder</span><span class="o">(),</span> <span class="nc">EntrypointType</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="nc">AppEntrypoint</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">addBinding</span><span class="o">(</span><span class="nc">EntrypointType</span><span class="o">.</span><span class="na">REST</span><span class="o">).</span><span class="na">to</span><span class="o">(</span><span class="nc">WebEntrypoint</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We need some kind of resolver that will decide which “Run as” has to be executed. For that we create class <code class="language-plaintext highlighter-rouge">Startup</code> and inject
+all possible entrypoints.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">com.google.inject.Inject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.alzuma.AppEntrypoint</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.alzuma.EntrypointType</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.inject.Singleton</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Optional</span><span class="o">;</span>
+
+<span class="nd">@Singleton</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Startup</span> <span class="o">{</span>
+    <span class="nd">@Inject</span><span class="o">(</span><span class="n">optional</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">EntrypointType</span><span class="o">,</span> <span class="nc">AppEntrypoint</span><span class="o">&gt;</span> <span class="n">entrypoints</span> <span class="o">=</span> <span class="nc">Collections</span><span class="o">.</span><span class="na">emptyMap</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">boot</span><span class="o">(</span><span class="nc">EntrypointType</span> <span class="n">entrypointType</span><span class="o">,</span> <span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">var</span> <span class="n">entryPoint</span> <span class="o">=</span> <span class="nc">Optional</span><span class="o">.</span><span class="na">ofNullable</span><span class="o">(</span><span class="n">entrypoints</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">entrypointType</span><span class="o">));</span>
+        <span class="n">entryPoint</span><span class="o">.</span><span class="na">orElseThrow</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">RuntimeException</span><span class="o">(</span><span class="s">"Entrypoint not defined"</span><span class="o">)).</span><span class="na">boot</span><span class="o">(</span><span class="n">args</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>As for our last module we define <code class="language-plaintext highlighter-rouge">AppModule</code>. Where we install our project module.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">com.google.inject.AbstractModule</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.kidbank.KidBankModule</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AppModule</span> <span class="kd">extends</span> <span class="nc">AbstractModule</span> <span class="o">{</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">bind</span><span class="o">(</span><span class="nc">Startup</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">install</span><span class="o">(</span><span class="k">new</span> <span class="nc">KidBankModule</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now we are ready to start our web-server.</p>
+
+<p>Create injector from <code class="language-plaintext highlighter-rouge">AppModule</code> which will trigger all the bindings and installations down the path.
+Resolve <code class="language-plaintext highlighter-rouge">Startup</code> and boot the REST with Javalin.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">App</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">var</span> <span class="n">injector</span> <span class="o">=</span> <span class="nc">Guice</span><span class="o">.</span><span class="na">createInjector</span><span class="o">(</span><span class="k">new</span> <span class="nc">AppModule</span><span class="o">());</span>
+        <span class="n">injector</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="nc">Startup</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">boot</span><span class="o">(</span><span class="nc">EntrypointType</span><span class="o">.</span><span class="na">REST</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Open in browser <code class="language-plaintext highlighter-rouge">http://localhost:7000/api/kidbank/users</code> and wait for response <code class="language-plaintext highlighter-rouge">["BOB","KATE","JOHN"]</code></p>
+
+<h2 id="conclusion">Conclusion</h2>
+<ul>
+  <li>We created modular application, with capabilities to run it self not only as a web-server.</li>
+  <li>It takes time, to get use to Guice modules, but once you get, the idea the sky is your limit!</li>
+</ul>
+
+<p>Most important part. Have fun!</p>
+
+    </div>
+    <h3>Thanks for reading</h3>
+    If you find any errors, please <a href="https://github.com/javalin/javalin.github.io/blob/master/_posts/tutorials/community/2018-04-29-javalin-java-10-guice.md">edit this page on GitHub</a>.
+    <br>
+    
+        The full source code for this tutorial can also be found on <a href="https://github.com/alzuma/javalin-java-10-guice.git">GitHub</a>.
+    
+</article>
+<style>
+    .social {
+        margin: 30px 0;
+        display: flex;
+    }
+    .social-btn {
+        text-align: center;
+        min-width: 240px;
+        padding: 10px 16px 8px;
+        font-size: 14px;
+        font-family: 'Roboto Slab', sans-serif;
+        font-weight: 600;
+        color: #fff;
+        background: #000;
+        border-radius: 50px;
+        box-shadow: 2px 2px red, -2px -2px cyan;
+    }
+    .social-btn + .social-btn {
+        margin-left: 24px;
+    }
+    .social-btn:hover {
+        background: #008ab4;
+    }
+    .social-btn img {
+        width: 24px;
+        display: inline;
+        vertical-align: middle;
+        margin-right: 12px;
+    }
+    @media (max-width: 480px) {
+        .social {
+            justify-content: space-between;
+        }
+        .social-btn {
+            min-width: 0;
+            width: calc(50% - 12px);
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+        .social-btn + .social-btn {
+            margin-left: 0;
+        }
+    }
+</style>
+<div class="social">
+    <a class="social-btn" href="https://twitter.com/intent/tweet?text=Javalin with Java 10 and Google Guice&url=https://zugazagoitia.github.io/tutorials/javalin-java-10-google-guice&via=javalin_io&related=javalin_io"
+       rel="nofollow"
+       title="Share on Twitter">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAM1BMVEUAAAD///////////////////////////////////////////////////////////////+3leKCAAAAEHRSTlMA8BDQwKCAMOBwYECwUCCQ27fl2AAAAW1JREFUWMPtltuOwyAMRLG5QxL8/1+7G6lKFApMaJ5W2/NIPCPAnlL15R+xRSM7ZPMnci5yYvxrNRt3VMRtpPdBLqR9MWkhPkpI80BPUpFy2dfiUbKK9B02kjbmrCkycNAdfeCqpuOQOnrye2teRS9LrxqEjn4tQSS/io7Fxg1Kn/MWjxX7dgw30NvGNkO9CQP1O8v7oGEDq07i9Uu+YxAvs1J91GmDBtdQLVKjYz6/YINNWujiVgsMet3CqAr7yICKn3XQF4N9gizJDAsIDMSBLkIyyDzkmjqmWb0GoYUUBVKLWFUF6yk9gccDYtU7bKabWBNv9yKoDunmTcSW2Im+uwNi1cBP5+DjUSAGrzgiVcLZSBmlHjnQBv7L4AOMYEdwiAGcFgK/A5BN9/WsMCs90nsjT/SrGd0fI3UJIIIdovtlAUnWftA5KwiKakg2Y7ljfPn9tzWkUw5GsHV059UEOVpDR2wXl1l9+RP8AHA4c7ljId3mAAAAAElFTkSuQmCC">Share on Twitter
+    </a>
+    <a class="social-btn" href="https://facebook.com/sharer.php?u=https://zugazagoitia.github.io/tutorials/javalin-java-10-google-guice"
+       rel="nofollow"
+       title="Share on Facebook">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUAAAD///////////////////////////////////////////////////////////87TQQwAAAAD3RSTlMAwIDwEEDgMKBgINBwUJA4su2wAAAAy0lEQVRIx2MYJICr+T9WkOQAVTD/Pw5gDpHn/I8TXAAriMetwAqsQB63gh9gBf/xgAFT8E0QCPJxK/ixACTqj1PB5wCwKD9OBbsY8Cv4XEBAwU8GAgoECCmYABTB5QuEUI2S0n4cCn6DRBzxhORHkMh5Qgr0h7eCjw6I/BiPTcEnBgRgxKbgK5ICPkIKmGij4C+yIwn5gg2bgm9ICuIHa2SNKqCZgs9gBf2YClBTkDNuBSlgBeyYCtDKzGJcCtKhyY+lH7sCIweGwQEAY2jNUu1+zZgAAAAASUVORK5CYII=">Share on Facebook
+    </a>
+</div>
+
+
+    </main>
+    <footer>
+        Javalin is a Java and Kotlin web framework, open sourced under the
+        <a href="https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)">Apache 2</a> license
+        | <a href="/download">Download</a>
+        | <a href="/about">About</a>
+        | <a href="/news">News</a>
+        | <a href="/about#contact">Contact</a>
+        | <a href="/for-educators">For educators</a>
+    </footer>
+    <div id="star-begging">
+    <style>
+        #star-begging {
+            transition: transform .25s;
+            transform: scale(0);
+            border-radius: 8px;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            padding: 20px 40px 16px 20px;
+            background: #fff;
+            box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15);
+            z-index: 9999998;
+        }
+        #star-begging.in {
+            transform: scale(1);
+        }
+        #star-begging.out {
+            transform: translateX(400px);
+        }
+        #star-begging p {
+            font-size: 16px;
+            margin: 0 0 15px;
+        }
+        #star-begging .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            height: 40px;
+            width: 40px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-family: arial, sans-serif;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+    </style>
+    <p>
+        Like Javalin?
+        <br>Star us 😊
+    </p>
+    <span class="close">×</span>
+    <iframe id="starFrame" class="githubStar" title="github-stars"
+            src="https://ghbtns.com/github-btn.html?user=javalin&amp;repo=javalin&amp;type=star&amp;count=true&size=large"
+            frameborder="0" scrolling="0" width="150px" height="30px">
+    </iframe>
+    <script>
+        if (localStorage.getItem("dismissed") !== "true" && document.getElementById("notification-banner") === null) {
+            setTimeout(function () {
+                document.querySelector("#star-begging").classList.add("in");
+            }, 15000);
+            document.querySelector("#star-begging .close").addEventListener("click", function () {
+                document.querySelector("#star-begging").classList.add("out");
+                localStorage.setItem("dismissed", "true");
+            });
+        }
+    </script>
+</div>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>

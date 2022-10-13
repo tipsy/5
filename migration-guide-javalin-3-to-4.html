@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54137818-11"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-54137818-11', {'anonymize_ip': true});
+</script>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen+Mono|Roboto+Slab:500,700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Migration guide, v3 to v4 - Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:site_name" content="Javalin">
+    <meta property="og:url" content="https://javalin.io">
+    <meta property="og:description" content="Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:image" content="https://javalin.io/img/javalin.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="liMtSlffOZROWLqoiOZdSx-luH9_Siq5-Ot6xqHZwq8">
+    <title>
+        Migration guide, v3 to v4 - Javalin - A lightweight Java and Kotlin web framework
+    </title>
+    <meta name="description" content="Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <link rel="canonical" href="https://zugazagoitia.github.io/migration-guide-javalin-3-to-4">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>/* Styles that affect the length of the document */
+p code,
+li code {
+    font-size: 90%;
+    letter-spacing: -0.5px;
+    border: 1px solid #ccd;
+    background: #f5f5f7;
+    padding: 1px 3px;
+}
+
+.multitab-code pre {
+    margin-top: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.multitab-code div[data-tab] {
+    display: none;
+}
+
+:target {
+    scroll-margin-top: 108px;
+}
+
+.anchorjs-link {
+    transition: all .25s linear;
+  }
+  
+*:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+ }</style>
+</head>
+<body>
+    <a id="fork-me" href="https://github.com/javalin/javalin" target="_blank">
+    <img style="position:fixed;top:0;right:0;border:0;z-index:99999" src="data:image/png;base64,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" alt="Fork me on GitHub">
+</a>
+    <header class="top-nav-header">
+        <nav class="width-limit">
+            <a id="logo" href="/" aria-label="Javalin">
+                <img src="/img/logo.svg" alt="Javalin">
+            </a>
+            <ul>
+                <li><a href="/documentation">Docs</a></li>
+                <li><a href="/tutorials">Tutorials</a></li>
+                <li><a href="/plugins">Plugins</a></li>
+                <li><a href="/community">Community</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="width-limit">
+                <h1 class="no-margin-top">Javalin 3 to 4 migration guide</h1>
+<p>This page attempts to cover all the things you need to know in order to migrate from Javalin 3 to Javalin 4.
+If you find any errors, please <a href="https://github.com/javalin/javalin.github.io/blob/master/pages/docs/migration-guide-3-4.md">edit this page on GitHub</a>.</p>
+
+<h2 id="routing-and-path-parameters">Routing and path parameters</h2>
+<p>The path parameter syntax has changed from <code class="language-plaintext highlighter-rouge">:param</code> to <code class="language-plaintext highlighter-rouge">{param}</code>. A new <code class="language-plaintext highlighter-rouge">&lt;param&gt;</code> syntax has
+also been introduced, which allows for path parameters to accept slashes. A single path
+segment can now include both static and dynamic parts, and multiple path params:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">get</span><span class="o">(</span><span class="s">"/:param"</span><span class="o">,</span> <span class="o">...)</span> <span class="c1">// old</span>
+<span class="n">get</span><span class="o">(</span><span class="s">"/{param}"</span><span class="o">,</span> <span class="o">...)</span> <span class="c1">// new</span>
+
+<span class="n">get</span><span class="o">(</span><span class="s">"/:param-suffix"</span><span class="o">,</span> <span class="o">...)</span> <span class="c1">// invalid</span>
+<span class="n">get</span><span class="o">(</span><span class="s">"/{param}-suffix"</span><span class="o">,</span> <span class="o">...)</span> <span class="c1">// new</span>
+
+<span class="n">get</span><span class="o">(</span><span class="s">"/files/:filename.:extension"</span><span class="o">,</span> <span class="o">...)</span> <span class="c1">// invalid</span>
+<span class="n">get</span><span class="o">(</span><span class="s">"/files/{filename}.{extension}"</span><span class="o">,</span> <span class="o">...)</span> <span class="c1">// new</span>
+
+<span class="n">get</span><span class="o">(</span><span class="s">"/root/:subpaths/leaf"</span><span class="o">)</span> <span class="c1">// old (will only match /root/1/leaf)</span>
+<span class="n">get</span><span class="o">(</span><span class="s">"/root/&lt;subpaths&gt;/leaf"</span><span class="o">)</span> <span class="c1">// new (will match /root/1/2/3/leaf)</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">ctx.splat(index)</code> method has been removed in favor of the new <code class="language-plaintext highlighter-rouge">ctx.pathParam(key)</code>
+method, since this method now supports multiple subpaths.</p>
+
+<h2 id="static-files-configuration">Static files configuration</h2>
+<p>Static file handling in Javalin 3 was an adventure. You could declare static file handlers like:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">config</span><span class="o">.</span><span class="na">addStaticFiles</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>
+<span class="n">config</span><span class="o">.</span><span class="na">addStaticFiles</span><span class="o">(</span><span class="n">path</span><span class="o">,</span> <span class="n">location</span><span class="o">);</span>
+<span class="n">config</span><span class="o">.</span><span class="na">addStaticFiles</span><span class="o">(</span><span class="n">path</span><span class="o">,</span> <span class="n">location</span><span class="o">,</span> <span class="n">hostedPath</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>You could also configure some global options:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">config</span><span class="o">.</span><span class="na">precompressStaticFiles</span> <span class="o">=</span> <span class="kc">true</span><span class="o">/</span><span class="kc">false</span><span class="o">;</span>
+<span class="n">config</span><span class="o">.</span><span class="na">aliasCheckForStaticFiles</span> <span class="o">=</span> <span class="nc">ContextHandler</span><span class="o">.</span><span class="na">AliasCheck</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p>And in addition, there was special handling if you put files in a folder called <code class="language-plaintext highlighter-rouge">immutable</code>.</p>
+
+<p>In Javalin 4, you can add handlers like this:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">config</span><span class="o">.</span><span class="na">addStaticFiles</span><span class="o">(</span><span class="n">path</span><span class="o">,</span> <span class="n">location</span><span class="o">);</span> <span class="c1">// location is now required, default is gone</span>
+<span class="n">config</span><span class="o">.</span><span class="na">addStaticFiles</span><span class="o">(</span><span class="n">staticFileConfig</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">StaticFileConfig</code> class has the following options:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="py">hostedPath</span><span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="s">"/"</span><span class="p">,</span>
+<span class="kd">var</span> <span class="py">directory</span><span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="s">"/public"</span><span class="p">,</span>
+<span class="kd">var</span> <span class="py">location</span><span class="p">:</span> <span class="nc">Location</span> <span class="p">=</span> <span class="nc">Location</span><span class="p">.</span><span class="nc">CLASSPATH</span><span class="p">,</span>
+<span class="kd">var</span> <span class="py">precompress</span><span class="p">:</span> <span class="nc">Boolean</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
+<span class="kd">var</span> <span class="py">aliasCheck</span><span class="p">:</span> <span class="nc">AliasCheck</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+<span class="kd">var</span> <span class="py">headers</span><span class="p">:</span> <span class="nc">Map</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">,</span> <span class="nc">String</span><span class="p">&gt;</span> <span class="p">=</span> <span class="nf">mapOf</span><span class="p">(</span><span class="nc">Header</span><span class="p">.</span><span class="nc">CACHE_CONTROL</span> <span class="n">to</span> <span class="s">"max-age=0"</span><span class="p">)</span>
+<span class="kd">var</span> <span class="py">skipFileFunction</span><span class="p">:</span> <span class="p">(</span><span class="nc">HttpServletRequest</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Boolean</span> <span class="p">=</span> <span class="p">{</span> <span class="k">false</span> <span class="p">},</span>
+</code></pre></div></div>
+<p>The global options have been removed, so all options are now per static file handler.
+These options can be configure in a familiar Javalin way:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">config</span><span class="o">.</span><span class="na">addStaticFiles</span><span class="o">(</span><span class="n">staticFiles</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">staticFiles</span><span class="o">.</span><span class="na">aliasCheck</span> <span class="o">=</span> <span class="nc">ContextHandler</span><span class="o">.</span><span class="na">AliasCheck</span><span class="o">((</span><span class="n">path</span><span class="o">,</span> <span class="n">resource</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">!</span><span class="n">path</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="s">".txt"</span><span class="o">));</span>
+    <span class="n">staticFiles</span><span class="o">.</span><span class="na">directory</span> <span class="o">=</span> <span class="s">"src/test/external/"</span><span class="o">;</span>
+    <span class="n">staticFiles</span><span class="o">.</span><span class="na">location</span> <span class="o">=</span> <span class="nc">Location</span><span class="o">.</span><span class="na">EXTERNAL</span><span class="o">;</span>
+<span class="o">});</span>
+</code></pre></div></div>
+
+<h2 id="roles">Roles</h2>
+<p>Routes used to accept a <code class="language-plaintext highlighter-rouge">Set&lt;Role&gt;</code>, but they now accept a <code class="language-plaintext highlighter-rouge">RouteRole...</code> (varargs):</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">get</span><span class="o">(</span><span class="s">"/path"</span><span class="o">,</span> <span class="nl">controller:</span><span class="o">:</span><span class="n">method</span><span class="o">,</span> <span class="n">roles</span><span class="o">(</span><span class="nc">MyRole</span><span class="o">.</span><span class="na">ROLENAME</span><span class="o">))</span> <span class="c1">// old, using util-method</span>
+<span class="n">get</span><span class="o">(</span><span class="s">"/path"</span><span class="o">,</span> <span class="nl">controller:</span><span class="o">:</span><span class="n">method</span><span class="o">,</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="nc">MyRole</span><span class="o">.</span><span class="na">ROLENAME</span><span class="o">));)</span> <span class="c1">// old, no util method</span>
+<span class="n">get</span><span class="o">(</span><span class="s">"/path"</span><span class="o">,</span> <span class="nl">controller:</span><span class="o">:</span><span class="n">method</span><span class="o">,</span> <span class="nc">Role</span><span class="o">.</span><span class="na">ROLENAME</span><span class="o">)</span> <span class="c1">// new</span>
+</code></pre></div></div>
+
+<p>The marker interface was renamed from <code class="language-plaintext highlighter-rouge">Role</code> to <code class="language-plaintext highlighter-rouge">RouteRole</code>, both because it’s clearer
+in the internal code what a <code class="language-plaintext highlighter-rouge">RouteRole</code> is, and because it’s tempting for end-users to
+name their role enum <code class="language-plaintext highlighter-rouge">Role</code>.</p>
+
+<h2 id="validation-rework">Validation rework</h2>
+<ul>
+  <li>Validation has been reworked from having a <code class="language-plaintext highlighter-rouge">Validator&lt;T&gt;</code> and a <code class="language-plaintext highlighter-rouge">BodyValidator&lt;T&gt;</code>, to also include
+a <code class="language-plaintext highlighter-rouge">BaseValidator&lt;T&gt;</code> and a <code class="language-plaintext highlighter-rouge">NullableValidator&lt;T&gt;</code>.</li>
+  <li>You can convert from a <code class="language-plaintext highlighter-rouge">Validator</code> to a <code class="language-plaintext highlighter-rouge">NullableValidator</code> by calling <code class="language-plaintext highlighter-rouge">Validator#allowNullable</code>.</li>
+  <li>A <code class="language-plaintext highlighter-rouge">Validator#getOrDefault</code> method has been added.</li>
+  <li>Validation errors are available as <code class="language-plaintext highlighter-rouge">BaseValidator#errors</code>, which all validators inherit.</li>
+</ul>
+
+<p>The <code class="language-plaintext highlighter-rouge">check</code> method can now take a map of arguments, which is useful for localization:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ctx</span><span class="p">.</span><span class="n">queryParamAsClass</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">&gt;(</span><span class="s">"age"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">check</span><span class="p">({</span> <span class="n">it</span> <span class="p">&gt;=</span> <span class="mi">18</span> <span class="p">},</span> <span class="nc">ValidationError</span><span class="p">(</span><span class="s">"AGE_TOO_LOW"</span><span class="p">,</span> <span class="n">args</span> <span class="p">=</span> <span class="nf">mapOf</span><span class="p">(</span><span class="s">"minAge"</span> <span class="n">to</span> <span class="mi">18</span><span class="p">)))</span>
+    <span class="p">.</span><span class="k">get</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Validation errors are now provided as a map:</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="dl">"</span><span class="s2">age</span><span class="dl">"</span><span class="p">:</span> <span class="p">[{</span><span class="dl">"</span><span class="s2">message</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">NULLCHECK_FAILED</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">args</span><span class="dl">"</span><span class="p">:{},</span> <span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span> <span class="kc">null</span><span class="p">}]}</span> <span class="c1">// POST /age-check</span>
+<span class="p">{</span><span class="dl">"</span><span class="s2">age</span><span class="dl">"</span><span class="p">:</span> <span class="p">[{</span><span class="dl">"</span><span class="s2">message</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">AGE_TOO_LOW</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">args</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span><span class="dl">"</span><span class="s2">minAge</span><span class="dl">"</span><span class="p">:</span> <span class="mi">18</span><span class="p">},</span> <span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span> <span class="mi">16</span><span class="p">}]}</span> <span class="c1">// POST /age-check?age=16</span>
+</code></pre></div></div>
+
+<p>How validation errors are handled can be changed by overriding the <code class="language-plaintext highlighter-rouge">ValidationException</code>:</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">app</span><span class="p">.</span><span class="nf">exception</span><span class="p">(</span><span class="nc">ValidationException</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">)</span> <span class="p">{</span> <span class="n">e</span><span class="p">,</span> <span class="n">ctx</span> <span class="p">-&gt;</span>
+    <span class="n">e</span><span class="p">.</span><span class="n">errors</span> <span class="c1">// do stuff with errors</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="removed-default-overloads-for-queryparam-and-formparam">Removed default overloads for queryParam and formParam</h2>
+<p>The <code class="language-plaintext highlighter-rouge">ctx.queryParam("key", "default")</code> and <code class="language-plaintext highlighter-rouge">ctx.formParam("key", "default")</code> methods have been removed.
+You can use <code class="language-plaintext highlighter-rouge">Validator#getOrDefault()</code>, or rely on the built in mechanisms for defaults in your language.
+This would mean the <code class="language-plaintext highlighter-rouge">?:</code> operator in Kotlin, or <code class="language-plaintext highlighter-rouge">Optional#ofNullable</code> in Java.</p>
+
+<h2 id="reified-methods-on-context">Reified methods on <code class="language-plaintext highlighter-rouge">Context</code></h2>
+<p>The reified methods on <code class="language-plaintext highlighter-rouge">Context</code> and <code class="language-plaintext highlighter-rouge">WsContext</code> have been renamed from <code class="language-plaintext highlighter-rouge">ctx.queryParam&lt;Int&gt;</code> to <code class="language-plaintext highlighter-rouge">ctx.queryParamAsClass&lt;Int&gt;("key")</code>.
+This change was necessary because mocking libraries were confused by the seemingly identical signatures of
+<code class="language-plaintext highlighter-rouge">queryParam(key): String</code> and <code class="language-plaintext highlighter-rouge">reified queryParam(key): T</code></p>
+
+<h2 id="javalinjson-moves-to-configjsonmapperjsonmapper"><code class="language-plaintext highlighter-rouge">JavalinJson</code> moves to <code class="language-plaintext highlighter-rouge">config.jsonMapper(jsonMapper)</code></h2>
+<p>The <code class="language-plaintext highlighter-rouge">JavalinJson</code> has been replaced by a <code class="language-plaintext highlighter-rouge">JsonMapper</code>
+interface, which has four optional methods:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">default</span> <span class="nc">String</span> <span class="nf">toJsonString</span><span class="o">(</span><span class="nd">@NotNull</span> <span class="nc">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// basic method for mapping to json</span>
+<span class="k">default</span> <span class="nc">InputStream</span> <span class="nf">toJsonStream</span><span class="o">(</span><span class="nd">@NotNull</span> <span class="nc">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// memory efficient method for mapping to json</span>
+<span class="k">default</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="no">T</span> <span class="nf">fromJsonString</span><span class="o">(</span><span class="nd">@NotNull</span> <span class="nc">String</span> <span class="n">json</span><span class="o">,</span> <span class="nd">@NotNull</span> <span class="nc">Class</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">targetClass</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// basic method for mapping from json</span>
+<span class="k">default</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="no">T</span> <span class="nf">fromJsonStream</span><span class="o">(</span><span class="nd">@NotNull</span> <span class="nc">InputStream</span> <span class="n">json</span><span class="o">,</span> <span class="nd">@NotNull</span> <span class="nc">Class</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">targetClass</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// memory efficient method for mapping from json</span>
+</code></pre></div></div>
+
+<p>You only have to implement the methods you will be using. If you implement <code class="language-plaintext highlighter-rouge">fromJsonStream</code>,
+Javalin will pick this automatically over <code class="language-plaintext highlighter-rouge">fromJsonString</code> when deserializing a request body to an object,
+but <code class="language-plaintext highlighter-rouge">toJsonStream</code> needs to be called explicitly by doing <code class="language-plaintext highlighter-rouge">ctx.json(obj, useStreamingMapper = true)</code>.
+This is because it uses an extra thread, and will only be beneficial for bigger JSON objects
+(unless you are using Project Loom).</p>
+
+<p>To configure Javalin to use your <code class="language-plaintext highlighter-rouge">JsonMapper</code>, do <code class="language-plaintext highlighter-rouge">config.jsonMapper(myJsonMapper)</code>.</p>
+
+<h2 id="future-rework">Future rework</h2>
+<p>In Javalin 3, we had <code class="language-plaintext highlighter-rouge">ctx.json(future)</code> and <code class="language-plaintext highlighter-rouge">ctx.result(future)</code>.
+In Javalin 4 we have <code class="language-plaintext highlighter-rouge">ctx.future(future)</code>, and <code class="language-plaintext highlighter-rouge">ctx.future(future, callback)</code>.
+The default callback is implemented as:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">when</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">is</span> <span class="nc">InputStream</span> <span class="p">-&gt;</span> <span class="nf">result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">is</span> <span class="nc">String</span> <span class="p">-&gt;</span> <span class="nf">result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">is</span> <span class="nc">Any</span> <span class="p">-&gt;</span> <span class="nf">json</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Meaning it will be set as a result if it’s an <code class="language-plaintext highlighter-rouge">InputStream</code> or a <code class="language-plaintext highlighter-rouge">String</code>,
+and it will be transformed into JSON if it’s any other type of object.
+If you need custom handling, you can now define this easily:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ctx</span><span class="p">.</span><span class="nf">future</span><span class="p">(</span><span class="n">myFuture</span><span class="p">)</span> <span class="p">{</span> <span class="n">result</span> <span class="p">-&gt;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ctx</span><span class="p">.</span><span class="nf">status</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">.</span><span class="nf">json</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">ctx</span><span class="p">.</span><span class="nf">status</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This should provide a lot more flexibility when working with futures in Javalin.</p>
+
+<h2 id="maxrequestsize-replaces-requestcachesize"><code class="language-plaintext highlighter-rouge">maxRequestSize</code> replaces <code class="language-plaintext highlighter-rouge">requestCacheSize</code></h2>
+<p>The old <code class="language-plaintext highlighter-rouge">requestCacheSize</code> has been removed, and <code class="language-plaintext highlighter-rouge">maxRequestSize</code> is now set to 1mb by default.
+This means that requests up to 1mb will be cached when you call <code class="language-plaintext highlighter-rouge">ctx.body()</code>. Requests larger
+than 1mb require you to use <code class="language-plaintext highlighter-rouge">ctx.bodyAsInputStream()</code> in order to read them (unless you adjust <code class="language-plaintext highlighter-rouge">maxRequestSize</code>).</p>
+
+<h2 id="compressionstrategy-replaces-dynamicgzip"><code class="language-plaintext highlighter-rouge">compressionStrategy</code> replaces <code class="language-plaintext highlighter-rouge">dynamicGzip</code></h2>
+<p>The old <code class="language-plaintext highlighter-rouge">dynamicGzip = true/false</code> has been replaced by <code class="language-plaintext highlighter-rouge">config.compressionStrategy(Brotli(level), Gzip(level))</code>.
+To disable compression, do <code class="language-plaintext highlighter-rouge">config.compressionStrategy(CompressionStrategy.NONE)</code>.</p>
+
+<h2 id="a-ratelimiter-reality-check">A <code class="language-plaintext highlighter-rouge">RateLimiter</code> reality check</h2>
+<p>The <code class="language-plaintext highlighter-rouge">RateLimiter</code> in Javalin is very naive, and in Javalin 4 we decided to be a bit more
+aggressive in letting people know this. The <code class="language-plaintext highlighter-rouge">RateLimiter</code> is now called <code class="language-plaintext highlighter-rouge">NaiveRateLimiter</code>.</p>
+
+<h2 id="cookie-overwrites">Cookie overwrites</h2>
+<p>Multiple calls to <code class="language-plaintext highlighter-rouge">ctx.cookie(name)</code> will now only result in one cookie being set.
+In Javalin 3 this method functioned as <code class="language-plaintext highlighter-rouge">addCookie</code>, but in Javalin 4 this has been fixed
+so it behaves like <code class="language-plaintext highlighter-rouge">setCookie</code>.</p>
+
+<h2 id="internal-config-is-now-_conf">Internal <code class="language-plaintext highlighter-rouge">config</code> is now <code class="language-plaintext highlighter-rouge">_conf</code></h2>
+<p>The internal <code class="language-plaintext highlighter-rouge">config</code> is <code class="language-plaintext highlighter-rouge">public</code> for advanced users, but we noticed a lot of beginners
+using it accidentally. It’s been renamed to <code class="language-plaintext highlighter-rouge">_conf</code> to discourage (mis)use.</p>
+
+<h2 id="websocket-renaming">WebSocket renaming</h2>
+<ul>
+  <li>The <code class="language-plaintext highlighter-rouge">WsHandlerController</code> class has been renamed to <code class="language-plaintext highlighter-rouge">WsConnection</code></li>
+  <li>The <code class="language-plaintext highlighter-rouge">WsHandler</code> class has been renamed to <code class="language-plaintext highlighter-rouge">WsConfig</code></li>
+  <li>The <code class="language-plaintext highlighter-rouge">WsMessageContext#message(Class)</code> method is now <code class="language-plaintext highlighter-rouge">WsMessageContext#messageAsClass(Class)</code></li>
+</ul>
+
+<h2 id="app-attributes-signatures">App attributes signatures</h2>
+<p>The <code class="language-plaintext highlighter-rouge">Javalin#attribute(class, value)</code> method is now <code class="language-plaintext highlighter-rouge">Javalin#attribute(string, value)</code>.</p>
+
+<h2 id="default-port-8080">Default port 8080</h2>
+<p>The default port was changed from <code class="language-plaintext highlighter-rouge">7000</code> to <code class="language-plaintext highlighter-rouge">8080</code> to conform with other JVM frameworks.</p>
+
+<h2 id="context-extensions-are-gone">Context extensions are gone</h2>
+<p>The <code class="language-plaintext highlighter-rouge">Context#register</code> and <code class="language-plaintext highlighter-rouge">Context#use</code> methods have been removed.</p>
+
+<p>These methods were intended for Java users who couldn’t use Kotlin extension functions.
+You can instead create a class which wraps context:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">myHandler</span><span class="o">(</span><span class="nc">Context</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">ContextExtensions</span> <span class="n">myExtensions</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ContextExtensions</span><span class="o">(</span><span class="n">ctx</span><span class="o">);</span>
+    <span class="n">myExtensions</span><span class="o">.</span><span class="na">methodName</span><span class="o">();</span>
+<span class="o">});</span>
+</code></pre></div></div>
+
+
+        <script src="/js/anchor.min.js"></script>
+        <script>
+            anchors.options.placement = 'left';
+            anchors.add();
+        </script>
+
+    </main>
+    <footer>
+        Javalin is a Java and Kotlin web framework, open sourced under the
+        <a href="https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)">Apache 2</a> license
+        | <a href="/download">Download</a>
+        | <a href="/about">About</a>
+        | <a href="/news">News</a>
+        | <a href="/about#contact">Contact</a>
+        | <a href="/for-educators">For educators</a>
+    </footer>
+    <div id="star-begging">
+    <style>
+        #star-begging {
+            transition: transform .25s;
+            transform: scale(0);
+            border-radius: 8px;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            padding: 20px 40px 16px 20px;
+            background: #fff;
+            box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15);
+            z-index: 9999998;
+        }
+        #star-begging.in {
+            transform: scale(1);
+        }
+        #star-begging.out {
+            transform: translateX(400px);
+        }
+        #star-begging p {
+            font-size: 16px;
+            margin: 0 0 15px;
+        }
+        #star-begging .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            height: 40px;
+            width: 40px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-family: arial, sans-serif;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+    </style>
+    <p>
+        Like Javalin?
+        <br>Star us 😊
+    </p>
+    <span class="close">×</span>
+    <iframe id="starFrame" class="githubStar" title="github-stars"
+            src="https://ghbtns.com/github-btn.html?user=javalin&amp;repo=javalin&amp;type=star&amp;count=true&size=large"
+            frameborder="0" scrolling="0" width="150px" height="30px">
+    </iframe>
+    <script>
+        if (localStorage.getItem("dismissed") !== "true" && document.getElementById("notification-banner") === null) {
+            setTimeout(function () {
+                document.querySelector("#star-begging").classList.add("in");
+            }, 15000);
+            document.querySelector("#star-begging .close").addEventListener("click", function () {
+                document.querySelector("#star-begging").classList.add("out");
+                localStorage.setItem("dismissed", "true");
+            });
+        }
+    </script>
+</div>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>

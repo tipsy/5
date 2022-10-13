@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54137818-11"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-54137818-11', {'anonymize_ip': true});
+</script>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen+Mono|Roboto+Slab:500,700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:site_name" content="Javalin">
+    <meta property="og:url" content="https://javalin.io">
+    <meta property="og:description" content="Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:image" content="https://javalin.io/img/javalin.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="liMtSlffOZROWLqoiOZdSx-luH9_Siq5-Ot6xqHZwq8">
+    <title>
+        Javalin - A lightweight Java and Kotlin web framework
+    </title>
+    <meta name="description" content="Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <link rel="canonical" href="https://zugazagoitia.github.io/">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>/* Styles that affect the length of the document */
+p code,
+li code {
+    font-size: 90%;
+    letter-spacing: -0.5px;
+    border: 1px solid #ccd;
+    background: #f5f5f7;
+    padding: 1px 3px;
+}
+
+.multitab-code pre {
+    margin-top: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.multitab-code div[data-tab] {
+    display: none;
+}
+
+:target {
+    scroll-margin-top: 108px;
+}
+
+.anchorjs-link {
+    transition: all .25s linear;
+  }
+  
+*:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+ }</style>
+</head>
+<body>
+    <a id="fork-me" href="https://github.com/javalin/javalin" target="_blank">
+    <img style="position:fixed;top:0;right:0;border:0;z-index:99999" src="data:image/png;base64,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" alt="Fork me on GitHub">
+</a>
+    <header class="top-nav-header">
+        <nav class="width-limit">
+            <a id="logo" href="/" aria-label="Javalin">
+                <img src="/img/logo_inv.svg" alt="Javalin">
+            </a>
+            <ul>
+                <li><a href="/documentation">Docs</a></li>
+                <li><a href="/tutorials">Tutorials</a></li>
+                <li><a href="/plugins">Plugins</a></li>
+                <li><a href="/community">Community</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="width-limit">
+        <style>main {
+    padding: 0;
+}
+
+header nav {
+    justify-content: center;
+}
+
+header nav ul {
+    display: none;
+}
+
+main.width-limit {
+    max-width: 100%;
+    padding: 0;
+}
+
+header {
+    position: absolute;
+    border: 0;
+    background: radial-gradient(#1a1a1a, #212121);
+}
+
+nav ul li + li {
+    border: 0;
+}
+
+nav ul li a {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+nav ul li a:hover {
+    color: white;
+}
+
+.landing h1 {
+    text-align: center;
+    margin: 32px 0 40px; /* offset line height */
+}
+
+.bluepart *::selection {
+    background: #000000;
+}
+
+.bluepart.blackpart {
+    background: #343434;
+    background: radial-gradient(#313131, #212121);
+    padding: 70px 20px 90px; /* Uneven padding to deal with text height */
+}
+
+.bluepart {
+    padding: 60px 20px;
+    background: radial-gradient(#02a2d7, #028ebc);
+}
+
+.bluepart .multitab-code {
+    max-width: 540px;
+    margin: 40px auto;
+}
+
+.bluepart .multitab-code ul {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.bluepart .multitab-code pre {
+    background: rgba(0, 0, 0, 0.30);
+}
+
+.bluepart.blackpart .multitab-code ul {
+    background: rgba(0, 0, 0, 0.30);
+}
+
+.bluepart.blackpart .multitab-code pre {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.bluepart .multitab-code pre code {
+    line-height: 1.4;
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.3);
+    font-size: 15px;
+}
+
+.bluepart .multitab-code pre code .token.number {
+    color: #ffbbea;
+}
+
+.bluepart .multitab-code pre code .token.function {
+    color: #ffe200;
+}
+
+.bluepart .multitab-code pre code .token.string {
+    color: #9be800;
+}
+
+.bluepart .multitab-code pre code .token.keyword {
+    color: #54e3ff;
+}
+
+.bluepart .multitab-code pre code .token.comment {
+    color: #a0bedc;
+}
+
+.bluepart h1 {
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.blackpart h1 {
+    text-shadow: 2px 2px 0 #000;
+}
+
+.whitepart {
+    padding: 0 20px;
+}
+
+.whitepart h1 {
+    text-decoration: underline;
+}
+
+.bluepart > p {
+    text-align: center;
+    color: white;
+}
+
+.bluepart > p > a {
+    color: white;
+    text-decoration: underline;
+}
+
+.center {
+    text-align: center;
+}
+
+.landing-btn {
+    margin: 8px 8px 0 8px;
+    padding: 12px 28px;
+    text-align: center;
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.15);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+    color: white;
+    cursor: pointer;
+    border-radius: 50px;
+    font-size: 16px;
+    font-family: 'Roboto Slab', arial, sans-serif;
+    font-weight: 500;
+}
+
+.blackpart .landing-btn {
+    border-bottom: 3px solid rgba(0, 0, 0, 0.7);
+}
+
+.landing-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.boxes {
+    display: flex;
+    max-width: 1200px;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.boxes .box {
+    flex-basis: calc(25% - 32px);
+    margin: 0 16px 32px 16px;
+    padding: 32px;
+    background: #fff;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.7;
+    color: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
+}
+
+.boxes .box h2 {
+    color: rgba(0, 0, 0, 0.9);
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-weight: 500;
+    text-transform: none;
+    font-size: 24px;
+}
+
+.boxes + .boxes {
+    margin-bottom: 64px;
+}
+
+@media (max-width: 1200px) {
+    .boxes {
+        flex-wrap: wrap;
+    }
+
+    .boxes .box {
+        flex-basis: calc(50% - 32px);
+    }
+}
+
+@media (max-width: 600px) {
+    .boxes .box {
+        margin: 0 0 32px 0;
+        flex-basis: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .bluepart {
+        padding: 40px 20px;
+    }
+}
+
+.used-by {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1140px;
+    margin: 40px auto 0;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.used-by img {
+    display: inline-block;
+    width: 240px;
+    height: 135px;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    object-fit: contain;
+}
+
+.small-used-by {
+    padding: 16px 20px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.small-used-by .content {
+    margin: 0 auto;
+    max-width: 1140px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.small-used-by img {
+    display: block;
+    width: 120px;
+    height: 68px;
+    padding: 10px;
+    filter: grayscale(1);
+}
+
+.whitepart .comment {
+    margin-top: -16px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.white-paragraph {
+    max-width: 700px;
+    margin: 32px auto 100px;
+    text-align: center;
+    padding: 0 20px;
+    line-height: 1.7;
+}
+
+@media (max-width: 480px) {
+
+    .bluepart h1,
+    .whitepart h1 {
+        font-size: 7.5vw;
+    }
+
+    .landing-btn {
+        font-size: 14px;
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+
+    .landing-btn + .landing-btn {
+        margin-top: 16px;
+    }
+
+    .box p {
+        font-size: 16px;
+    }
+
+    .used-by img {
+        width: calc(50% - 15px);
+        margin: 7px;
+    }
+
+    nav #logo img {
+        height: 34px;
+    }
+
+    .small-used-by img {
+        width: 61px;
+        height: 34px;
+        padding: 5px;
+    }
+
+}
+
+.bluepart.blackpart.image {
+    padding: 60px 20px 120px;
+    background: url("/img/background.jpg") center;
+    background-size: cover;
+}
+
+.bluepart.blackpart.image .multitab-code ul,
+.bluepart.blackpart.image .multitab-code pre {
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.bluepart.blackpart.image .landing-btn {
+    background: rgb(36, 70, 101);
+}
+
+.bluepart.blackpart.image .landing-btn:hover {
+    background: rgb(35, 75, 113);
+}
+</style>
+
+<div class="landing bluepart blackpart">
+    <h1>A simple web framework<br />for Java and Kotlin</h1>
+    
+
+
+<div class="multitab-code" data-tab="1">
+<ul>
+    <li data-tab="1">Java</li>
+    <li data-tab="2">Kotlin</li>
+</ul>
+<div data-tab="1">
+      <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">io.javalin.Javalin</span><span class="o">;</span>
+
+<span class="no">THIS</span> <span class="no">STILL</span> <span class="no">DOES</span> <span class="no">NOT</span> <span class="no">COMPILE</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloWorld</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">var</span> <span class="n">app</span> <span class="o">=</span> <span class="nc">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="cm">/*config*/</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/"</span><span class="o">,</span> <span class="n">ctx</span> <span class="o">-&gt;</span> <span class="n">ctx</span><span class="o">.</span><span class="na">result</span><span class="o">(</span><span class="s">"Hello World"</span><span class="o">))</span>
+            <span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="mi">7070</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>      </div>
+    </div>
+<div data-tab="2">
+      <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">io.javalin.Javalin</span>
+
+<span class="k">fun</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">app</span> <span class="p">=</span> <span class="nc">Javalin</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="cm">/*config*/</span><span class="p">)</span>
+        <span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="s">"/"</span><span class="p">)</span> <span class="p">{</span> <span class="n">ctx</span> <span class="p">-&gt;</span> <span class="n">ctx</span><span class="p">.</span><span class="nf">result</span><span class="p">(</span><span class="s">"Hello World"</span><span class="p">)</span> <span class="p">}</span>
+        <span class="p">.</span><span class="nf">start</span><span class="p">(</span><span class="mi">7070</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>      </div>
+    </div>
+</div>
+
+
+    <div class="center">
+        <a class="landing-btn arrow" href="/documentation">
+            View documentation
+            <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" /></svg>
+        </a>
+    </div>
+</div>
+<style>
+    .landing-btn.arrow {
+        display: inline-flex;
+        align-items: center;
+    }
+    .landing-btn.arrow svg {
+        margin-left: 8px;
+        fill: #fff;
+    }
+</style>
+
+<div class="small-used-by">
+    <div class="content">
+        <img src="/img/used-by/microsoft.png" alt="Microsoft" />
+        <img src="/img/used-by/redhat.png" alt="Redhat" />
+        <img src="/img/used-by/uber.png" alt="Uber" />
+        <img src="/img/used-by/telenor.png" alt="Telenor" />
+        <img src="/img/used-by/revolut.png" alt="Revolut" />
+        <img src="/img/used-by/c6bank.png" alt="C6 Bank" />
+        <img src="/img/used-by/nordstrom.png" alt="Nordstrom" />
+        <img src="/img/used-by/dkb.png" alt="Deutsche Kreditbank" />
+    </div>
+</div>
+
+<div class="landing whitepart">
+    <h1>Why Javalin?</h1>
+    <div class="boxes">
+        
+        
+            <div class="box">
+                <h2>
+        Simple </h2>
+                <p> Unlike other Java and Kotlin web frameworks, Javalin has very few concepts that you need to learn.
+        You never extend classes and you rarely implement interfaces.
+        </p>
+            </div>
+        
+            <div class="box">
+                <h2>
+        Lightweight </h2>
+                <p> Javalin is just a few thousand lines of code on top of Jetty, and
+        its performance is equivalent to raw Jetty code. Due to its size, it's
+        very easy to reason about the source code.
+        </p>
+            </div>
+        
+            <div class="box">
+                <h2>
+        Interoperable </h2>
+                <p> Other Java and Kotlin web frameworks usually offer one version for each language.
+        Javalin is being made with inter-operability in mind, apps are built the same way in both Java and Kotlin.
+        </p>
+            </div>
+        
+            <div class="box">
+                <h2>
+        Flexible </h2>
+                <p> Javalin is designed to be simple and blocking, as this is the easiest programming model to reason about.
+        But, if you set a <code>Future</code> as a result, Javalin switches into asynchronous mode.
+    </p>
+            </div>
+        
+    </div>
+    <div class="boxes">
+        
+        
+        <div class="box">
+            <h2>
+        Educational </h2>
+            <p> Visit our <a href="/for-educators">educators page</a> if you're teaching web programming
+        and looking for a web framework which will get out of your way and let you focus on the
+        core concepts of your curriculum.
+        </p>
+        </div>
+        
+        <div class="box">
+            <h2>
+        OpenAPI </h2>
+            <p> Many lightweight Java and Kotlin web frameworks don't support OpenAPI, but Javalin does
+        (including Swagger UI and ReDoc). Learn more at the <a href="/plugins/openapi">OpenAPI plugin page</a>.
+        </p>
+        </div>
+        
+        <div class="box">
+            <h2>
+        Jetty </h2>
+            <p> Javalin runs on top of Jetty, one of the most used and stable web-servers on the JVM.
+        You can configure the Jetty server fully, including SSL and HTTP3 and everything else
+        that Jetty offers.
+    </p>
+        </div>
+        
+    </div>
+</div>
+
+<div class="landing bluepart blackpart sponsors-part">
+    <div class="sponsors">
+        <h1>Our sponsors</h1>
+        <div class="sponsor">
+            <img src="/img/sponsors/feature-upvote.png" alt="Feature Upvote" />
+            <a href="https://featureupvote.com">https://featureupvote.com</a>
+        </div>
+        <div class="sponsor cta">
+            <div class="dashing-border">
+                Your logo here?
+                <br />
+                <a class="sponsor-button" href="https://github.com/sponsors/tipsy">
+    <svg width="24" height="24" viewBox="0 0 24 24">
+        <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
+    </svg>
+    Sponsor Javalin
+</a>
+<style>
+    .sponsor-button {
+        margin: 0 12px;
+        display: flex;
+        align-items: center;
+        color: rgba(0, 0, 0, 0.7);
+        background: #ffe8e8;
+        border: 1px solid #ffb5b5;
+        border-radius: 30px;
+        padding: 4px 12px;
+        font-weight: 500;
+        font-family: 'Roboto Slab', sans-serif;
+        transition: all .15s ease-in-out;
+    }
+
+    .sponsor-button:hover {
+        color: rgba(0, 0, 0, 0.8);
+        background: #ffe0e0;
+    }
+
+    .sponsor-button svg {
+        transition: all .15s ease-in-out;
+        margin-right: 8px;
+    }
+
+    .sponsor-button svg path {
+        fill: #ff6363;
+    }
+
+    .sponsor-button:hover svg {
+        transform: scale(1.15);
+    }
+</style>
+
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .bluepart.blackpart.sponsors-part {
+        padding: 40px 20px;
+    }
+
+    .sponsors {
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 1140px;
+        margin: 0 auto;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .sponsor {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        width: 280px;
+        height: 180px;
+        padding: 20px;
+        margin: 20px;
+        border-radius: 5px;
+        background: #fff;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .sponsor:not(.cta) a {
+        color: #333;
+        font-size: 14px;
+        text-decoration: underline;
+    }
+
+    .sponsor img {
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .sponsor.cta {
+        padding: 12px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 500;
+        font-family: "Encode Sans", sans-serif;
+    }
+
+    .sponsor.cta .sponsor-button {
+        font-size: 18px;
+    }
+
+    .dashing-border {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        height: 100%;
+        width: 100%;
+        border: 1px dashed #777;
+        border-radius: 5px;
+        padding: 24px 8px;
+        background: #f9f9f9;
+    }
+</style>
+
+<div class="landing bluepart">
+<h1>Declare server and API<br /> in the same place</h1>
+
+
+<div class="multitab-code" data-tab="1">
+<ul>
+    <li data-tab="1">Java</li>
+    <li data-tab="2">Kotlin</li>
+</ul>
+<div data-tab="1">
+      <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">io.javalin.Javalin</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">io</span><span class="o">.</span><span class="na">javalin</span><span class="o">.</span><span class="na">apibuilder</span><span class="o">.</span><span class="na">ApiBuilder</span><span class="o">.*;</span>
+
+<span class="nc">Javalin</span> <span class="n">app</span> <span class="o">=</span> <span class="nc">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">enableCorsForAllOrigins</span><span class="o">();</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">asyncRequestTimeout</span> <span class="o">=</span> <span class="mi">10_000L</span><span class="o">;</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">enforceSsl</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+<span class="o">}).</span><span class="na">routes</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">path</span><span class="o">(</span><span class="s">"users"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="n">get</span><span class="o">(</span><span class="nl">UserController:</span><span class="o">:</span><span class="n">getAll</span><span class="o">);</span>
+        <span class="n">post</span><span class="o">(</span><span class="nl">UserController:</span><span class="o">:</span><span class="n">create</span><span class="o">);</span>
+        <span class="n">path</span><span class="o">(</span><span class="s">"{userId}"</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">get</span><span class="o">(</span><span class="nl">UserController:</span><span class="o">:</span><span class="n">getOne</span><span class="o">);</span>
+            <span class="n">patch</span><span class="o">(</span><span class="nl">UserController:</span><span class="o">:</span><span class="n">update</span><span class="o">);</span>
+            <span class="n">delete</span><span class="o">(</span><span class="nl">UserController:</span><span class="o">:</span><span class="n">delete</span><span class="o">);</span>
+        <span class="o">});</span>
+        <span class="n">ws</span><span class="o">(</span><span class="s">"events"</span><span class="o">,</span> <span class="nl">userController:</span><span class="o">:</span><span class="n">webSocketEvents</span><span class="o">);</span>
+    <span class="o">});</span>
+<span class="o">}).</span><span class="na">start</span><span class="o">(</span><span class="n">port</span><span class="o">);</span>
+</code></pre></div>      </div>
+    </div>
+<div data-tab="2">
+      <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">io.javalin.Javalin;</span>
+<span class="k">import</span> <span class="nn">io.javalin.apibuilder.ApiBuilder.*;</span>
+
+<span class="kd">val</span> <span class="py">app</span> <span class="p">=</span> <span class="nc">Javalin</span><span class="p">.</span><span class="nf">create</span> <span class="p">{</span> <span class="n">config</span> <span class="p">-&gt;</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">enableCorsForAllOrigins</span><span class="p">()</span>
+    <span class="n">config</span><span class="p">.</span><span class="n">asyncRequestTimeout</span> <span class="p">=</span> <span class="mi">10_000L</span>
+    <span class="n">config</span><span class="p">.</span><span class="n">enforceSsl</span> <span class="p">=</span> <span class="k">true</span>
+<span class="p">}.</span><span class="nf">routes</span> <span class="p">{</span>
+    <span class="nf">path</span><span class="p">(</span><span class="s">"users"</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">get</span><span class="p">(</span><span class="nc">UserController</span><span class="o">::</span><span class="n">getAll</span><span class="p">)</span>
+        <span class="nf">post</span><span class="p">(</span><span class="nc">UserController</span><span class="o">::</span><span class="n">create</span><span class="p">)</span>
+        <span class="nf">path</span><span class="p">(</span><span class="s">"{userId}"</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">get</span><span class="p">(</span><span class="nc">UserController</span><span class="o">::</span><span class="n">getOne</span><span class="p">)</span>
+            <span class="nf">patch</span><span class="p">(</span><span class="nc">UserController</span><span class="o">::</span><span class="n">update</span><span class="p">)</span>
+            <span class="nf">delete</span><span class="p">(</span><span class="nc">UserController</span><span class="o">::</span><span class="n">delete</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="nf">ws</span><span class="p">(</span><span class="s">"events"</span><span class="p">,</span> <span class="n">userController</span><span class="o">::</span><span class="n">webSocketEvents</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}.</span><span class="nf">start</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+</code></pre></div>      </div>
+    </div>
+</div>
+
+
+<p style="margin: 40px 0">Creating a REST API has never been easier</p>
+
+<div class="center">
+    <a class="landing-btn" href="/tutorials">Show me tutorials</a>
+    <a class="landing-btn" href="/documentation">Show me the docs</a>
+</div>
+</div>
+
+<div class="landing whitepart">
+    <h1>An active community</h1>
+    <img src="/img/javalin-stats-sep-2022.svg" alt="Javalin Infographic" style="display:block;max-width:1000px;margin:0 auto;" />
+    <p class="white-paragraph">
+        Javalin 1.0 was released in 2017, and has been in steady development since.<br /><br />
+        As of April 2022, the project consists of less than 7000 lines of code with more than 10 000 lines of tests.
+        It has more than a hundred contributors, more than four hundred forks, and more than five thousand stars on GitHub.
+        The project has around 300 000 downloads per month, and has has been released 101 times in five years
+        (about two times per month).
+    </p>
+</div>
+
+<div class="landing bluepart whos-using-javalin">
+    <h1 id="whos-using-javalin">Who's using Javalin?</h1>
+    <div class="used-by">
+        <img src="/img/used-by/jhu.png" alt="JHU" />
+        <img src="/img/used-by/microsoft.png" alt="Microsoft" />
+        <img src="/img/used-by/redhat.png" alt="Redhat" />
+        <img src="/img/used-by/ntnu.png" alt="NTNU" />
+        <img src="/img/used-by/pleo.png" alt="Pleo" />
+        <img src="/img/used-by/uber.png" alt="Uber" />
+        <img src="/img/used-by/measuresforjustice.png" alt="Measures for Justice" />
+        <img src="/img/used-by/wit.png" alt="WIT" />
+        <img src="/img/used-by/briar.png" alt="Briar" />
+        <img src="/img/used-by/twosigma.png" alt="Two Sigma" />
+        <img src="/img/used-by/nav.png" alt="nav" />
+        <img src="/img/used-by/virgilsecurity.png" alt="Virgil Security" />
+        <img src="/img/used-by/wgtwo.png" alt="Working Group Two" />
+        <img src="/img/used-by/talanlabs.png" alt="Talan Labs" />
+        <img src="/img/used-by/datawire.png" alt="Datawire" />
+        <img src="/img/used-by/swatt.png" alt="Swatt" />
+        <img src="/img/used-by/telenor.png" alt="Telenor" />
+        <img src="/img/used-by/revolut.png" alt="Revolut" />
+        <img src="/img/used-by/expressscripts.png" alt="Express Scripts" />
+        <img src="/img/used-by/dkb.png" alt="Deutsche Kreditbank" />
+        <img src="/img/used-by/c6bank.png" alt="C6 Bank" />
+        <img src="/img/used-by/nordstrom.png" alt="Nordstrom" />
+        <img src="/img/used-by/apexar.png" alt="Apexar" />
+        <img src="/img/used-by/celer.png" alt="Celer" />
+        <img src="/img/used-by/essential.png" alt="Essential.gg" />
+        <img src="/img/used-by/carilion-clinic.png" alt="Carilion Clinic" />
+    </div>
+    <p>Are you using Javalin? <a href="https://github.com/javalin/javalin/issues/1676">Let us know</a>!</p>
+</div>
+
+<div class="landing whitepart">
+    <h1>What is Javalin used for?</h1>
+    <p class="white-paragraph">
+        Check out our recent <a href="/blog/javalin-user-survey-2021">survey results</a><br />
+        to learn more about how people use Javalin.
+    </p>
+</div>
+
+
+    </main>
+    <footer>
+        Javalin is a Java and Kotlin web framework, open sourced under the
+        <a href="https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)">Apache 2</a> license
+        | <a href="/download">Download</a>
+        | <a href="/about">About</a>
+        | <a href="/news">News</a>
+        | <a href="/about#contact">Contact</a>
+        | <a href="/for-educators">For educators</a>
+    </footer>
+    <div id="star-begging">
+    <style>
+        #star-begging {
+            transition: transform .25s;
+            transform: scale(0);
+            border-radius: 8px;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            padding: 20px 40px 16px 20px;
+            background: #fff;
+            box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15);
+            z-index: 9999998;
+        }
+        #star-begging.in {
+            transform: scale(1);
+        }
+        #star-begging.out {
+            transform: translateX(400px);
+        }
+        #star-begging p {
+            font-size: 16px;
+            margin: 0 0 15px;
+        }
+        #star-begging .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            height: 40px;
+            width: 40px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-family: arial, sans-serif;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+    </style>
+    <p>
+        Like Javalin?
+        <br>Star us 😊
+    </p>
+    <span class="close">×</span>
+    <iframe id="starFrame" class="githubStar" title="github-stars"
+            src="https://ghbtns.com/github-btn.html?user=javalin&amp;repo=javalin&amp;type=star&amp;count=true&size=large"
+            frameborder="0" scrolling="0" width="150px" height="30px">
+    </iframe>
+    <script>
+        if (localStorage.getItem("dismissed") !== "true" && document.getElementById("notification-banner") === null) {
+            setTimeout(function () {
+                document.querySelector("#star-begging").classList.add("in");
+            }, 15000);
+            document.querySelector("#star-begging .close").addEventListener("click", function () {
+                document.querySelector("#star-begging").classList.add("out");
+                localStorage.setItem("dismissed", "true");
+            });
+        }
+    </script>
+</div>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>

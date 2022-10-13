@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54137818-11"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-54137818-11', {'anonymize_ip': true});
+</script>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen+Mono|Roboto+Slab:500,700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Simple Frontends With Mithril.js - Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:site_name" content="Javalin">
+    <meta property="og:url" content="https://javalin.io">
+    <meta property="og:description" content="In this tutorial you’ll learn how to create simple frontends with Javalin and Mithril.js.The tutorial is only an intro, but covers the import and package sys...">
+    <meta property="og:image" content="https://javalin.io/img/javalin.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="liMtSlffOZROWLqoiOZdSx-luH9_Siq5-Ot6xqHZwq8">
+    <title>
+        Simple Frontends With Mithril.js - Javalin - A lightweight Java and Kotlin web framework
+    </title>
+    <meta name="description" content="In this tutorial you’ll learn how to create simple frontends with Javalin and Mithril.js.The tutorial is only an intro, but covers the import and package sys...">
+    <link rel="canonical" href="https://zugazagoitia.github.io/tutorials/frontends-with-javalinmithril">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>/* Styles that affect the length of the document */
+p code,
+li code {
+    font-size: 90%;
+    letter-spacing: -0.5px;
+    border: 1px solid #ccd;
+    background: #f5f5f7;
+    padding: 1px 3px;
+}
+
+.multitab-code pre {
+    margin-top: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.multitab-code div[data-tab] {
+    display: none;
+}
+
+:target {
+    scroll-margin-top: 108px;
+}
+
+.anchorjs-link {
+    transition: all .25s linear;
+  }
+  
+*:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+ }</style>
+</head>
+<body>
+    <a id="fork-me" href="https://github.com/javalin/javalin" target="_blank">
+    <img style="position:fixed;top:0;right:0;border:0;z-index:99999" src="data:image/png;base64,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" alt="Fork me on GitHub">
+</a>
+    <header class="top-nav-header">
+        <nav class="width-limit">
+            <a id="logo" href="/" aria-label="Javalin">
+                <img src="/img/logo.svg" alt="Javalin">
+            </a>
+            <ul>
+                <li><a href="/documentation">Docs</a></li>
+                <li><a href="/tutorials">Tutorials</a></li>
+                <li><a href="/plugins">Plugins</a></li>
+                <li><a href="/community">Community</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="width-limit">
+        <article class="tutorial" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="tutorial-header">
+        <h1 class="no-margin-top" itemprop="name headline">Simple Frontends With Mithril.js</h1>
+        <p class="notification">
+            <time datetime="2021-05-20T00:00:00+00:00" itemprop="datePublished">May 20, 2021</time>
+             
+                • Written by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><a href="https://www.linkedin.com/in/tareq-kirresh" target="_blank">Tareq Kirresh</a></span></span>
+            
+            <span id="timeToRead">Reading time: <b>0-0 min</b></span>
+             
+            <br>
+            <em class="github-link">
+                The source code for this tutorial can be found on 
+                <a href="https://github.com/TareqK/javalinmithril-example" target="_blank">GitHub</a>.
+                Please fork/clone and look while you read.
+            </em>
+            
+        </p>
+        
+    </div>
+    <div class="post-content" itemprop="articleBody">
+        <p>In this tutorial you’ll learn how to create simple frontends with Javalin and Mithril.js.
+The tutorial is only an intro, but covers the import and package system in the plugin, basic mithril.js components,
+application layouts, and state sharing between server and client.</p>
+
+<p>JavalinMithril is still in its infancy, but I belive that it has a place in your application - the main benefit of using it vs JavalinVue is that it gives you the ability to make frontends with more files and better Namespacing, instead of relying on component names that are unique in an application, allowing for more complex frontends.
+The background section dives into the idea behind JavalinMithril and how it is used,  but if you’re just here to learn how to use JavalinMithril(Or morbid curiousity, I don’t judge), you can skip ahead to <a href="#setup">setup</a> section.</p>
+
+<h2 id="background">Background</h2>
+
+<p>I’m a DevOps engineer by trade, but have worked several roles in the Software Industry in the last 5 years(even working as a teacher once, a story for another time). I started off in networking, then moved to Java EE(And also hardware integrations in java), then to Javalin. I always had a certain attraction to lesser used and known libraries and frameworks, simply because I like the way they solved a certain problem. In my very illustrious(read : not fun and dont like it) front end career, i tended to gravitate towards hyperscript-based frameworks(such as RE:DOM, and Mithril.js) rather than pure DOM manipulation or template based frameworks. I have configured a dozen or so projects with npm and yarn, but it always felt kind of contrary to the simple nature and spirit of the web(at least front ends) to have complex build systems, so I tend to stick close to “bare” metal.</p>
+
+<p>I came across JavalinVue a year or so ago, I absolutely loved the simplicity, so much so that I have contributed to it,  and the performance and quick development time have been key to the success of my projects and initatives(also a story for another time). This Plugin is inspired by JavalinVue(and a dare), and adresses the only shortcoming I found in it : you need to manage your component ids to be unique, otherwise it doesnt work correctly.</p>
+
+<p>In this tutorial, we will go over the main workflow in JavalinMithril, and explain some choices along the way. There is no build system for the front end, But there is a well defined namespace(package) and class system that we need to stick to to get the results we want.</p>
+
+<h2 id="setup">Setup</h2>
+<p>Our backend will be Java, and we’ll be using Maven to build.
+We need to bring in Javalin (web library), Jackson (JSON serializer), and JavalinMithril (front end). We also need the Webjar for Mithril.js<br />
+We’ll also add Vue (view library) for our frontend:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>io.javalin<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>javalin<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>3.13.13<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;type&gt;</span>jar<span class="nt">&lt;/type&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>io.github.javalin<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>javalinmithril<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>0.1.0<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;type&gt;</span>jar<span class="nt">&lt;/type&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.webjars.npm<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>mithril<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.0.4<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>com.fasterxml.jackson.core<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>jackson-databind<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.10.3<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+<div class="comment">
+  <p>You can add all frontend dependencies as <a href="https://www.webjars.org/">Webjars</a>, which can be built directly from NPM.
+If something is available on NPM, it’s also available as a Webjar, but as a prebuilt dist version (it has no dependencies).
+To view the full POM, please go to <a href="https://github.com/TareqK/javalinmithril-example/blob/master/pom.xml">GitHub</a>.</p>
+</div>
+
+<p>Now that we have all our dependencies in order, we need to configure our web server. Lets start off with 2 classes : the <code class="language-plaintext highlighter-rouge">Main</code> class, and the <code class="language-plaintext highlighter-rouge">App</code> class.</p>
+
+<p>Starting off, our Main class, in <code class="language-plaintext highlighter-rouge">/src/main/java/io/javalinmithril/demo/Main.java</code>, is just a wrapper class that calls and starts our App:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">io.javalin.Javalin</span>
+<span class="kn">package</span> <span class="nn">io.javalin.javalinmithril.demo</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="k">new</span> <span class="nf">App</span><span class="o">().</span><span class="na">start</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Our App class, which has the start method, looks like this</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*package and imports*/</span>
+<span class="kd">private</span> <span class="nc">Javalin</span> <span class="n">app</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">(){</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="nc">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+    <span class="n">app</span><span class="o">.</span><span class="na">config</span><span class="o">.</span><span class="na">enableWebjars</span><span class="o">();</span>
+    <span class="nc">JavalinMithril</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">config</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">config</span><span class="o">.</span><span class="na">isDev</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">stateFunction</span><span class="o">((</span><span class="n">ctx</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">singletonMap</span><span class="o">(</span><span class="s">"currentUser"</span><span class="o">,</span> <span class="n">currentUser</span><span class="o">(</span><span class="n">ctx</span><span class="o">)));</span>
+    <span class="o">});</span>
+    <span class="o">...</span>
+    <span class="n">app</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="mi">7000</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="o">...</span>
+
+</code></pre></div></div>
+<p>Notice the <code class="language-plaintext highlighter-rouge">JavalinMithirl.configure</code> method. We are basically telling the plugin to work in dev mode, and giving it the state function that will be injected into each component - in this case, its the name of the logged in user(We will get back to this in a bit).</p>
+
+<p>We also need an HTML file to load our dependencies and to initialize Mithril. <br />
+Let’s create <code class="language-plaintext highlighter-rouge">/src/main/resources/mithril/layout.html</code>:</p>
+
+<pre><code class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset="utf8"/&gt;
+        &lt;script src="@cdnWebjar/mithril/2.0.4/mithril.min.js"&gt;&lt;/script&gt;
+        &lt;style&gt;
+            &lt;!-- Your style here --&gt;
+        &lt;/style&gt;
+        @componentRegistration
+    &lt;/head&gt;
+    &lt;body&gt;
+
+    &lt;/body&gt;
+    &lt;script&gt;
+        m.mount(document.body, {view:()=&gt;@routeComponent})
+    &lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>There are two JavalinMithril specific things here: <code class="language-plaintext highlighter-rouge">@componentRegistration</code> and <code class="language-plaintext highlighter-rouge">@routeComponent</code>. The JavalinMithril plugin will scan your <code class="language-plaintext highlighter-rouge">/resources/mithril</code> folder and put all the dependencies you have imported in your current component into <code class="language-plaintext highlighter-rouge">@componentRegistration</code>, similar to how libraries are loaded via <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> tags. It will also will also let you choose one component to mount based on the current URL, this is the <code class="language-plaintext highlighter-rouge">@routeComponent</code>.</p>
+
+<div class="comment">
+  <p>Its important to note that there are differences between <code class="language-plaintext highlighter-rouge">m.mount</code> and <code class="language-plaintext highlighter-rouge">m.render</code>, but this is something you can refer to the mithril.js docs to figure out.</p>
+</div>
+
+<h2 id="hello-world">Hello World</h2>
+
+<p>Now that we have a layout file, let’s create <code class="language-plaintext highlighter-rouge">/resources/mithril/hello-world.js</code>:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+ @package io.javalin.mithril.demo;
+ */</span>
+<span class="kd">class</span> <span class="nx">HelloWorld</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="p">}</span>
+
+    <span class="nx">view</span><span class="p">(</span><span class="nx">vnode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">,[</span>
+                <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">h1.hello-world</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Hello World !</span><span class="dl">"</span><span class="p">),</span>
+                <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span><span class="na">href</span><span class="p">:</span> <span class="dl">"</span><span class="s2">/users</span><span class="dl">"</span><span class="p">},</span> <span class="dl">"</span><span class="s2">View user Overview</span><span class="dl">"</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here we are telling JavlainMithril that we are declaring a <code class="language-plaintext highlighter-rouge">HelloWorld</code> class. Notice the <code class="language-plaintext highlighter-rouge">@package</code> directive, which tells us that this class is in the package <code class="language-plaintext highlighter-rouge">io.javalin.mithril.demo</code>. Also Notice that there is no CSS here, The CSS can be put in multiple places, such as in a <code class="language-plaintext highlighter-rouge">&lt;style/&gt;</code> block of the header file, or imported using Javalin Static files, or imported via CDN. You can put these directives in a block comment(notice the space above and below the directives), if your IDE or editor is giving you issues, and they work fine there.</p>
+
+<p>To display our component to the user, we need to tell Javalin when to show it. Lets add a new route to our application</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">io.javalin.Javalin</span>
+<span class="kn">import</span> <span class="nn">io.javalin.plugin.rendering.mithril.JavalinMithril</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.plugin.rendering.mithril.MithrilComponent</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">(){</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="nc">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+    <span class="n">app</span><span class="o">.</span><span class="na">config</span><span class="o">.</span><span class="na">enableWebjars</span><span class="o">();</span>
+    <span class="nc">JavalinMithril</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">config</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">config</span><span class="o">.</span><span class="na">isDev</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="o">});</span>
+
+    <span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">MithrilComponent</span><span class="o">(</span><span class="s">"io.javalin.mithril.demo.HelloWorld"</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">@routeComponent</code> that we added in <code class="language-plaintext highlighter-rouge">layout.html</code> earlier will be replaced by the Class we supplied inside of <code class="language-plaintext highlighter-rouge">MithrilComponent</code>.
+This means a call to <code class="language-plaintext highlighter-rouge">/</code> will load the layout and display our <code class="language-plaintext highlighter-rouge">HelloWorld</code> component.</p>
+
+<p>Restart the server, go to <code class="language-plaintext highlighter-rouge">http://localhost:7000/</code>, and you’ll see <code class="language-plaintext highlighter-rouge">Hello, World!</code> in a nice goldenrod color.</p>
+
+<div class="comment">
+  <p>Note that you don’t have to restart the server when making changes to <code class="language-plaintext highlighter-rouge">.js</code> files,Javalin will pick up on those automatically.<br />
+The reason we needed to restart now was because we added a new route in the <code class="language-plaintext highlighter-rouge">start</code> function.</p>
+</div>
+
+<h2 id="importing-and-nesting">Importing and Nesting</h2>
+<p>So now we are all setup, for the sake of consistency, lets create an app frame. Create a file <code class="language-plaintext highlighter-rouge">/resources/mithril/app-frame.js</code></p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+ @package io.javalin.mithril.demo;
+ */</span>
+<span class="kd">class</span> <span class="nx">AppFrame</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">(</span><span class="nx">content</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="nx">view</span><span class="p">(</span><span class="nx">vnode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">div.app-frame</span><span class="dl">"</span><span class="p">,</span> <span class="p">[</span>
+            <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">header</span><span class="dl">"</span><span class="p">,</span> <span class="p">[</span>
+                <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">span</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Javalin Mithril Demo App</span><span class="dl">"</span><span class="p">)</span>
+                <span class="p">]),</span>
+            <span class="nx">vnode</span><span class="p">.</span><span class="nx">attrs</span><span class="p">.</span><span class="nx">content</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>Look at the <code class="language-plaintext highlighter-rouge">vnode.attrs.content</code> access here - this lets us access what attributes were passed into this component, which can be any javascript object(More about this in the Mithril docs). In our case, we are going to pass in the current view’s <code class="language-plaintext highlighter-rouge">content</code>, so our <code class="language-plaintext highlighter-rouge">HelloWorld</code> class looks like this now :</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+ @package io.javalin.mithril.demo;
+ @import io.javalin.mithril.demo.AppFrame;
+ */</span>
+<span class="kd">class</span> <span class="nx">HelloWorld</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="p">}</span>
+
+    <span class="nx">view</span><span class="p">(</span><span class="nx">vnode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">m</span><span class="p">(</span><span class="nx">AppFrame</span><span class="p">,</span> <span class="p">{</span><span class="na">content</span><span class="p">:</span> <span class="p">[</span>
+                <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">h1.hello-world</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Hello World !</span><span class="dl">"</span><span class="p">),</span>
+                <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span><span class="na">href</span><span class="p">:</span> <span class="dl">"</span><span class="s2">/users</span><span class="dl">"</span><span class="p">},</span> <span class="dl">"</span><span class="s2">View user Overview</span><span class="dl">"</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">})</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Take note of the <code class="language-plaintext highlighter-rouge">@import</code> directive We are also telling it that we are importing the <code class="language-plaintext highlighter-rouge">io.javalin.mithril.demo.AppFrame</code> class, which we are using  as the page template.</p>
+
+<h2 id="routing-and-error-handling">Routing and error handling</h2>
+
+<p>Now that we know how to create components, let’s look at a very common scenario:
+creating an admin interface. Our admin interface should be able to display an overview
+of users, and also additional details for one specific user.
+This will require two views, and we should probably also include a 404 page.</p>
+
+<p>Let’s change the server by adding the following lines:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">MithrilComponent</span><span class="o">(</span><span class="s">"io.javalin.mithril.demo.HelloWorld"</span><span class="o">));</span>
+<span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/users"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">MithrilComponent</span><span class="o">(</span><span class="s">"io.javalin.mithril.demo.UserOverview"</span><span class="o">));</span>
+<span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/users/:user-id"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">MithrilComponent</span><span class="o">(</span><span class="s">"io.javalin.mithril.demo.UserProfile"</span><span class="o">));</span>
+<span class="n">app</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="mi">404</span><span class="o">,</span> <span class="s">"html"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">MithrilComponent</span><span class="o">(</span><span class="s">"io.javalin.mithril.demo.NotFound"</span><span class="o">);</span>
+<span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/api/users"</span><span class="o">,</span> <span class="nl">UserController:</span><span class="o">:</span><span class="n">getAll</span><span class="o">);</span>
+<span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/api/users/:user-id"</span><span class="o">,</span> <span class="nl">UserController:</span><span class="o">:</span><span class="n">getOne</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>We’ve referenced <code class="language-plaintext highlighter-rouge">UserController</code> in the previous snippet, and you can see the source for that - more or less its just a Controller that deals with some data in an in-memory set, So i will spare you the details. you can look at <code class="language-plaintext highlighter-rouge">/src/main/java/io/javalinmithril/demo/controller/UserController.java</code> to see what is up there.</p>
+
+<p>Now lets move back to the frontend. We Want 3 views here : user-overview, user-profile, and not-found.
+This completes our backend, let’s move on to the frontend. We want three views (user-overview, user-profile, and not-found), so
+we should create three separate files in <code class="language-plaintext highlighter-rouge">/src/main/resources/mithril/views</code>. We also need a model, since that is the Mithirl convention<br />
+Lets start off with <code class="language-plaintext highlighter-rouge">/src/main/resources/mithril/user-model.js</code></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+ @package io.javalin.mithril.demo;
+ */</span>
+
+<span class="kd">class</span> <span class="nx">UserModel</span> <span class="p">{</span>
+
+<span class="p">}</span>
+
+<span class="nx">UserModel</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="nx">UserModel</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="nx">UserModel</span><span class="p">.</span><span class="nx">fetch</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">m</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="dl">"</span><span class="s2">/api/users</span><span class="dl">"</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">UserModel</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="nx">result</span><span class="p">;</span>
+    <span class="p">})</span>
+<span class="p">};</span>
+
+<span class="nx">UserModel</span><span class="p">.</span><span class="nx">fetchOne</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">m</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="s2">`/api/users/</span><span class="p">${</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">UserModel</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="nx">result</span><span class="p">;</span>
+    <span class="p">})</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<p>Both instance and static methods work here, But you need to declare a class so JavalinMithril picks it up. This class is just a View-Model to simplify our work. <br />
+Next, Let’s create <code class="language-plaintext highlighter-rouge">/src/main/resources/mithril/user-overview.js</code>:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+ @package io.javalin.mithril.demo;
+ @import io.javalin.mithril.demo.AppFrame;
+ @import io.javalin.mithril.demo.UserModel;
+ */</span>
+
+<span class="kd">class</span> <span class="nx">UserOverview</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">(</span><span class="nx">vnode</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
+    <span class="nx">oninit</span><span class="p">(</span><span class="nx">vnode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">UserModel</span><span class="p">.</span><span class="nx">fetch</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="nx">view</span><span class="p">(</span><span class="nx">vnode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">m</span><span class="p">(</span><span class="nx">AppFrame</span><span class="p">,</span> <span class="p">{</span><span class="na">content</span><span class="p">:</span>
+            <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">ul.user-overview-list</span><span class="dl">"</span><span class="p">,</span>
+                <span class="nx">UserModel</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">li</span><span class="dl">"</span><span class="p">,</span>
+                        <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span><span class="na">href</span><span class="p">:</span> <span class="s2">`/users/</span><span class="p">${</span><span class="nx">user</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">},</span> <span class="s2">`</span><span class="p">${</span><span class="nx">user</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2"> (</span><span class="p">${</span><span class="nx">user</span><span class="p">.</span><span class="nx">email</span><span class="p">}</span><span class="s2">)`</span><span class="p">))</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+             <span class="p">)</span>
+        <span class="p">})</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>This component will start off by fetching our Users from the server, then loops through the array, and creates a list of links we can click for more info. This is all pure JS. infact, all of your mithril classes are pure JS, your CSS can be wherever you prefer.</p>
+
+<p>Open <code class="language-plaintext highlighter-rouge">http://localhost:7000/users/</code> to view the list of users. If you click on one, a blank page will show.<br />
+Let’s fix this by creating <code class="language-plaintext highlighter-rouge">/src/main/resources/mithril/views/user-profile.js</code>:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+ @package io.javalin.mithril.demo;
+ @import io.javalin.mithril.demo.AppFrame;
+ @import io.javalin.mithril.demo.UserModel;
+ */</span>
+<span class="kd">class</span> <span class="nx">UserProfile</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">(</span><span class="nx">vnode</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
+    <span class="nx">oninit</span><span class="p">(</span><span class="nx">vnode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">UserModel</span><span class="p">.</span><span class="nx">fetchOne</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">javalin</span><span class="p">.</span><span class="nx">pathParams</span><span class="p">[</span><span class="dl">"</span><span class="s2">user-id</span><span class="dl">"</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+    <span class="nx">view</span><span class="p">(</span><span class="nx">vnode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">m</span><span class="p">(</span><span class="nx">AppFrame</span><span class="p">,</span>
+            <span class="p">{</span><span class="na">content</span><span class="p">:</span>
+                <span class="nx">UserModel</span><span class="p">.</span><span class="nx">current</span> <span class="p">?</span> <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">dl</span><span class="dl">"</span><span class="p">,</span> <span class="p">[</span>
+                    <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">dt</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">User ID</span><span class="dl">"</span><span class="p">),</span>
+                    <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">dd</span><span class="dl">"</span><span class="p">,</span> <span class="nx">UserModel</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">id</span><span class="p">),</span>
+                    <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">dt</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">User Name</span><span class="dl">"</span><span class="p">),</span>
+                    <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">dd</span><span class="dl">"</span><span class="p">,</span> <span class="nx">UserModel</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">name</span><span class="p">),</span>
+                    <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">dt</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Email</span><span class="dl">"</span><span class="p">),</span>
+                    <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">dd</span><span class="dl">"</span><span class="p">,</span> <span class="nx">UserModel</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">email</span><span class="p">),</span>
+                    <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">dt</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Birthday</span><span class="dl">"</span><span class="p">),</span>
+                    <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">dd</span><span class="dl">"</span><span class="p">,</span> <span class="nx">UserModel</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">userDetails</span><span class="p">.</span><span class="nx">dateOfBirth</span><span class="p">),</span>
+                    <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">dt</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Salary</span><span class="dl">"</span><span class="p">),</span>
+                    <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">dd</span><span class="dl">"</span><span class="p">,</span> <span class="nx">UserModel</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">userDetails</span><span class="p">.</span><span class="nx">salary</span><span class="p">)</span>
+                <span class="p">])</span> <span class="p">:</span> <span class="kc">null</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is pretty similar to our user-overview, but since this is a dynamic route,
+we use the <code class="language-plaintext highlighter-rouge">window.javalin</code> object to get the matched <code class="language-plaintext highlighter-rouge">user-id</code> in the route.</p>
+
+<p>Let’s finish up our views with <code class="language-plaintext highlighter-rouge">/src/main/resources/mithril/views/not-found.js</code>:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+ @package io.javalin.mithril.demo;
+ @import io.javalin.mithril.demo.AppFrame;
+ */</span>
+<span class="kd">class</span> <span class="nx">NotFound</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="p">}</span>
+
+    <span class="nx">view</span><span class="p">(</span><span class="nx">vnode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">m</span><span class="p">(</span><span class="nx">AppFrame</span><span class="p">,</span> <span class="p">{</span>
+            <span class="na">content</span><span class="p">:</span> <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">h1</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Page Not Found (error 404)</span><span class="dl">"</span><span class="p">)</span>
+        <span class="p">})</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Great, we have all our views ready!</p>
+
+<h2 id="server-side-state">Server Side State</h2>
+<p>Now that we can log users in, it would be nice if the client knew the current user.Our server knows, so we need to transfer this knowledge somehow.
+We need to modify our <code class="language-plaintext highlighter-rouge">JavalinMithril</code> config to do this injection. It looks something like this</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">JavalinMithril</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">config</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="n">config</span><span class="o">.</span><span class="na">isDev</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="n">config</span><span class="o">.</span><span class="na">stateFunction</span><span class="o">((</span><span class="n">ctx</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">singletonMap</span><span class="o">(</span><span class="s">"currentUser"</span><span class="o">,</span> <span class="n">currentUser</span><span class="o">(</span><span class="n">ctx</span><span class="o">)));</span>
+<span class="o">});</span>
+</code></pre></div></div>
+
+<p>This line of code sets a function that will run for every <code class="language-plaintext highlighter-rouge">MithrilComponent</code>, so all components will now
+have access to the current user (if there is one). Since basic-auth works per directory, the frame will only
+show the current user for <code class="language-plaintext highlighter-rouge">http://localhost:7000/users/</code> (the user-overview) and its subpaths (the individual profiles).
+Let’s add it to <code class="language-plaintext highlighter-rouge">app-frame.js</code>:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+ @package io.javalin.mithril.demo;
+ */</span>
+<span class="kd">class</span> <span class="nx">AppFrame</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">(</span><span class="nx">content</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="nx">view</span><span class="p">(</span><span class="nx">vnode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">div.app-frame</span><span class="dl">"</span><span class="p">,</span> <span class="p">[</span>
+            <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">header</span><span class="dl">"</span><span class="p">,</span> <span class="p">[</span>
+                <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">span</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Javalin Mithril Demo App</span><span class="dl">"</span><span class="p">),</span>
+                    <span class="nb">window</span><span class="p">.</span><span class="nx">javalin</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">currentUser</span> <span class="p">?</span> <span class="nx">m</span><span class="p">(</span><span class="dl">"</span><span class="s2">span</span><span class="dl">"</span><span class="p">,</span> <span class="s2">`Current User : '</span><span class="p">${</span><span class="nb">window</span><span class="p">.</span><span class="nx">javalin</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">currentUser</span><span class="p">}</span><span class="s2">'`</span><span class="p">)</span> <span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+                <span class="p">]),</span>
+            <span class="nx">vnode</span><span class="p">.</span><span class="nx">attrs</span><span class="p">.</span><span class="nx">content</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>We’ve created a fully working (but pretty limited) admin interface with only a few files.</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">App.java</code> contains the server config (routes, error handlers, access management)</li>
+  <li><code class="language-plaintext highlighter-rouge">UserController.java</code> contains the list of fake users, and methods to get them (getAll, getOne)</li>
+  <li><code class="language-plaintext highlighter-rouge">layout.html</code> loads the frontend dependencies and initializes Mithril</li>
+  <li><code class="language-plaintext highlighter-rouge">app-frame.js</code> has a header and some global styling which is included in all components</li>
+  <li><code class="language-plaintext highlighter-rouge">user-overview.js</code> displays a list of users</li>
+  <li><code class="language-plaintext highlighter-rouge">user-profile.js</code> displays additional details for one user (requires login)</li>
+  <li><code class="language-plaintext highlighter-rouge">not-found.js</code> displays a 404 error page</li>
+  <li><code class="language-plaintext highlighter-rouge">user-model.js</code> contains the ViewModel for users</li>
+  <li><code class="language-plaintext highlighter-rouge">pom.xml</code> contains all our dependencies</li>
+</ul>
+
+<p>Since our frontend dependencies are prepacked WebJars, we don’t need NPM, and we don’t need to
+manage any frontend libraries manually. The project structure is very clean:</p>
+
+<div class="compressed-code">
+  <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">javalinvue</span><span class="o">-</span><span class="n">example</span>
+<span class="err">├───</span><span class="n">src</span>
+<span class="err">│</span>   <span class="err">└───</span> <span class="n">main</span>
+<span class="err">│</span>       <span class="err">└───</span><span class="n">java</span>
+<span class="err">│</span>       <span class="o">|</span>   <span class="err">├───</span><span class="n">io</span><span class="o">/</span><span class="n">javalinmithril</span><span class="o">/</span><span class="n">demo</span>
+<span class="err">│</span>       <span class="o">|</span>        <span class="err">└───'</span><span class="nc">Java</span> <span class="nc">Source</span> <span class="nc">Code</span><span class="err">'</span>
+<span class="err">│</span>       <span class="err">└───</span><span class="n">resources</span><span class="o">/</span><span class="n">mihtril</span>
+<span class="err">│</span>               <span class="err">└───</span><span class="n">app</span><span class="o">-</span><span class="n">frame</span><span class="o">.</span><span class="na">js</span>
+<span class="err">│</span>               <span class="err">└───</span><span class="n">not</span><span class="o">-</span><span class="n">found</span><span class="o">.</span><span class="na">js</span>
+<span class="err">│</span>               <span class="err">└───</span><span class="n">user</span><span class="o">-</span><span class="n">overview</span><span class="o">.</span><span class="na">js</span>
+<span class="err">│</span>               <span class="err">└───</span><span class="n">user</span><span class="o">-</span><span class="n">profile</span><span class="o">.</span><span class="na">js</span>
+<span class="o">|</span>               <span class="err">└───</span><span class="n">user</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="na">js</span>
+<span class="err">│</span>               <span class="err">└───</span><span class="n">layout</span><span class="o">.</span><span class="na">html</span>
+<span class="err">└───</span><span class="n">pom</span><span class="o">.</span><span class="na">xml</span>
+</code></pre></div>  </div>
+  <style>.compressed-code .highlighter-rouge pre code { line-height: 1.2; }</style>
+
+</div>
+
+<p>That’s about it. The Afterword contains a bit more discussion about this technique,
+but similarly to the Background section you can skip it if you’re not that interested. <strong>Thanks for reading</strong>!</p>
+
+<h3 id="afterword">Afterword</h3>
+<p>The Library is still in its early days. However, there is a lot of potential here for growing front-ends without the associated tool-chain complexities, keeping a small overhead/request - and keeping that overhead consistent, even as your application grows in features and complexity. While Mithril.js is designed around single-page applications, it just offers so much out of the box that when we were considering the hyperscript framework to use for this plugin (trust me when I say, it was even more bonkers than it is right now - who even writes an import and package system?), we just decided to go with it because of the (outwardly looking) reactive nature, performance, and built in XHR functionality.</p>
+
+<p>I’ve created <a href="https://github.com/TareqK/javalinmithril-example/issues/1">an issue on GitHub</a>
+where you can post your pros/cons, or general comments on the tutorial.</p>
+
+    </div>
+    <h3>Thanks for reading</h3>
+    If you find any errors, please <a href="https://github.com/javalin/javalin.github.io/blob/master/_posts/tutorials/community/2021-05-20-frontends-with-javalinmithril.md">edit this page on GitHub</a>.
+    <br>
+    
+        The full source code for this tutorial can also be found on <a href="https://github.com/TareqK/javalinmithril-example">GitHub</a>.
+    
+</article>
+<style>
+    .social {
+        margin: 30px 0;
+        display: flex;
+    }
+    .social-btn {
+        text-align: center;
+        min-width: 240px;
+        padding: 10px 16px 8px;
+        font-size: 14px;
+        font-family: 'Roboto Slab', sans-serif;
+        font-weight: 600;
+        color: #fff;
+        background: #000;
+        border-radius: 50px;
+        box-shadow: 2px 2px red, -2px -2px cyan;
+    }
+    .social-btn + .social-btn {
+        margin-left: 24px;
+    }
+    .social-btn:hover {
+        background: #008ab4;
+    }
+    .social-btn img {
+        width: 24px;
+        display: inline;
+        vertical-align: middle;
+        margin-right: 12px;
+    }
+    @media (max-width: 480px) {
+        .social {
+            justify-content: space-between;
+        }
+        .social-btn {
+            min-width: 0;
+            width: calc(50% - 12px);
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+        .social-btn + .social-btn {
+            margin-left: 0;
+        }
+    }
+</style>
+<div class="social">
+    <a class="social-btn" href="https://twitter.com/intent/tweet?text=Simple Frontends With Mithril.js&url=https://zugazagoitia.github.io/tutorials/frontends-with-javalinmithril&via=javalin_io&related=javalin_io"
+       rel="nofollow"
+       title="Share on Twitter">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAM1BMVEUAAAD///////////////////////////////////////////////////////////////+3leKCAAAAEHRSTlMA8BDQwKCAMOBwYECwUCCQ27fl2AAAAW1JREFUWMPtltuOwyAMRLG5QxL8/1+7G6lKFApMaJ5W2/NIPCPAnlL15R+xRSM7ZPMnci5yYvxrNRt3VMRtpPdBLqR9MWkhPkpI80BPUpFy2dfiUbKK9B02kjbmrCkycNAdfeCqpuOQOnrye2teRS9LrxqEjn4tQSS/io7Fxg1Kn/MWjxX7dgw30NvGNkO9CQP1O8v7oGEDq07i9Uu+YxAvs1J91GmDBtdQLVKjYz6/YINNWujiVgsMet3CqAr7yICKn3XQF4N9gizJDAsIDMSBLkIyyDzkmjqmWb0GoYUUBVKLWFUF6yk9gccDYtU7bKabWBNv9yKoDunmTcSW2Im+uwNi1cBP5+DjUSAGrzgiVcLZSBmlHjnQBv7L4AOMYEdwiAGcFgK/A5BN9/WsMCs90nsjT/SrGd0fI3UJIIIdovtlAUnWftA5KwiKakg2Y7ljfPn9tzWkUw5GsHV059UEOVpDR2wXl1l9+RP8AHA4c7ljId3mAAAAAElFTkSuQmCC">Share on Twitter
+    </a>
+    <a class="social-btn" href="https://facebook.com/sharer.php?u=https://zugazagoitia.github.io/tutorials/frontends-with-javalinmithril"
+       rel="nofollow"
+       title="Share on Facebook">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUAAAD///////////////////////////////////////////////////////////87TQQwAAAAD3RSTlMAwIDwEEDgMKBgINBwUJA4su2wAAAAy0lEQVRIx2MYJICr+T9WkOQAVTD/Pw5gDpHn/I8TXAAriMetwAqsQB63gh9gBf/xgAFT8E0QCPJxK/ixACTqj1PB5wCwKD9OBbsY8Cv4XEBAwU8GAgoECCmYABTB5QuEUI2S0n4cCn6DRBzxhORHkMh5Qgr0h7eCjw6I/BiPTcEnBgRgxKbgK5ICPkIKmGij4C+yIwn5gg2bgm9ICuIHa2SNKqCZgs9gBf2YClBTkDNuBSlgBeyYCtDKzGJcCtKhyY+lH7sCIweGwQEAY2jNUu1+zZgAAAAASUVORK5CYII=">Share on Facebook
+    </a>
+</div>
+
+
+    </main>
+    <footer>
+        Javalin is a Java and Kotlin web framework, open sourced under the
+        <a href="https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)">Apache 2</a> license
+        | <a href="/download">Download</a>
+        | <a href="/about">About</a>
+        | <a href="/news">News</a>
+        | <a href="/about#contact">Contact</a>
+        | <a href="/for-educators">For educators</a>
+    </footer>
+    <div id="star-begging">
+    <style>
+        #star-begging {
+            transition: transform .25s;
+            transform: scale(0);
+            border-radius: 8px;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            padding: 20px 40px 16px 20px;
+            background: #fff;
+            box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15);
+            z-index: 9999998;
+        }
+        #star-begging.in {
+            transform: scale(1);
+        }
+        #star-begging.out {
+            transform: translateX(400px);
+        }
+        #star-begging p {
+            font-size: 16px;
+            margin: 0 0 15px;
+        }
+        #star-begging .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            height: 40px;
+            width: 40px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-family: arial, sans-serif;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+    </style>
+    <p>
+        Like Javalin?
+        <br>Star us 😊
+    </p>
+    <span class="close">×</span>
+    <iframe id="starFrame" class="githubStar" title="github-stars"
+            src="https://ghbtns.com/github-btn.html?user=javalin&amp;repo=javalin&amp;type=star&amp;count=true&size=large"
+            frameborder="0" scrolling="0" width="150px" height="30px">
+    </iframe>
+    <script>
+        if (localStorage.getItem("dismissed") !== "true" && document.getElementById("notification-banner") === null) {
+            setTimeout(function () {
+                document.querySelector("#star-begging").classList.add("in");
+            }, 15000);
+            document.querySelector("#star-begging .close").addEventListener("click", function () {
+                document.querySelector("#star-begging").classList.add("out");
+                localStorage.setItem("dismissed", "true");
+            });
+        }
+    </script>
+</div>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>
