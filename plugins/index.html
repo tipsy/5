@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54137818-11"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-54137818-11', {'anonymize_ip': true});
+</script>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen+Mono|Roboto+Slab:500,700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Plugin store - Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:site_name" content="Javalin">
+    <meta property="og:url" content="https://javalin.io">
+    <meta property="og:description" content="Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:image" content="https://javalin.io/img/javalin.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="liMtSlffOZROWLqoiOZdSx-luH9_Siq5-Ot6xqHZwq8">
+    <title>
+        Plugin store - Javalin - A lightweight Java and Kotlin web framework
+    </title>
+    <meta name="description" content="Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <link rel="canonical" href="5//plugins/">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>/* Styles that affect the length of the document */
+p code,
+li code {
+    font-size: 90%;
+    letter-spacing: -0.5px;
+    border: 1px solid #ccd;
+    background: #f5f5f7;
+    padding: 1px 3px;
+}
+
+.multitab-code pre {
+    margin-top: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.multitab-code div[data-tab] {
+    display: none;
+}
+
+:target {
+    scroll-margin-top: 108px;
+}
+
+.anchorjs-link {
+    transition: all .25s linear;
+  }
+  
+*:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+ }</style>
+</head>
+<body>
+    <a id="fork-me" href="https://github.com/javalin/javalin" target="_blank">
+    <img style="position:fixed;top:0;right:0;border:0;z-index:99999" src="data:image/png;base64,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" alt="Fork me on GitHub">
+</a>
+    <header class="top-nav-header">
+        <nav class="width-limit">
+            <a id="logo" href="/" aria-label="Javalin">
+                <img src="/img/logo.svg" alt="Javalin">
+            </a>
+            <ul>
+                <li><a href="/documentation">Docs</a></li>
+                <li><a href="/tutorials">Tutorials</a></li>
+                <li><a href="/plugins">Plugins</a></li>
+                <li><a href="/community">Community</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="width-limit">
+        <script>let reactionIcons = {};
+reactionIcons.alert = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 13H11V7H13M11 15H13V17H11M15.73 3H8.27L3 8.27V15.73L8.27 21H15.73L21 15.73V8.27L15.73 3Z" /></svg>`;
+reactionIcons.check = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z" /></svg>`;
+
+function setPluginReports(pluginName, apiUrl) {
+    let cached = JSON.parse(sessionStorage.getItem(apiUrl));
+    if (cached?.url) { // check if we have a valid response cached
+        setReports(cached.comments);
+    } else {
+        fetch(apiUrl)
+            .then(res => res.json())
+            .then(data => {
+                if (!data?.url) return; // check if we got a valid response
+                sessionStorage.setItem(apiUrl, JSON.stringify(data));
+                setReports(data.comments);
+            });
+    }
+
+    function setReports(comments) {
+        document.querySelector(`.${pluginName} .plugin-reports`).insertAdjacentHTML("afterbegin", `
+          ${comments > 0
+            ? `<span class="r-icon r-alert">${reactionIcons.alert} This plugin has been reported ${comments} times</span>`
+            : `<span class="r-icon r-check">${reactionIcons.check} This plugin has never been reported</span>`}
+        `)
+    }
+}
+
+</script>
+
+<style>.plugin-box {
+    position: relative;
+    color: #444;
+    display: block;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    margin-top: 24px;
+}
+
+.plugin-box-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.plugin-box-header .plugin-tag {
+    text-transform: capitalize;
+    background: #d6f0f9;
+    border-radius: 5px;
+    padding: 2px 6px 1px;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.plugin-box h2 {
+    font-size: 22px;
+    margin-top: 0;
+}
+
+.plugin-box p {
+    font-size: 15px;
+    margin-top: 0;
+}
+
+.plugin-box h2 .plugin-authors {
+    font-size: 70%;
+    font-weight: 400;
+}
+
+.plugin-authors a + a {
+    margin-left: 3px;
+}
+
+.plugin-authors a + a:before {
+    margin-right: 3px;
+    content: "/";
+}
+
+.plugin-box .is-bundled {
+    font-size: 13px;
+}
+
+.plugin-box-footer {
+    font-size: 13px;
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.plugin-box-footer .view-docs-btn {
+    background: #f5f5f5;
+    border-radius: 40px;
+    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    color: black;
+}
+
+.plugin-box-footer .view-docs-btn svg {
+    margin-left: 4px;
+}
+
+.plugin-box-footer .plugin-reports {
+    display: inline-flex;
+    align-items: center;
+}
+
+.plugin-box-footer .r-icon {
+    display: inline-flex;
+    align-items: center;
+    background: 1px #f5f5f5;
+    padding: 4px 8px;
+    border-radius: 5px;
+    line-height: 1;
+}
+
+.plugin-box-footer .r-icon svg {
+    display: block;
+    height: 20px;
+    width: 20px;
+    margin-right: 4px;
+}
+
+.plugin-box-footer .plugin-reports .r-check,
+.plugin-box-footer .plugin-reports .r-check svg {
+    fill: #676767;
+}
+
+.plugin-box-footer .plugin-reports .r-alert,
+.plugin-box-footer .plugin-reports .r-alert svg {
+    fill: #c02c2c;
+}
+
+.plugin-box-footer .plugin-reports a {
+    color: #676767;
+    text-decoration: underline;
+}
+
+.plugin-reports .make-report {
+    margin-left: 12px;
+}
+
+.plugin-reports .view-reports {
+    margin-left: 12px;
+    display: none;
+}
+
+.plugin-reports .r-alert + .view-reports {
+    display: inline-block;
+}
+</style>
+
+<h1 class="no-margin-top">Plugins</h1>
+<p>This page contains an overview of official and unofficial Javalin plugins.
+If you find an issue with a plugin and the plugin owner refuses to address it,
+please report it on GitHub (link in plugin card).</p>
+
+<div class="plugin-box javalinvue">
+    <div class="plugin-box-header">
+        <h2>
+            JavalinVue
+            <small class="plugin-authors">
+                
+                (by <a href="https://github.com/tipsy">@tipsy</a><a href="https://github.com/TareqK">@TareqK</a>)
+            </small>
+        </h2>
+        <span class="plugin-tags">
+             
+                <span class="plugin-tag">Bundled</span>
+             
+        </span>
+    </div>
+    <p>
+        
+        JavalinVue let's you create simple Vue frontends without having a frontend build pipeline.
+        It uses Vue single-file components with Javalin's server side routing,
+        and automatically includes only the Vue code required per route.
+        It's ideal for rapid prototyping and creation of websites/web-portals.
+    
+    </p>
+    <div class="plugin-box-footer">
+        <div class="plugin-reports">
+            <a class="view-reports" href="https://github.com/javalin/javalin.github.io/issues/132">View reports</a>
+            <a class="make-report" href="https://github.com/javalin/javalin.github.io/issues/132">Report plugin</a>
+        </div>
+        
+        <a class="view-docs-btn" href="/plugins/javalinvue">
+            View documentation
+            
+            <svg width="24" height="24" viewBox="0 0 24 24">
+                <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
+            </svg>
+            
+        </a>
+    </div>
+    <script>
+        (() => {
+            let pluginName = "javalinvue";
+            let issueUrl = "https://github.com/javalin/javalin.github.io/issues/132";
+            let apiUrl = issueUrl.replace("https://github.com/", "https://api.github.com/repos/");
+            setPluginReports(pluginName, apiUrl);
+        })();
+    </script>
+</div>
+
+<div class="plugin-box openapi-annotation-processor">
+    <div class="plugin-box-header">
+        <h2>
+            OpenAPI Annotation Processor
+            <small class="plugin-authors">
+                
+                (by <a href="https://github.com/dzikoysk">@dzikoysk</a>)
+            </small>
+        </h2>
+        <span class="plugin-tags">
+             
+                <span class="plugin-tag">Third party</span>
+             
+        </span>
+    </div>
+    <p>
+        
+        This OpenAPI plugin replaces the old DSL + annotation setup that was
+        available before Javalin 5.
+        Features:
+        <ul>
+            <li>Reflection free, does not perform any extra operations at runtime</li>
+            <li>Uses @OpenApi to simplify migration from bundled OpenApi implementation</li>
+            <li>Supports Java 8 and all further releases of Java and Kotlin (through Kapt)</li>
+            <li>Uses internal WebJar handler that works with /* route out of the box</li>
+            <li>Provides better projection of OpenAPI specification</li>
+            <li>Schema validation through Swagger core module</li>
+        </ul>
+    
+    </p>
+    <div class="plugin-box-footer">
+        <div class="plugin-reports">
+            <a class="view-reports" href="https://github.com/javalin/javalin.github.io/issues/133">View reports</a>
+            <a class="make-report" href="https://github.com/javalin/javalin.github.io/issues/133">Report plugin</a>
+        </div>
+        
+        <a class="view-docs-btn" href="https://github.com/javalin/javalin-openapi#readme">
+            View documentation
+            
+            <svg width="24" height="24" viewBox="0 0 24 24">
+                <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" />
+            </svg>
+            
+        </a>
+    </div>
+    <script>
+        (() => {
+            let pluginName = "openapi-annotation-processor";
+            let issueUrl = "https://github.com/javalin/javalin.github.io/issues/133";
+            let apiUrl = issueUrl.replace("https://github.com/", "https://api.github.com/repos/");
+            setPluginReports(pluginName, apiUrl);
+        })();
+    </script>
+</div>
+
+<div class="plugin-box ssl-helpers">
+    <div class="plugin-box-header">
+        <h2>
+            SSL Helpers
+            <small class="plugin-authors">
+                
+                (by <a href="https://github.com/zugazagoitia">@zugazagoitia</a>)
+            </small>
+        </h2>
+        <span class="plugin-tags">
+             
+                <span class="plugin-tag">Third party</span>
+             
+        </span>
+    </div>
+    <p>
+        
+        SSL configuration made easy. This plugin provides a simple way to configure SSL for Javalin, just the same way you would configure Javalin itself. Support for PEM, PKCS12, and JKS formats, as well as HTTP/2.
+    
+    </p>
+    <div class="plugin-box-footer">
+        <div class="plugin-reports">
+            <a class="view-reports" href="https://github.com/javalin/javalin.github.io/issues/134">View reports</a>
+            <a class="make-report" href="https://github.com/javalin/javalin.github.io/issues/134">Report plugin</a>
+        </div>
+        
+        <a class="view-docs-btn" href="/plugins/ssl-helpers">
+            View documentation
+            
+            <svg width="24" height="24" viewBox="0 0 24 24">
+                <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
+            </svg>
+            
+        </a>
+    </div>
+    <script>
+        (() => {
+            let pluginName = "ssl-helpers";
+            let issueUrl = "https://github.com/javalin/javalin.github.io/issues/134";
+            let apiUrl = issueUrl.replace("https://github.com/", "https://api.github.com/repos/");
+            setPluginReports(pluginName, apiUrl);
+        })();
+    </script>
+</div>
+
+<div class="plugin-box cors">
+    <div class="plugin-box-header">
+        <h2>
+            CORS
+            <small class="plugin-authors">
+                
+                (by <a href="https://github.com/Playacem">@Playacem</a>)
+            </small>
+        </h2>
+        <span class="plugin-tags">
+             
+                <span class="plugin-tag">Bundled</span>
+             
+        </span>
+    </div>
+    <p>
+        
+        The CORS plugin bundles the functionality to set CORS headers for some or all origins
+        as required.
+    
+    </p>
+    <div class="plugin-box-footer">
+        <div class="plugin-reports">
+            <a class="view-reports" href="https://github.com/javalin/javalin.github.io/issues/147">View reports</a>
+            <a class="make-report" href="https://github.com/javalin/javalin.github.io/issues/147">Report plugin</a>
+        </div>
+        
+        <a class="view-docs-btn" href="/plugins/cors">
+            View documentation
+            
+            <svg width="24" height="24" viewBox="0 0 24 24">
+                <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
+            </svg>
+            
+        </a>
+    </div>
+    <script>
+        (() => {
+            let pluginName = "cors";
+            let issueUrl = "https://github.com/javalin/javalin.github.io/issues/147";
+            let apiUrl = issueUrl.replace("https://github.com/", "https://api.github.com/repos/");
+            setPluginReports(pluginName, apiUrl);
+        })();
+    </script>
+</div>
+
+<div class="plugin-box graphql">
+    <div class="plugin-box-header">
+        <h2>
+            GraphQL
+            <small class="plugin-authors">
+                
+                (by <a href="https://github.com/7agustibm">@7agustibm</a>)
+            </small>
+        </h2>
+        <span class="plugin-tags">
+             
+                <span class="plugin-tag">Third party</span>
+             
+        </span>
+    </div>
+    <p>
+        
+        This plugin allows implementing the
+        <a href="https://graphql.org/">GraphQL</a>
+        specification with a few easy steps.
+    
+    </p>
+    <div class="plugin-box-footer">
+        <div class="plugin-reports">
+            <a class="view-reports" href="https://github.com/javalin/javalin.github.io/issues/150">View reports</a>
+            <a class="make-report" href="https://github.com/javalin/javalin.github.io/issues/150">Report plugin</a>
+        </div>
+        
+        <a class="view-docs-btn" href="https://github.com/javalin/javalin-graphql">
+            View documentation
+            
+            <svg width="24" height="24" viewBox="0 0 24 24">
+                <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" />
+            </svg>
+            
+        </a>
+    </div>
+    <script>
+        (() => {
+            let pluginName = "graphql";
+            let issueUrl = "https://github.com/javalin/javalin.github.io/issues/150";
+            let apiUrl = issueUrl.replace("https://github.com/", "https://api.github.com/repos/");
+            setPluginReports(pluginName, apiUrl);
+        })();
+    </script>
+</div>
+
+<div class="plugin-box javalinmithril">
+    <div class="plugin-box-header">
+        <h2>
+            JavalinMithril
+            <small class="plugin-authors">
+                
+                (by <a href="https://github.com/TareqK">@TareqK</a>)
+            </small>
+        </h2>
+        <span class="plugin-tags">
+             
+                <span class="plugin-tag">Third party</span>
+             
+        </span>
+    </div>
+    <p>
+        
+        This is a <a href="https://mithril.js.org/">Mithril.js</a> plugin.
+        It allows you to use Mithril.js and Server Side Routing and State Injection to create multi-page applications
+        with Javalin. It is heavily inspired by the JavalinVue plugin.
+    
+    </p>
+    <div class="plugin-box-footer">
+        <div class="plugin-reports">
+            <a class="view-reports" href="https://github.com/javalin/javalin.github.io/issues/151">View reports</a>
+            <a class="make-report" href="https://github.com/javalin/javalin.github.io/issues/151">Report plugin</a>
+        </div>
+        
+        <a class="view-docs-btn" href="https://github.com/javalin/javalin-mithril">
+            View documentation
+            
+            <svg width="24" height="24" viewBox="0 0 24 24">
+                <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" />
+            </svg>
+            
+        </a>
+    </div>
+    <script>
+        (() => {
+            let pluginName = "javalinmithril";
+            let issueUrl = "https://github.com/javalin/javalin.github.io/issues/151";
+            let apiUrl = issueUrl.replace("https://github.com/", "https://api.github.com/repos/");
+            setPluginReports(pluginName, apiUrl);
+        })();
+    </script>
+</div>
+
+<div class="plugin-box routeoverview">
+    <div class="plugin-box-header">
+        <h2>
+            RouteOverview
+            <small class="plugin-authors">
+                
+                (by <a href="https://github.com/tipsy">@tipsy</a>)
+            </small>
+        </h2>
+        <span class="plugin-tags">
+             
+                <span class="plugin-tag">Bundled</span>
+             
+        </span>
+    </div>
+    <p>
+        
+        The route overview provides you with a HTML and/or JSON overview of all the routes
+        registered on your Javalin application. Perfect for debugging!
+    
+    </p>
+    <div class="plugin-box-footer">
+        <div class="plugin-reports">
+            <a class="view-reports" href="https://github.com/javalin/javalin.github.io/issues/135">View reports</a>
+            <a class="make-report" href="https://github.com/javalin/javalin.github.io/issues/135">Report plugin</a>
+        </div>
+        
+        <a class="view-docs-btn" href="/plugins/routeoverview">
+            View documentation
+            
+            <svg width="24" height="24" viewBox="0 0 24 24">
+                <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
+            </svg>
+            
+        </a>
+    </div>
+    <script>
+        (() => {
+            let pluginName = "routeoverview";
+            let issueUrl = "https://github.com/javalin/javalin.github.io/issues/135";
+            let apiUrl = issueUrl.replace("https://github.com/", "https://api.github.com/repos/");
+            setPluginReports(pluginName, apiUrl);
+        })();
+    </script>
+</div>
+
+<div class="plugin-box devlogging">
+    <div class="plugin-box-header">
+        <h2>
+            DevLogging
+            <small class="plugin-authors">
+                
+                (by <a href="https://github.com/tipsy">@tipsy</a>)
+            </small>
+        </h2>
+        <span class="plugin-tags">
+             
+                <span class="plugin-tag">Bundled</span>
+             
+        </span>
+    </div>
+    <p>
+        
+        The development debugging logger catches most of the interesting stuff about requests
+        and responses, and logs it in an easy to read manner. It works both for
+        HTTP and WebSocket requests. Only intended for use during development and/or debugging.
+    
+    </p>
+    <div class="plugin-box-footer">
+        <div class="plugin-reports">
+            <a class="view-reports" href="https://github.com/javalin/javalin.github.io/issues/139">View reports</a>
+            <a class="make-report" href="https://github.com/javalin/javalin.github.io/issues/139">Report plugin</a>
+        </div>
+        
+        <a class="view-docs-btn" href="/plugins/devlogging">
+            View documentation
+            
+            <svg width="24" height="24" viewBox="0 0 24 24">
+                <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
+            </svg>
+            
+        </a>
+    </div>
+    <script>
+        (() => {
+            let pluginName = "devlogging";
+            let issueUrl = "https://github.com/javalin/javalin.github.io/issues/139";
+            let apiUrl = issueUrl.replace("https://github.com/", "https://api.github.com/repos/");
+            setPluginReports(pluginName, apiUrl);
+        })();
+    </script>
+</div>
+
+
+    </main>
+    <footer>
+        Javalin is a Java and Kotlin web framework, open sourced under the
+        <a href="https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)">Apache 2</a> license
+        | <a href="/download">Download</a>
+        | <a href="/about">About</a>
+        | <a href="/news">News</a>
+        | <a href="/about#contact">Contact</a>
+        | <a href="/for-educators">For educators</a>
+    </footer>
+    <div id="star-begging">
+    <style>
+        #star-begging {
+            transition: transform .25s;
+            transform: scale(0);
+            border-radius: 8px;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            padding: 20px 40px 16px 20px;
+            background: #fff;
+            box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15);
+            z-index: 9999998;
+        }
+        #star-begging.in {
+            transform: scale(1);
+        }
+        #star-begging.out {
+            transform: translateX(400px);
+        }
+        #star-begging p {
+            font-size: 16px;
+            margin: 0 0 15px;
+        }
+        #star-begging .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            height: 40px;
+            width: 40px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-family: arial, sans-serif;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+    </style>
+    <p>
+        Like Javalin?
+        <br>Star us 😊
+    </p>
+    <span class="close">×</span>
+    <iframe id="starFrame" class="githubStar" title="github-stars"
+            src="https://ghbtns.com/github-btn.html?user=javalin&amp;repo=javalin&amp;type=star&amp;count=true&size=large"
+            frameborder="0" scrolling="0" width="150px" height="30px">
+    </iframe>
+    <script>
+        if (localStorage.getItem("dismissed") !== "true" && document.getElementById("notification-banner") === null) {
+            setTimeout(function () {
+                document.querySelector("#star-begging").classList.add("in");
+            }, 15000);
+            document.querySelector("#star-begging .close").addEventListener("click", function () {
+                document.querySelector("#star-begging").classList.add("out");
+                localStorage.setItem("dismissed", "true");
+            });
+        }
+    </script>
+</div>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54137818-11"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-54137818-11', {'anonymize_ip': true});
+</script>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen+Mono|Roboto+Slab:500,700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Serving Protobuf via a REST API with Javalin - Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:site_name" content="Javalin">
+    <meta property="og:url" content="https://javalin.io">
+    <meta property="og:description" content="What You Will LearnIn this tutorial we will serve protobuf to an application over HTTP (or HTTP2 for performance).">
+    <meta property="og:image" content="https://javalin.io/img/javalin.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="liMtSlffOZROWLqoiOZdSx-luH9_Siq5-Ot6xqHZwq8">
+    <title>
+        Serving Protobuf via a REST API with Javalin - Javalin - A lightweight Java and Kotlin web framework
+    </title>
+    <meta name="description" content="What You Will LearnIn this tutorial we will serve protobuf to an application over HTTP (or HTTP2 for performance).">
+    <link rel="canonical" href="5//tutorials/serving-protobuf-with-javalin">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>/* Styles that affect the length of the document */
+p code,
+li code {
+    font-size: 90%;
+    letter-spacing: -0.5px;
+    border: 1px solid #ccd;
+    background: #f5f5f7;
+    padding: 1px 3px;
+}
+
+.multitab-code pre {
+    margin-top: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.multitab-code div[data-tab] {
+    display: none;
+}
+
+:target {
+    scroll-margin-top: 108px;
+}
+
+.anchorjs-link {
+    transition: all .25s linear;
+  }
+  
+*:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+ }</style>
+</head>
+<body>
+    <a id="fork-me" href="https://github.com/javalin/javalin" target="_blank">
+    <img style="position:fixed;top:0;right:0;border:0;z-index:99999" src="data:image/png;base64,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" alt="Fork me on GitHub">
+</a>
+    <header class="top-nav-header">
+        <nav class="width-limit">
+            <a id="logo" href="/" aria-label="Javalin">
+                <img src="/img/logo.svg" alt="Javalin">
+            </a>
+            <ul>
+                <li><a href="/documentation">Docs</a></li>
+                <li><a href="/tutorials">Tutorials</a></li>
+                <li><a href="/plugins">Plugins</a></li>
+                <li><a href="/community">Community</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="width-limit">
+        <article class="tutorial" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="tutorial-header">
+        <h1 class="no-margin-top" itemprop="name headline">Serving Protobuf via a REST API with Javalin</h1>
+        <p class="notification">
+            <time datetime="2022-03-25T00:00:00+00:00" itemprop="datePublished">Mar 25, 2022</time>
+             
+                • Written by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><a href="https://www.linkedin.com/in/cole-snyder-programmer" target="_blank">Cole Snyder</a></span></span>
+            
+            <span id="timeToRead">Reading time: <b>0-0 min</b></span>
+             
+            <br>
+            <em class="github-link">
+                The source code for this tutorial can be found on 
+                <a href="https://github.com/The-Funk/serving-protobuf-with-javalin" target="_blank">GitHub</a>.
+                Please fork/clone and look while you read.
+            </em>
+            
+        </p>
+        
+    </div>
+    <div class="post-content" itemprop="articleBody">
+        <h2 id="what-you-will-learn">What You Will Learn</h2>
+<p>In this tutorial we will serve protobuf to an application over HTTP (or HTTP2 for performance).</p>
+
+<p>Our goal will be to take sensor data from a specific type of machine, serialize that data with protobuf, and then hand that
+off to our frontend via a REST API. <i>Disclaimer: protobuf is usually used as part of a gRPC API.</i></p>
+
+<h2 id="what-is-protobuf">What Is Protobuf?</h2>
+<p>Protobuf is shorthand for Protocol Buffers. Protocol Buffers are a typed system for serializing data, similar to XML or JSON.
+Unlike XML, protobuf is very small, and unlike JSON, the data sent via protobuf can be typed as opposed to being a string by default.
+In many cases this means that messages with protobuf payloads are more lightweight and faster in practice than messages with
+comparable JSON payloads.</p>
+
+<h2 id="dependencies">Dependencies</h2>
+<p>First we create a Gradle project with our dependencies <a href="/tutorials/gradle-setup">(→ Tutorial)</a>.<br />
+We will be using Javalin for our web-server, slf4j for logging, and protobuf for data serialization:</p>
+
+<div class="language-groovy highlighter-rouge"><pre class="highlight"><code><span class="n">dependencies</span> <span class="o">{</span>
+    <span class="n">implementation</span> <span class="s1">'org.slf4j:slf4j-simple:1.8.0-beta4'</span>
+    <span class="n">implementation</span> <span class="s1">'io.javalin:javalin:5.0.1'</span>
+    <span class="n">implementation</span> <span class="s1">'com.fasterxml.jackson.core:jackson-databind:2.13.2'</span>
+    <span class="n">implementation</span> <span class="s1">'com.google.protobuf:protobuf-java:3.19.4'</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h2 id="other-setup">Other Setup</h2>
+<p>This tutorial assumes you will be using the Gradle build tool in order to build your project. Without Gradle you can alternatively
+use the build scripts provided in the sample repository to automate some of the build process, however these tools aren’t
+as feature rich or robust as the Gradle plugin covered here. The Gradle plugin is built and maintained by Google.</p>
+
+<p>To see all of this code in action and skip the tutorial, you can alternatively clone the repository
+<a href="https://github.com/The-Funk/serving-protobuf-with-javalin">here.</a></p>
+
+<h2 id="application-structure">Application Structure</h2>
+<p>The Javalin application is fairly simple however we will both generate and utilize Protobuf within the same scope of work.
+Some best practices recommend creating a separate directory structure for generated files. When working in my IDE I noticed
+that by keeping the files separate, I could mark the “gen” folder as a “generated sources root”, which prompts the IDE
+to warn you if you are editing a file that could be potentially regenerated at a later time.</p>
+
+<p>Let’s start by building our project structure. Here’s a quick directory tree. Go ahead and add these directories under ‘src’
+in your project.</p>
+
+<p><img src="../../../img/posts/protobufExample/directory-tree.png" alt="directory tree" /></p>
+
+<h2 id="the-data">The Data</h2>
+<p>Now that we have our directory structure, let’s dive right in and create our first plain ole’ Java object (POJO). This will
+represent our sensor data that we wish to read from either a database or the machinery itself.</p>
+
+<p>In the objects directory go ahead and create a SensorData class like so…</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">app</span><span class="o">.</span><span class="na">model</span><span class="o">.</span><span class="na">objects</span><span class="o">;</span>
+ 
+<span class="kn">import</span> <span class="nn">java.sql.Timestamp</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+ 
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SensorData</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">makeAndModel</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">destinationYear</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Double</span><span class="o">&gt;</span> <span class="n">fluxCapacitorReadings</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">Timestamp</span> <span class="n">lastCheckIn</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">safetyBeltsOn</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getMakeAndModel</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">makeAndModel</span><span class="o">;</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setMakeAndModel</span><span class="o">(</span><span class="n">String</span> <span class="n">makeAndModel</span><span class="o">)</span> <span class="o">{</span> <span class="k">this</span><span class="o">.</span><span class="na">makeAndModel</span> <span class="o">=</span> <span class="n">makeAndModel</span><span class="o">;</span> <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Double</span><span class="o">&gt;</span> <span class="nf">getFluxCapacitorReadings</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">fluxCapacitorReadings</span><span class="o">;</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFluxCapacitorReadings</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Double</span><span class="o">&gt;</span> <span class="n">fluxCapacitorReadings</span><span class="o">)</span> <span class="o">{</span> <span class="k">this</span><span class="o">.</span><span class="na">fluxCapacitorReadings</span> <span class="o">=</span> <span class="n">fluxCapacitorReadings</span><span class="o">;</span> <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getDestinationYear</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">destinationYear</span><span class="o">;</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setDestinationYear</span><span class="o">(</span><span class="kt">int</span> <span class="n">destinationYear</span><span class="o">)</span> <span class="o">{</span> <span class="k">this</span><span class="o">.</span><span class="na">destinationYear</span> <span class="o">=</span> <span class="n">destinationYear</span><span class="o">;</span> <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Timestamp</span> <span class="nf">getLastCheckIn</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">lastCheckIn</span><span class="o">;</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setLastCheckIn</span><span class="o">(</span><span class="n">Timestamp</span> <span class="n">lastCheckIn</span><span class="o">)</span> <span class="o">{</span> <span class="k">this</span><span class="o">.</span><span class="na">lastCheckIn</span> <span class="o">=</span> <span class="n">lastCheckIn</span><span class="o">;</span> <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isSafetyBeltsOn</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">safetyBeltsOn</span><span class="o">;</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setSafetyBeltsOn</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">safetyBeltsOn</span><span class="o">)</span> <span class="o">{</span> <span class="k">this</span><span class="o">.</span><span class="na">safetyBeltsOn</span> <span class="o">=</span> <span class="n">safetyBeltsOn</span><span class="o">;</span> <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>Perfect! Now we have a model to represent our SensorData. In this case, we also implemented the Serializable interface
+as a good practice to ensure compatibility with whatever JSON serializer we choose to use in the future.</p>
+
+<p>Now let’s pop on over to our DAO directory and add a quick FakeDAO class so that we can emulate data coming from a database
+in the form of a POJO. This is typically how data would be mapped from a database, so we’ll represent that here.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">app</span><span class="o">.</span><span class="na">model</span><span class="o">.</span><span class="na">dao</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">app.model.objects.SensorData</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.sql.Timestamp</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">FakeDao</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nf">FakeDao</span><span class="o">(){}</span>
+
+    <span class="kd">public</span> <span class="n">SensorData</span> <span class="nf">getSensorDataFromVehicleDB</span><span class="o">(){</span>
+        <span class="n">SensorData</span> <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SensorData</span><span class="o">();</span>
+        <span class="n">data</span><span class="o">.</span><span class="na">setMakeAndModel</span><span class="o">(</span><span class="s">"DMC, DeLorean"</span><span class="o">);</span>
+        <span class="n">data</span><span class="o">.</span><span class="na">setDestinationYear</span><span class="o">(</span><span class="mi">2035</span><span class="o">);</span>
+        <span class="n">data</span><span class="o">.</span><span class="na">setFluxCapacitorReadings</span><span class="o">(</span><span class="n">List</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mf">37456.3245</span><span class="o">,</span> <span class="mf">3453.3454</span><span class="o">,</span> <span class="mf">348765.2343</span><span class="o">));</span>
+        <span class="n">data</span><span class="o">.</span><span class="na">setLastCheckIn</span><span class="o">(</span><span class="k">new</span> <span class="n">Timestamp</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()));</span>
+        <span class="n">data</span><span class="o">.</span><span class="na">setSafetyBeltsOn</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h2 id="the-proto-file">The .proto File</h2>
+<p>Now that we have a POJO representation of our SensorData, let’s go ahead and create our first .proto file. Proto files are used
+to describe a protocol buffer. After we write our .proto file, we will use it to generate corresponding Java code. Note that you
+could use this same .proto file in your frontend to generate <a href="https://developers.google.com/protocol-buffers/docs/tutorials">JavaScript or Dart code, etc.</a></p>
+
+<div class="language-protobuf highlighter-rouge"><pre class="highlight"><code><span class="na">syntax</span> <span class="o">=</span> <span class="s">"proto3"</span><span class="p">;</span>
+<span class="c1">// The package directive (when generating Java src files) tells protoc where to store the generated Java files
+</span><span class="kn">package</span> <span class="nn">protos</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="s">"google/protobuf/timestamp.proto"</span><span class="p">;</span>
+
+<span class="c1">// proto standard says field names should be lower_snake_case
+// except enum values (not covered here) which should be SCREAMING_SNAKE_CASE
+</span>
+<span class="kd">message</span> <span class="nc">SensorData</span> <span class="p">{</span>
+    <span class="k">optional</span> <span class="kt">string</span> <span class="na">make_and_model</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="kt">int32</span> <span class="na">destination_year</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="k">repeated</span> <span class="kt">double</span> <span class="na">flux_capacitor_readings</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="k">optional</span> <span class="n">google.protobuf.Timestamp</span> <span class="na">last_check_in</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="na">safety_belts_on</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<h2 id="anatomy-of-a-proto-file">Anatomy of a .proto File</h2>
+<p>There’s a lot going on in the short code snippet above, so let’s cover just the basics, shall we?</p>
+
+<ul>
+  <li>The above document uses the latest (at time of writing) proto3 syntax.</li>
+  <li>The message keyword denotes a complex object we wish to represent. You can have multiple messages per proto file or just one.</li>
+  <li>Every field in a .proto file is denoted by a positive integer value. For the sake of saving memory it’s best to start with the lowest number possible (1) and work sequentially.</li>
+  <li>The protobuf spec defines several primitive data types, you can see examples of them above including int32, double, bool, etc.</li>
+  <li>To denote that a field could be omitted or “null” it’s best to use the optional keyword. In our example, last_check_in and make_and_model can be null.</li>
+  <li>Protos can be imported for use inside more complex protos. In this instance, timestamp requires a proto definition and our SensorData proto makes use of that definition.</li>
+  <li>List types can be denoted using the repeated keyword</li>
+  <li>gRPC API methods can be defined with the service keyword (outside the scope of this tutorial)</li>
+</ul>
+
+<p>With those basics in mind, let’s move on to generating our first Java class from a proto.</p>
+
+<h2 id="configuring-the-gradle-protobuf-plugin">Configuring the Gradle Protobuf Plugin</h2>
+<p>Now wait just one minute! Why are we creating a redundant Java class when we just created one only moments ago?
+Let’s talk about what’s happening here. We’re about to generate Java code to represent our proto.
+However, this generated code is not meant to be edited. This means creating helper functions in the generated code is discouraged.
+In fact extending the generated code in any way is really inadvisable. This is because, if the schema were to change,
+first the proto file would need updated, then protoc would compile a new generated class, thereby undoing any work that might
+have been done inside that class. For this reason and others, we instead use the generated code for what it is, a means of
+serializing and representing an existing class.</p>
+
+<div class="language-groovy highlighter-rouge"><pre class="highlight"><code><span class="n">buildscript</span> <span class="o">{</span>
+    <span class="n">repositories</span> <span class="o">{</span>
+        <span class="n">mavenCentral</span><span class="o">()</span>
+    <span class="o">}</span>
+    <span class="n">dependencies</span> <span class="o">{</span>
+        <span class="n">classpath</span> <span class="s1">'com.google.protobuf:protobuf-gradle-plugin:0.8.18'</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span> <span class="s2">"com.google.protobuf"</span> <span class="n">version</span> <span class="s2">"0.8.18"</span>
+    <span class="n">id</span> <span class="s1">'java'</span>
+<span class="o">}</span>
+
+<span class="n">repositories</span> <span class="o">{</span>
+    <span class="n">mavenCentral</span><span class="o">()</span>
+<span class="o">}</span>
+
+<span class="n">dependencies</span> <span class="o">{</span>
+    <span class="n">implementation</span> <span class="s1">'org.slf4j:slf4j-simple:1.8.0-beta4'</span>
+    <span class="n">implementation</span> <span class="s1">'io.javalin:javalin:5.0.1'</span>
+    <span class="n">implementation</span> <span class="s1">'com.fasterxml.jackson.core:jackson-databind:2.13.2'</span>
+    <span class="n">implementation</span> <span class="s1">'com.google.protobuf:protobuf-java:3.19.4'</span>
+<span class="o">}</span>
+
+<span class="n">sourceSets</span> <span class="o">{</span>
+    <span class="n">main</span> <span class="o">{</span>
+        <span class="n">proto</span> <span class="o">{</span>
+            <span class="n">srcDir</span> <span class="s2">"src/main/proto"</span>
+        <span class="o">}</span>
+        <span class="n">java</span> <span class="o">{</span>
+            <span class="n">srcDirs</span> <span class="s2">"src/main/java"</span><span class="o">,</span> <span class="s2">"gen/main/java"</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="n">group</span> <span class="o">=</span> <span class="s1">'tech.gmork'</span>
+<span class="n">version</span> <span class="o">=</span> <span class="s1">'1.0-SNAPSHOT'</span>
+<span class="n">description</span> <span class="o">=</span> <span class="s1">'serving-protobuf-with-javalin'</span>
+
+<span class="n">rootProject</span><span class="o">.</span><span class="na">tasks</span><span class="o">.</span><span class="na">named</span><span class="o">(</span><span class="s2">"processResources"</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">duplicatesStrategy</span> <span class="o">=</span> <span class="s1">'include'</span>
+<span class="o">}</span>
+
+<span class="n">protobuf</span> <span class="o">{</span>
+    <span class="c1">// Configure the protoc executable</span>
+    <span class="n">protoc</span> <span class="o">{</span>
+        <span class="c1">// Download from repositories</span>
+        <span class="n">artifact</span> <span class="o">=</span> <span class="s1">'com.google.protobuf:protoc:3.19.4'</span>
+    <span class="o">}</span>
+
+    <span class="n">generateProtoTasks</span><span class="o">.</span><span class="na">generatedFilesBaseDir</span> <span class="o">=</span> <span class="s1">'gen'</span>
+
+    <span class="n">generateProtoTasks</span> <span class="o">{</span>
+        <span class="c1">// all() returns the collection of all protoc tasks</span>
+        <span class="n">all</span><span class="o">().</span><span class="na">each</span> <span class="o">{</span> <span class="n">task</span> <span class="o">-&gt;</span>
+            <span class="c1">// Here you can configure the task</span>
+        <span class="o">}</span>
+
+        <span class="n">ofSourceSet</span><span class="o">(</span><span class="s1">'main'</span><span class="o">)</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+<h2 id="understanding-our-first-generated-class">Understanding Our First Generated Class</h2>
+<p>With our build.gradle prepared and our .proto file in place, if we do a build on our project now, we should see a
+SensorDataOuterClass.java file generated within a new <code class="highlighter-rouge">gen</code> directory. Congratulations, you’ve compiled your first
+Java class from a protobuf definition.</p>
+
+<p>The Java code generated here has a few features we will be utilizing. The first is an inner Builder class, which allows us
+to build a protobuf object based around our proto schema. The second is a method which in Java is named <code class="highlighter-rouge">toByteArray()</code>.
+In other languages (Dart for instance) this same method would be named something like <code class="highlighter-rouge">toBuffer()</code>. This method, as the
+name suggests, transforms our object data into an array of bytes which can be sent over a communication channel of your choosing.</p>
+
+<p>We will use the Builder class to build our SensorData object and then use <code class="highlighter-rouge">toByteArray()</code> to prepare our object for
+transmission using our HTTP API.</p>
+
+<h2 id="mapping-our-data">Mapping Our Data</h2>
+<p>Now all that’s left is to create our mapping classes and our Javalin app!</p>
+
+<p>Let’s start by creating two mapping classes in the mappers directory. We’ll use one for mapping primitive or very basic
+types that we’ll need to reuse frequently, and we’ll use one to map the return data for some of our REST endpoints. You
+can make your own pattern for this if you like. For our example, we’ll only be returning a single protobuf object, but
+in an actual API you might be returning a multitude of objects and you may need to generate a payload proto and map to
+it accordingly.</p>
+
+<p>Here’s our BaseMapper. Note the only utility we’ve defined is a means to convert a nullable Timestamp from Java format
+to Protobuf format. Alternatively we could extend java.sql.Timestamp and provide a <code class="highlighter-rouge">toByteArray()</code> method of our own.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">app</span><span class="o">.</span><span class="na">model</span><span class="o">.</span><span class="na">mappers</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.protobuf.Timestamp</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.time.Instant</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Optional</span><span class="o">;</span>
+
+<span class="c1">//Class for mapping standard library types, enums, etc to protobuf</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BaseMapper</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Optional</span><span class="o">&lt;</span><span class="n">Timestamp</span><span class="o">&gt;</span> <span class="nf">sqltimeToProtoTime</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">Timestamp</span> <span class="n">sqltime</span><span class="o">){</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">sqltime</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">){</span>
+            <span class="n">Instant</span> <span class="n">instant</span> <span class="o">=</span> <span class="n">sqltime</span><span class="o">.</span><span class="na">toInstant</span><span class="o">();</span>
+            <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">Timestamp</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">().</span><span class="na">setSeconds</span><span class="o">(</span><span class="n">instant</span><span class="o">.</span><span class="na">getEpochSecond</span><span class="o">()).</span><span class="na">setNanos</span><span class="o">(</span><span class="n">instant</span><span class="o">.</span><span class="na">getNano</span><span class="o">()).</span><span class="na">build</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">Optional</span><span class="o">.</span><span class="na">empty</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">java</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">Timestamp</span> <span class="nf">protoTimetoSQLTime</span><span class="o">(</span><span class="n">Timestamp</span> <span class="n">tstamp</span><span class="o">){</span>
+        <span class="k">return</span> <span class="n">java</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">Timestamp</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">Instant</span><span class="o">.</span><span class="na">ofEpochSecond</span><span class="o">(</span><span class="n">tstamp</span><span class="o">.</span><span class="na">getSeconds</span><span class="o">(),</span> <span class="n">tstamp</span><span class="o">.</span><span class="na">getNanos</span><span class="o">()));</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>Great! Now that we have everything we need, let’s hop back over to our SensorData.java class for just a moment and add a
+method to convert the POJO into its PROTO equivalent. Take note that we must consider null safety because some of our proto’s
+fields can have null values.</p>
+
+<p>Go ahead and add the following code to the end of the POJO. You’ll receive a warning that you need to import your generated
+Java class and the SQL timestamp method we just defined. Make sure you do that!</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="n">SensorDataOuterClass</span><span class="o">.</span><span class="na">SensorData</span> <span class="nf">toBuffer</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">SensorDataOuterClass</span><span class="o">.</span><span class="na">SensorData</span><span class="o">.</span><span class="na">Builder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">SensorDataOuterClass</span><span class="o">.</span><span class="na">SensorData</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">();</span>
+
+    <span class="c1">// Set all non-nullable values first</span>
+    <span class="n">builder</span><span class="o">.</span><span class="na">addAllFluxCapacitorReadings</span><span class="o">(</span><span class="n">fluxCapacitorReadings</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">setDestinationYear</span><span class="o">(</span><span class="n">destinationYear</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">setSafetyBeltsOn</span><span class="o">(</span><span class="n">safetyBeltsOn</span><span class="o">);</span>
+
+    <span class="c1">// Demonstrates using Java Optional for proto optionals, in this case lastCheckIn is optional in our proto</span>
+    <span class="c1">// therefore we should check that lastCheckIn is not null prior to setting the lastCheckIn value on our proto object</span>
+    <span class="n">sqltimeToProtoTime</span><span class="o">(</span><span class="n">lastCheckIn</span><span class="o">).</span><span class="na">ifPresent</span><span class="o">(</span><span class="nl">builder:</span><span class="o">:</span><span class="n">setLastCheckIn</span><span class="o">);</span>
+
+    <span class="c1">// Demonstrates null string check for proto optionals, in this case make and model can be null in our proto</span>
+    <span class="c1">// so it can be assumed it could also be null in our datastore, thus we should check before setting it with our builder.</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">makeAndModel</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">){</span> <span class="n">builder</span><span class="o">.</span><span class="na">setMakeAndModel</span><span class="o">(</span><span class="n">makeAndModel</span><span class="o">);</span> <span class="o">}</span>
+
+    <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>Note: In the sample code on GitHub, this toBuffer() method is declared in an interface and all of our POJO’s implement this interface.</p>
+
+<p>And here is our RouteMapper, which will handle providing the return data for a GET endpoint in our Javalin app.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">app</span><span class="o">.</span><span class="na">model</span><span class="o">.</span><span class="na">mappers</span><span class="o">;</span>
+
+
+<span class="kn">import</span> <span class="nn">app.model.objects.SensorData</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RouteMapper</span> <span class="o">{</span>
+    
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">byte</span><span class="o">[]</span> <span class="nf">getSensorDataResponse</span><span class="o">(</span><span class="n">SensorData</span> <span class="n">data</span><span class="o">){</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="na">toBuffer</span><span class="o">().</span><span class="na">toByteArray</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h2 id="create-the-javalin-app-and-endpoints">Create the Javalin App and Endpoints</h2>
+<p>Lastly, we’ll create two endpoints, one which will serve our FakeDao data over protobuf and one that will serve the same
+data over JSON.</p>
+
+<p>We’ll call this class MyJavalinRunner and put it in the app directory.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">package</span> <span class="n">app</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">app.model.dao.FakeDao</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">app.model.objects.SensorData</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.Javalin</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.core.JavalinConfig</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.javalin.http.Handler</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">app</span><span class="o">.</span><span class="na">model</span><span class="o">.</span><span class="na">mappers</span><span class="o">.</span><span class="na">RouteMapper</span><span class="o">.</span><span class="na">getSensorDataResponse</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyJavalinRunner</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="n">Javalin</span> <span class="n">app</span> <span class="o">=</span> <span class="n">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nl">JavalinConfig:</span><span class="o">:</span><span class="n">enableCorsForAllOrigins</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
+
+        <span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/pbuf"</span><span class="o">,</span> <span class="n">handleServeProtobuf</span><span class="o">);</span>
+        <span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/json"</span><span class="o">,</span> <span class="n">handleServeJSON</span><span class="o">);</span>
+
+        <span class="n">app</span><span class="o">.</span><span class="na">exception</span><span class="o">(</span><span class="n">Exception</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="o">(</span><span class="n">e</span><span class="o">,</span> <span class="n">ctx</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+            <span class="n">ctx</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="mi">500</span><span class="o">);</span>
+        <span class="o">});</span>
+
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Handler</span> <span class="n">handleServeProtobuf</span> <span class="o">=</span> <span class="n">ctx</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="c1">// Here's where you'd get your SensorData from your DB or device, etc.</span>
+        <span class="n">FakeDao</span> <span class="n">dao</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FakeDao</span><span class="o">();</span>
+        <span class="n">SensorData</span> <span class="n">sData</span> <span class="o">=</span> <span class="n">dao</span><span class="o">.</span><span class="na">getSensorDataFromVehicleDB</span><span class="o">();</span>
+
+        <span class="n">ctx</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="mi">200</span><span class="o">);</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="na">contentType</span><span class="o">(</span><span class="s">"application/x-protobuf"</span><span class="o">);</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="na">result</span><span class="o">(</span><span class="n">getSensorDataResponse</span><span class="o">(</span><span class="n">sData</span><span class="o">));</span>
+    <span class="o">};</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Handler</span> <span class="n">handleServeJSON</span> <span class="o">=</span> <span class="n">ctx</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="c1">// Here's where you'd get your SensorData from your DB or device, etc.</span>
+        <span class="n">FakeDao</span> <span class="n">dao</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FakeDao</span><span class="o">();</span>
+        <span class="n">SensorData</span> <span class="n">sData</span> <span class="o">=</span> <span class="n">dao</span><span class="o">.</span><span class="na">getSensorDataFromVehicleDB</span><span class="o">();</span>
+
+        <span class="n">ctx</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="mi">200</span><span class="o">);</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="na">json</span><span class="o">(</span><span class="n">sData</span><span class="o">);</span>
+    <span class="o">};</span>
+
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>That should do it, go ahead and click RUN!</p>
+
+<h2 id="comparing-the-json-and-protobuf-responses">Comparing the JSON and Protobuf Responses</h2>
+<p>That wasn’t so bad. Now that our app is running, let’s see what all the fuss is about with this protobuf stuff!</p>
+
+<p>Let’s start by loading up a REST API Client. My personal favorite is <a href="https://insomnia.rest/">Insomnia</a> because it has
+support for HTTP2 in addition to a bunch of other cool features.</p>
+
+<p>We’ll leave out the set-up and just skip straight to the part where we make a request to our server.</p>
+
+<p>Let’s start with the JSON endpoint. We’ll do a GET request to http://localhost:8080/json</p>
+
+<p><img src="../../../img/posts/protobufExample/json-response.png" alt="" /></p>
+
+<p><strong>218 milliseconds and 163 bytes.</strong> Not bad!</p>
+
+<p>Now let’s hit the protobuf endpoint and see what we get!</p>
+
+<p><img src="../../../img/posts/protobufExample/pbuf-response.png" alt="" /></p>
+
+<p><strong>33.8 milliseconds and 59 bytes!</strong> Wow!</p>
+
+<p>That’s a bit over 6 times faster and roughly 1/3 the size of our JSON response!</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>That’s it, you now have a basic understanding of protobuf and how it can be used within the context of a RESTful API.</p>
+
+<h2 id="further-exploration">Further Exploration</h2>
+<p>We now know protobuf is capable of providing a much smaller footprint than regular JSON but here’s where things get complicated.
+What if our JSON payloads were compressed? With modern compression like Brotli, it’s possible that we could shrink our JSON
+string-based payloads simply and efficiently.</p>
+
+<p>Examining how compression affects response times and payload sizes is outside
+the scope of this tutorial but could be useful in making a decision about how to serialize data in your applications.
+For some light reading and some basic protobuf vs JSON benchmarks, check out
+<a href="https://nilsmagnus.github.io/post/proto-json-sizes/">this article</a>.</p>
+
+<p>Opinion: The big <i>advantages</i> of protobuf are that it can send typed data, and as such often sends data in the smallest
+and thus most efficient format. JSON sends everything as a string. Strings (assuming UTF-8) cost 8 bits per char. This might
+not seem like a big deal, but if your data isn’t primarily strings, the size cost of strings can quickly add up.
+The <i>disadvantages</i> of protobuf are that the data payload is binary and the implementation of protobuf involves compiling
+based on schema files (our .proto file in this tutorial), both of which make supporting and debugging code a little harder.
+Additionally, there are no widely used automatic serialization and deserialization tools for protobuf like there are with JSON.
+This sort of code must be written manually.</p>
+
+    </div>
+    <h3>Thanks for reading</h3>
+    If you find any errors, please <a href="https://github.com/javalin/javalin.github.io/blob/master/_posts/tutorials/community/2022-03-25-serving-protobuf-with-javalin.md">edit this page on GitHub</a>.
+    <br>
+    
+        The full source code for this tutorial can also be found on <a href="https://github.com/The-Funk/serving-protobuf-with-javalin">GitHub</a>.
+    
+</article>
+<style>
+    .social {
+        margin: 30px 0;
+        display: flex;
+    }
+    .social-btn {
+        text-align: center;
+        min-width: 240px;
+        padding: 10px 16px 8px;
+        font-size: 14px;
+        font-family: 'Roboto Slab', sans-serif;
+        font-weight: 600;
+        color: #fff;
+        background: #000;
+        border-radius: 50px;
+        box-shadow: 2px 2px red, -2px -2px cyan;
+    }
+    .social-btn + .social-btn {
+        margin-left: 24px;
+    }
+    .social-btn:hover {
+        background: #008ab4;
+    }
+    .social-btn img {
+        width: 24px;
+        display: inline;
+        vertical-align: middle;
+        margin-right: 12px;
+    }
+    @media (max-width: 480px) {
+        .social {
+            justify-content: space-between;
+        }
+        .social-btn {
+            min-width: 0;
+            width: calc(50% - 12px);
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+        .social-btn + .social-btn {
+            margin-left: 0;
+        }
+    }
+</style>
+<div class="social">
+    <a class="social-btn" href="https://twitter.com/intent/tweet?text=Serving Protobuf via a REST API with Javalin&url=/tutorials/serving-protobuf-with-javalin&via=javalin_io&related=javalin_io"
+       rel="nofollow"
+       title="Share on Twitter">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAM1BMVEUAAAD///////////////////////////////////////////////////////////////+3leKCAAAAEHRSTlMA8BDQwKCAMOBwYECwUCCQ27fl2AAAAW1JREFUWMPtltuOwyAMRLG5QxL8/1+7G6lKFApMaJ5W2/NIPCPAnlL15R+xRSM7ZPMnci5yYvxrNRt3VMRtpPdBLqR9MWkhPkpI80BPUpFy2dfiUbKK9B02kjbmrCkycNAdfeCqpuOQOnrye2teRS9LrxqEjn4tQSS/io7Fxg1Kn/MWjxX7dgw30NvGNkO9CQP1O8v7oGEDq07i9Uu+YxAvs1J91GmDBtdQLVKjYz6/YINNWujiVgsMet3CqAr7yICKn3XQF4N9gizJDAsIDMSBLkIyyDzkmjqmWb0GoYUUBVKLWFUF6yk9gccDYtU7bKabWBNv9yKoDunmTcSW2Im+uwNi1cBP5+DjUSAGrzgiVcLZSBmlHjnQBv7L4AOMYEdwiAGcFgK/A5BN9/WsMCs90nsjT/SrGd0fI3UJIIIdovtlAUnWftA5KwiKakg2Y7ljfPn9tzWkUw5GsHV059UEOVpDR2wXl1l9+RP8AHA4c7ljId3mAAAAAElFTkSuQmCC">Share on Twitter
+    </a>
+    <a class="social-btn" href="https://facebook.com/sharer.php?u=/tutorials/serving-protobuf-with-javalin"
+       rel="nofollow"
+       title="Share on Facebook">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUAAAD///////////////////////////////////////////////////////////87TQQwAAAAD3RSTlMAwIDwEEDgMKBgINBwUJA4su2wAAAAy0lEQVRIx2MYJICr+T9WkOQAVTD/Pw5gDpHn/I8TXAAriMetwAqsQB63gh9gBf/xgAFT8E0QCPJxK/ixACTqj1PB5wCwKD9OBbsY8Cv4XEBAwU8GAgoECCmYABTB5QuEUI2S0n4cCn6DRBzxhORHkMh5Qgr0h7eCjw6I/BiPTcEnBgRgxKbgK5ICPkIKmGij4C+yIwn5gg2bgm9ICuIHa2SNKqCZgs9gBf2YClBTkDNuBSlgBeyYCtDKzGJcCtKhyY+lH7sCIweGwQEAY2jNUu1+zZgAAAAASUVORK5CYII=">Share on Facebook
+    </a>
+</div>
+
+
+    </main>
+    <footer>
+        Javalin is a Java and Kotlin web framework, open sourced under the
+        <a href="https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)">Apache 2</a> license
+        | <a href="/download">Download</a>
+        | <a href="/about">About</a>
+        | <a href="/news">News</a>
+        | <a href="/about#contact">Contact</a>
+        | <a href="/for-educators">For educators</a>
+    </footer>
+    <div id="star-begging">
+    <style>
+        #star-begging {
+            transition: transform .25s;
+            transform: scale(0);
+            border-radius: 8px;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            padding: 20px 40px 16px 20px;
+            background: #fff;
+            box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15);
+            z-index: 9999998;
+        }
+        #star-begging.in {
+            transform: scale(1);
+        }
+        #star-begging.out {
+            transform: translateX(400px);
+        }
+        #star-begging p {
+            font-size: 16px;
+            margin: 0 0 15px;
+        }
+        #star-begging .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            height: 40px;
+            width: 40px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-family: arial, sans-serif;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+    </style>
+    <p>
+        Like Javalin?
+        <br>Star us 😊
+    </p>
+    <span class="close">×</span>
+    <iframe id="starFrame" class="githubStar" title="github-stars"
+            src="https://ghbtns.com/github-btn.html?user=javalin&amp;repo=javalin&amp;type=star&amp;count=true&size=large"
+            frameborder="0" scrolling="0" width="150px" height="30px">
+    </iframe>
+    <script>
+        if (localStorage.getItem("dismissed") !== "true" && document.getElementById("notification-banner") === null) {
+            setTimeout(function () {
+                document.querySelector("#star-begging").classList.add("in");
+            }, 15000);
+            document.querySelector("#star-begging .close").addEventListener("click", function () {
+                document.querySelector("#star-begging").classList.add("out");
+                localStorage.setItem("dismissed", "true");
+            });
+        }
+    </script>
+</div>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>

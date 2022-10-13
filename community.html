@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54137818-11"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-54137818-11', {'anonymize_ip': true});
+</script>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen+Mono|Roboto+Slab:500,700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Community - Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:site_name" content="Javalin">
+    <meta property="og:url" content="https://javalin.io">
+    <meta property="og:description" content="Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:image" content="https://javalin.io/img/javalin.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="liMtSlffOZROWLqoiOZdSx-luH9_Siq5-Ot6xqHZwq8">
+    <title>
+        Community - Javalin - A lightweight Java and Kotlin web framework
+    </title>
+    <meta name="description" content="Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <link rel="canonical" href="5//community">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>/* Styles that affect the length of the document */
+p code,
+li code {
+    font-size: 90%;
+    letter-spacing: -0.5px;
+    border: 1px solid #ccd;
+    background: #f5f5f7;
+    padding: 1px 3px;
+}
+
+.multitab-code pre {
+    margin-top: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.multitab-code div[data-tab] {
+    display: none;
+}
+
+:target {
+    scroll-margin-top: 108px;
+}
+
+.anchorjs-link {
+    transition: all .25s linear;
+  }
+  
+*:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+ }</style>
+</head>
+<body>
+    <a id="fork-me" href="https://github.com/javalin/javalin" target="_blank">
+    <img style="position:fixed;top:0;right:0;border:0;z-index:99999" src="data:image/png;base64,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" alt="Fork me on GitHub">
+</a>
+    <header class="top-nav-header">
+        <nav class="width-limit">
+            <a id="logo" href="/" aria-label="Javalin">
+                <img src="/img/logo.svg" alt="Javalin">
+            </a>
+            <ul>
+                <li><a href="/documentation">Docs</a></li>
+                <li><a href="/tutorials">Tutorials</a></li>
+                <li><a href="/plugins">Plugins</a></li>
+                <li><a href="/community">Community</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="width-limit">
+        <script>
+    const notificationId = "javalin-5-released";
+    const hasBeenDismissed = localStorage.getItem(notificationId + "-dismissed") === "true";
+    const pageLoadCount = parseInt(localStorage.getItem(notificationId + "-count") || 0);
+    localStorage.setItem(notificationId + "-count", (pageLoadCount + 1).toString());
+    if (!hasBeenDismissed && pageLoadCount >= 0) {
+        document.write(`
+            <div id="notification-banner">
+                <h1>Javalin 5 is out!</h1>
+                Javalin 5 stable is finally here!
+                Read more in the <a href="/news/javalin-5.0.0-stable.html">release post</a>.
+            </div>
+        `);
+        if (pageLoadCount >= 0) {
+            document.querySelector("#notification-banner").insertAdjacentHTML("beforeend", `<span class="close">×</span>`);
+            document.querySelector("#notification-banner .close").addEventListener("click", () => {
+                document.querySelector("#notification-banner").style.display = "none";
+                localStorage.setItem(notificationId + "-dismissed", "true");
+            });
+        }
+    }
+</script>
+
+<style>
+    #notification-banner {
+        line-height: 1.5;
+        position: fixed;
+        bottom: 32px;
+        right: 32px;
+        width: 360px;
+        z-index: 9999999;
+        background: linear-gradient(20deg, #29292d 30%, #008cbb);
+        color: white;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        font-size: 16px;
+        border-radius: 8px;
+        padding: 24px;
+    }
+
+    #notification-banner h1 {
+        line-height: 1;
+        margin: 0 0 20px 0;
+        font-family: 'Encode Sans', sans-serif;
+        font-weight: 400;
+        font-size: 22px;
+        text-decoration: underline;
+    }
+
+    #notification-banner a {
+        font-weight: 700;
+        border: 1px solid white;
+        padding: 1px 3px;
+        background: white;
+        color: #333;
+        border-radius: 3px;
+        margin: 0 2px;
+    }
+
+    #notification-banner .close {
+        position: absolute;
+        right: 14px;
+        top: 14px;
+        height: 40px;
+        width: 40px;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        font-family: arial, sans-serif;
+        cursor: pointer;
+        background: rgba(0, 0, 0, 0.15);
+        border-radius: 5px;
+    }
+
+    @media (max-width: 480px) {
+        #notification-banner {
+            border-radius: 0;
+            width: 100%;
+            right: 0;
+            bottom: 0;
+            font-size: 14px;
+        }
+    }
+</style>
+
+<h1 class="no-margin-top">Community</h1>
+
+<p>This page lists all of the places to ask for help or discuss Javalin, in order of relevance.</p>
+
+<div class="community-boxes">
+  <div class="community-box">
+    <h2>GitHub</h2>
+    <p>
+      The GitHub repo (<a href="https://github.com/tipsy/javalin">https://github.com/tipsy/javalin</a>)
+      is where most of the action happens.
+      You can create issues to make feature request, to report bugs, or even to ask questions.
+      We're not too strict.
+    </p>
+  </div>
+  <div class="community-box">
+    <h2>Discord</h2>
+    <p>
+      Discord is the primary chat server for Javalin. You can use this invite link to join:
+      <a href="https://discord.com/invite/sgak4e5NKv">https://discord.com/invite/sgak4e5NKv</a>.
+    </p>
+  </div>
+  <div class="community-box">
+    <h2>Slack</h2>
+    <p>
+      It's not as lively as Discord, but it is a lot more corporate:
+      <a href="https://join.slack.com/t/javalin-io/shared_invite/zt-1hwdevskx-ftMobDhGxhW0I268B7Ub~w">https://javalin-io.slack.com/</a>
+    </p>
+  </div>
+  <div class="community-box">
+    <h2>Twitter</h2>
+    <p>
+      Javalin doesn't tweet a lot, but it does retweet and like Javalin related things:
+      <a href="https://twitter.com/javalin_io">https://twitter.com/javalin_io</a>
+    </p>
+  </div>
+  <div class="community-box">
+    <h2>Stack Overflow</h2>
+    <p>
+      Javalin has its own tag on Stack Overflow, but it's not a common place to seek help:
+      <a href="https://stackoverflow.com/questions/tagged/javalin">https://stackoverflow.com/questions/tagged/javalin</a>
+    </p>
+  </div>
+</div>
+
+<h2>Top 15 contributors <small class="total-contributors">(of 161)</small></h2>
+<div class="contributors">
+    
+    <a href="https://github.com/tipsy" class="contributor">
+        <img src="https://avatars.githubusercontent.com/u/1521451?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>tipsy</h4>
+            <div class="commits">1383 commits</div>
+        </div>
+    </a>
+    
+    <a href="https://github.com/dzikoysk" class="contributor">
+        <img src="https://avatars.githubusercontent.com/u/4235722?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>dzikoysk</h4>
+            <div class="commits">58 commits</div>
+        </div>
+    </a>
+    
+    <a href="https://github.com/Playacem" class="contributor">
+        <img src="https://avatars.githubusercontent.com/u/3692093?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>Playacem</h4>
+            <div class="commits">29 commits</div>
+        </div>
+    </a>
+    
+    <a href="https://github.com/TobiasWalle" class="contributor">
+        <img src="https://avatars.githubusercontent.com/u/9933601?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>TobiasWalle</h4>
+            <div class="commits">27 commits</div>
+        </div>
+    </a>
+    
+    <a href="https://github.com/mpe85" class="contributor">
+        <img src="https://avatars.githubusercontent.com/u/23398713?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>mpe85</h4>
+            <div class="commits">15 commits</div>
+        </div>
+    </a>
+    
+    <a href="https://github.com/ShikaSD" class="contributor">
+        <img src="https://avatars.githubusercontent.com/u/6198744?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>ShikaSD</h4>
+            <div class="commits">13 commits</div>
+        </div>
+    </a>
+    
+    <a href="https://github.com/maxemann96" class="contributor">
+        <img src="https://avatars.githubusercontent.com/u/4399206?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>maxemann96</h4>
+            <div class="commits">9 commits</div>
+        </div>
+    </a>
+    
+    <a href="https://github.com/casid" class="contributor">
+        <img src="https://avatars.githubusercontent.com/u/4077354?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>casid</h4>
+            <div class="commits">8 commits</div>
+        </div>
+    </a>
+    
+    <a href="https://github.com/dependabot[bot]" class="contributor">
+        <img src="https://avatars.githubusercontent.com/in/29110?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>dependabot[bot]</h4>
+            <div class="commits">8 commits</div>
+        </div>
+    </a>
+    
+    <a href="https://github.com/nixxcode" class="contributor">
+        <img src="https://avatars.githubusercontent.com/u/46871088?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>nixxcode</h4>
+            <div class="commits">8 commits</div>
+        </div>
+    </a>
+    
+    <a href="https://github.com/Gmugra" class="contributor">
+        <img src="https://avatars.githubusercontent.com/u/3171372?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>Gmugra</h4>
+            <div class="commits">7 commits</div>
+        </div>
+    </a>
+    
+    <a href="https://github.com/spinscale" class="contributor">
+        <img src="https://avatars.githubusercontent.com/u/667544?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>spinscale</h4>
+            <div class="commits">6 commits</div>
+        </div>
+    </a>
+    
+    <a href="https://github.com/flyrev" class="contributor">
+        <img src="https://avatars.githubusercontent.com/u/21454?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>flyrev</h4>
+            <div class="commits">6 commits</div>
+        </div>
+    </a>
+    
+    <a href="https://github.com/jorunfa" class="contributor">
+        <img src="https://avatars.githubusercontent.com/u/1413275?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>jorunfa</h4>
+            <div class="commits">6 commits</div>
+        </div>
+    </a>
+    
+    <a href="https://github.com/28Smiles" class="contributor">
+        <img src="https://avatars.githubusercontent.com/u/9430219?v=4" alt="User avatar" />
+        <div class="name-and-commit">
+            <h4>28Smiles</h4>
+            <div class="commits">5 commits</div>
+        </div>
+    </a>
+    
+</div>
+<style>
+    .total-contributors {
+        font-weight: 400;
+        color: rgba(0, 0, 0, 0.3);
+    }
+
+    .contributors {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .contributors .contributor {
+        display: flex;
+        align-items: center;
+        width: calc(33% - 16px); /* 16*3/2 == 24 */
+        padding: 16px;
+        background: #fff;
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        margin-bottom: 16px;
+        color: rgba(0, 0, 0, 0.75);
+    }
+
+    .contributors .contributor img {
+        display: block;
+        max-width: 40px;
+        border-radius: 40px;
+        margin-right: 16px;
+    }
+
+    .contributors .contributor h4 {
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .contributors .contributor .name-and-commit {
+        width: calc(100% - 56px);
+    }
+
+    .contributors .contributor h4,
+    .contributors .contributor .commits {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    @media (max-width: 600px) {
+        .contributors .contributor {
+            width: 100%;
+        }
+    }
+</style>
+
+<style>
+  .community-box {
+    position: relative;
+    color: #444;
+    display: block;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    margin-top: 24px;
+  }
+
+  .community-box h2 {
+    font-size: 24px;
+    margin-top: 0;
+  }
+</style>
+
+
+    </main>
+    <footer>
+        Javalin is a Java and Kotlin web framework, open sourced under the
+        <a href="https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)">Apache 2</a> license
+        | <a href="/download">Download</a>
+        | <a href="/about">About</a>
+        | <a href="/news">News</a>
+        | <a href="/about#contact">Contact</a>
+        | <a href="/for-educators">For educators</a>
+    </footer>
+    <div id="star-begging">
+    <style>
+        #star-begging {
+            transition: transform .25s;
+            transform: scale(0);
+            border-radius: 8px;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            padding: 20px 40px 16px 20px;
+            background: #fff;
+            box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15);
+            z-index: 9999998;
+        }
+        #star-begging.in {
+            transform: scale(1);
+        }
+        #star-begging.out {
+            transform: translateX(400px);
+        }
+        #star-begging p {
+            font-size: 16px;
+            margin: 0 0 15px;
+        }
+        #star-begging .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            height: 40px;
+            width: 40px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-family: arial, sans-serif;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+    </style>
+    <p>
+        Like Javalin?
+        <br>Star us 😊
+    </p>
+    <span class="close">×</span>
+    <iframe id="starFrame" class="githubStar" title="github-stars"
+            src="https://ghbtns.com/github-btn.html?user=javalin&amp;repo=javalin&amp;type=star&amp;count=true&size=large"
+            frameborder="0" scrolling="0" width="150px" height="30px">
+    </iframe>
+    <script>
+        if (localStorage.getItem("dismissed") !== "true" && document.getElementById("notification-banner") === null) {
+            setTimeout(function () {
+                document.querySelector("#star-begging").classList.add("in");
+            }, 15000);
+            document.querySelector("#star-begging .close").addEventListener("click", function () {
+                document.querySelector("#star-begging").classList.add("out");
+                localStorage.setItem("dismissed", "true");
+            });
+        }
+    </script>
+</div>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>

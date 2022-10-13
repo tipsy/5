@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54137818-11"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-54137818-11', {'anonymize_ip': true});
+</script>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen+Mono|Roboto+Slab:500,700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Using JWT with a Javalin application - Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:site_name" content="Javalin">
+    <meta property="og:url" content="https://javalin.io">
+    <meta property="og:description" content="This is a simple tutorial on how to integrate JWT into a Javalin application.It relies on an extension which can be found here.">
+    <meta property="og:image" content="https://javalin.io/img/javalin.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="liMtSlffOZROWLqoiOZdSx-luH9_Siq5-Ot6xqHZwq8">
+    <title>
+        Using JWT with a Javalin application - Javalin - A lightweight Java and Kotlin web framework
+    </title>
+    <meta name="description" content="This is a simple tutorial on how to integrate JWT into a Javalin application.It relies on an extension which can be found here.">
+    <link rel="canonical" href="5//2018/09/11/javalin-jwt-example.html">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>/* Styles that affect the length of the document */
+p code,
+li code {
+    font-size: 90%;
+    letter-spacing: -0.5px;
+    border: 1px solid #ccd;
+    background: #f5f5f7;
+    padding: 1px 3px;
+}
+
+.multitab-code pre {
+    margin-top: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.multitab-code div[data-tab] {
+    display: none;
+}
+
+:target {
+    scroll-margin-top: 108px;
+}
+
+.anchorjs-link {
+    transition: all .25s linear;
+  }
+  
+*:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+ }</style>
+</head>
+<body>
+    <a id="fork-me" href="https://github.com/javalin/javalin" target="_blank">
+    <img style="position:fixed;top:0;right:0;border:0;z-index:99999" src="data:image/png;base64,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" alt="Fork me on GitHub">
+</a>
+    <header class="top-nav-header">
+        <nav class="width-limit">
+            <a id="logo" href="/" aria-label="Javalin">
+                <img src="/img/logo.svg" alt="Javalin">
+            </a>
+            <ul>
+                <li><a href="/documentation">Docs</a></li>
+                <li><a href="/tutorials">Tutorials</a></li>
+                <li><a href="/plugins">Plugins</a></li>
+                <li><a href="/community">Community</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="width-limit">
+        <article class="tutorial" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="tutorial-header">
+        <h1 class="no-margin-top" itemprop="name headline">Using JWT with a Javalin application</h1>
+        <p class="notification">
+            <time datetime="2018-09-11T00:00:00+00:00" itemprop="datePublished">Sep 11, 2018</time>
+             
+                • Written by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><a href="https://github.com/kmehrunes" target="_blank">Khaled Y.M.</a></span></span>
+            
+            <span id="timeToRead">Reading time: <b>0-0 min</b></span>
+            
+        </p>
+        
+    </div>
+    <div class="post-content" itemprop="articleBody">
+        <p>This is a simple tutorial on how to integrate JWT into a Javalin application.
+It relies on an extension which can be found <a href="https://github.com/kmehrunes/javalin-jwt">here</a>.</p>
+
+<h2 id="what-you-will-learn">What You Will Learn</h2>
+<p>In this tutorial we will introduce the extension and what it provides, then we will
+show a basic use, and finally we will go a bit deeper and use some components
+provided by the extension. The tutorial assumes that you know what JWTs are. If you
+do not, then you can check <a href="https://jwt.io/introduction/">this post</a> for an easy but
+quite thorough introduction.</p>
+
+<h2 id="dependencies">Dependencies</h2>
+<p>Currently there is no Maven dependency to get the extension directly; you need to
+pull the source code. There should be one ready soon, and this tutorial will be
+updated accordingly.</p>
+
+<p>The extension itself depends on <a href="https://github.com/auth0/java-jwt">Auth0 Java JWT library</a>.</p>
+
+<h2 id="the-extension">The Extension</h2>
+<p><strong>Note: it is recommended that you familiarize yourself with Auth0 Java JWT first</strong>
+The extension itself is quite small, and it provides three things:</p>
+<ul>
+  <li>
+    <p>Helper functions for Javalin Context to make working with JWTs easier,
+includes: extracting tokens from authorization headers, adding/getting tokens
+to/from cookies, and adding decoded JWT objects to contexts for future handlers
+to use</p>
+  </li>
+  <li>
+    <p>Decode helpers which take care of extracting, validating, and adding decoded
+objects to the context for you</p>
+  </li>
+  <li>
+    <p>An access manager</p>
+  </li>
+</ul>
+
+<p>There is no requirement to use all parts of the extension, you can use only
+the parts you need for your particular case.</p>
+
+<h2 id="preliminary-steps">Preliminary Steps</h2>
+<p>For any use of the extension, we need what we call a JWT provider (for lack of
+a better word). A provider is a somewhat convient way of working with JWT which
+wraps a generator and a verifier. Where A generator implements the functional
+interface JWTGeneratr, and a verifier which is the normal Auth0 JWTVerifier.</p>
+
+<p>Before being able to create a provider, we first need to have: a user class,
+a generator, and a verifier. For the sake of this tutorial we will assume the
+following class as our user class:</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MockUser</span> <span class="o">{</span>
+    <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="n">String</span> <span class="n">level</span><span class="o">;</span>
+
+    <span class="n">MockUser</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">String</span> <span class="n">level</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">level</span> <span class="o">=</span> <span class="n">level</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>Now we can create our JWT provider as follows:</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//1.</span>
+<span class="n">Algorithm</span> <span class="n">algorithm</span> <span class="o">=</span> <span class="n">Algorithm</span><span class="o">.</span><span class="na">HMAC256</span><span class="o">(</span><span class="s">"very_secret"</span><span class="o">);</span>
+
+<span class="c1">//2.</span>
+<span class="n">JWTGenerator</span><span class="o">&lt;</span><span class="n">MockUser</span><span class="o">&gt;</span> <span class="n">generator</span> <span class="o">=</span> <span class="o">(</span><span class="n">user</span><span class="o">,</span> <span class="n">alg</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">JWTCreator</span><span class="o">.</span><span class="na">Builder</span> <span class="n">token</span> <span class="o">=</span> <span class="n">JWT</span><span class="o">.</span><span class="na">create</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">withClaim</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span> <span class="n">user</span><span class="o">.</span><span class="na">name</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">withClaim</span><span class="o">(</span><span class="s">"level"</span><span class="o">,</span> <span class="n">user</span><span class="o">.</span><span class="na">level</span><span class="o">);</span>
+            <span class="k">return</span> <span class="n">token</span><span class="o">.</span><span class="na">sign</span><span class="o">(</span><span class="n">alg</span><span class="o">);</span>
+        <span class="o">};</span>
+
+<span class="c1">//3.</span>
+<span class="n">JWTVerifier</span> <span class="n">verifier</span> <span class="o">=</span> <span class="n">JWT</span><span class="o">.</span><span class="na">require</span><span class="o">(</span><span class="n">algorithm</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+
+<span class="c1">//4.</span>
+<span class="n">JWTProvider</span> <span class="n">provider</span> <span class="o">=</span> <span class="n">JWTProvider</span><span class="o">(</span><span class="n">algorithm</span><span class="o">,</span> <span class="n">generator</span><span class="o">,</span> <span class="n">verifier</span><span class="o">);</span>
+</code></pre>
+</div>
+<p>1) First we initialize the algorithm we are going to use. In our
+case we chose HMAC256 but feel free to try other variants. Tip:
+if you are separating the application into services where only
+one service will issue the tokens then consider using an asymetric
+algorithm like RSA.</p>
+
+<p>2) In the second step we create our JWT generator. It implements
+a function which takes an object and algorithm to generate a token
+with a set of claims and returns the token signed.</p>
+
+<p>3) In the third step we create a verifier using the builder
+provided by Auth0. In our case we only have the algorithm
+but there are many more to be added depending on your case.</p>
+
+<p>4) We finally create our provider which we will use throughout the
+rest of this tutorial.</p>
+
+<h2 id="basic-example">Basic Example</h2>
+<p>Now that we have everything ready, we can finally start using
+the provider in our application. We will create a simple application
+which only has two routes: <em>/generate</em> and <em>/validate</em>.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="c1">//</span>
+<span class="c1">// .. create your Javalin app ...</span>
+<span class="c1">//</span>
+<span class="n">Handler</span> <span class="n">generateHandler</span> <span class="o">=</span> <span class="n">context</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">MockUser</span> <span class="n">mockUser</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MockUser</span><span class="o">(</span><span class="s">"Mocky McMockface"</span><span class="o">,</span> <span class="s">"user"</span><span class="o">);</span>
+    <span class="n">String</span> <span class="n">token</span> <span class="o">=</span> <span class="n">provider</span><span class="o">.</span><span class="na">generateToken</span><span class="o">(</span><span class="n">mockUser</span><span class="o">);</span>
+    <span class="n">context</span><span class="o">.</span><span class="na">json</span><span class="o">(</span><span class="k">new</span> <span class="n">JWTResponse</span><span class="o">(</span><span class="n">token</span><span class="o">));</span>
+<span class="o">};</span>
+
+<span class="n">Handler</span> <span class="n">validateHandler</span> <span class="o">=</span> <span class="n">context</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">Optional</span><span class="o">&lt;</span><span class="n">DecodedJWT</span><span class="o">&gt;</span> <span class="n">decodedJWT</span> <span class="o">=</span> <span class="n">JavalinJWT</span><span class="o">.</span><span class="na">getTokenFromHeader</span><span class="o">(</span><span class="n">context</span><span class="o">)</span>
+                                                  <span class="o">.</span><span class="na">flatMap</span><span class="o">(</span><span class="nl">provider:</span><span class="o">:</span><span class="n">validateToken</span><span class="o">);</span>
+
+    <span class="k">if</span> <span class="o">(!</span><span class="n">decodedJWT</span><span class="o">.</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="mi">401</span><span class="o">).</span><span class="na">result</span><span class="o">(</span><span class="s">"Missing or invalid token"</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">else</span> <span class="o">{</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">result</span><span class="o">(</span><span class="s">"Hi "</span> <span class="o">+</span> <span class="n">decodedJWT</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">getClaim</span><span class="o">(</span><span class="s">"name"</span><span class="o">).</span><span class="na">asString</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">};</span>
+
+<span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/generate"</span><span class="o">,</span> <span class="n">generateHandler</span><span class="o">);</span>
+<span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/validate"</span><span class="o">,</span> <span class="n">validateHandler</span><span class="o">);</span>
+</code></pre>
+</div>
+
+<p>In <em>generateHandler</em> we use the provider to generate a token for a mock user.
+We then wrap that token in a response object which will result in the JSON
+response object to be {“jwt”: “…”}. In a real world example, that object
+might also contain a renewal token, an expiry date..etc.</p>
+
+<p>In <em>validateHandler</em> we extract the token from authorization header using
+one of the provided helper functions, then we validate it using the provider.
+The authorization header value must have a Bearer scheme. An empty option
+represents lack of a token value or an invalid token.</p>
+
+<p>Now if you visit /generate, you’ll get a JWT for the created user. Then you
+need to put that token in an authorization header with “Bearer” scheme and
+issue a request to /validate.</p>
+
+<p>Some links to check:</p>
+<ul>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization">Authorization header</a></li>
+  <li><a href="https://tools.ietf.org/html/rfc6750">Bearer scheme</a></li>
+</ul>
+
+<h2 id="advanced-example">Advanced Example</h2>
+<p>The previous example showed the basic functionality of the extension but you
+might have noticed two impracticalities in the implementation: you need to
+handle extracting and verifying the JWT for every handler that needs it, and
+you need to perform access control inside every handler. In this example we
+will show how we can solve those two problems using decode handlers and access
+managers.</p>
+
+<p>A decode handler takes care of decoding and validating a JWT, then adds
+the decoded object to the context for future handler to use. There are two
+decode handler: one for reading the token from an authorization header
+and one to read the token from a cookie. Pick whichever you like.
+A decode handler is simply created using a helper function as follows:</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Handler</span> <span class="n">decodeHandler</span> <span class="o">=</span> <span class="n">JavalinJWT</span><span class="o">.</span><span class="na">createHeaderDecodeHandler</span><span class="o">(</span><span class="n">provider</span><span class="o">);</span>
+</code></pre>
+</div>
+<p><strong>Note: it is a common mistake to think that JWT is an alternative for cookies;
+it is actually an alternative to sessions and cookies could be used for carrying
+JWTs</strong></p>
+
+<p>And should be added as a <em>before</em> handler, whether globally or to certain paths. In this example we set it globally:</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">app</span><span class="o">.</span><span class="na">before</span><span class="o">(</span><span class="n">decodeHandler</span><span class="o">);</span>
+</code></pre>
+</div>
+
+<p>We will then use an access manager to handle access management. An access manager
+requires the name of a JWT claim which declares the user’s level, a mapping between
+users’ levels and roles, and a default role for when no token is available. For the
+sake of this example, here are the available roles and their mapping:</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>
+<span class="kd">enum</span> <span class="n">Roles</span> <span class="kd">implements</span> <span class="n">Role</span> <span class="o">{</span>
+    <span class="n">ANYONE</span><span class="o">,</span>
+    <span class="n">USER</span><span class="o">,</span>
+    <span class="n">ADMIN</span>
+<span class="o">}</span>
+
+<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Role</span><span class="o">&gt;</span> <span class="n">rolesMapping</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Role</span><span class="o">&gt;()</span> <span class="o">{{</span>
+    <span class="n">put</span><span class="o">(</span><span class="s">"user"</span><span class="o">,</span> <span class="n">Roles</span><span class="o">.</span><span class="na">USER</span><span class="o">);</span>
+    <span class="n">put</span><span class="o">(</span><span class="s">"admin"</span><span class="o">,</span> <span class="n">Roles</span><span class="o">.</span><span class="na">ADMIN</span><span class="o">);</span>
+<span class="o">}};</span>
+
+</code></pre>
+</div>
+<p>And the access manager is set simply like this:</p>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">JWTAccessManager</span> <span class="n">accessManager</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JWTAccessManager</span><span class="o">(</span><span class="s">"level"</span><span class="o">,</span> <span class="n">rolesMapping</span><span class="o">,</span> <span class="n">Roles</span><span class="o">.</span><span class="na">ANYONE</span><span class="o">);</span>
+<span class="n">app</span><span class="o">.</span><span class="na">accessManager</span><span class="o">(</span><span class="n">accessManager</span><span class="o">);</span>
+</code></pre>
+</div>
+<p>Notice that the user’s level claim must match what was specified in the generator.</p>
+
+<p>Now that we have the decode handler and the access manager all set up, we can go
+ahead and put them to good use.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Handler</span> <span class="n">generateHandler</span> <span class="o">=</span> <span class="n">context</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">MockUser</span> <span class="n">mockUser</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MockUser</span><span class="o">(</span><span class="s">"Mocky McMockface"</span><span class="o">,</span> <span class="s">"user"</span><span class="o">);</span>
+    <span class="n">String</span> <span class="n">token</span> <span class="o">=</span> <span class="n">provider</span><span class="o">.</span><span class="na">generateToken</span><span class="o">(</span><span class="n">mockUser</span><span class="o">);</span>
+    <span class="n">context</span><span class="o">.</span><span class="na">json</span><span class="o">(</span><span class="k">new</span> <span class="n">JWTResponse</span><span class="o">(</span><span class="n">token</span><span class="o">));</span>
+<span class="o">};</span>
+
+<span class="n">Handler</span> <span class="n">validateHandler</span> <span class="o">=</span> <span class="n">context</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">DecodedJWT</span> <span class="n">decodedJWT</span> <span class="o">=</span> <span class="n">JavalinJWT</span><span class="o">.</span><span class="na">getDecodedFromContext</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+    <span class="n">context</span><span class="o">.</span><span class="na">result</span><span class="o">(</span><span class="s">"Hi "</span> <span class="o">+</span> <span class="n">decodedJWT</span><span class="o">.</span><span class="na">getClaim</span><span class="o">(</span><span class="s">"name"</span><span class="o">).</span><span class="na">asString</span><span class="o">());</span>
+<span class="o">};</span>
+
+<span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/generate"</span><span class="o">,</span>  <span class="n">generateHandler</span><span class="o">,</span> <span class="n">roles</span><span class="o">(</span><span class="n">Roles</span><span class="o">.</span><span class="na">ANYONE</span><span class="o">));</span>
+<span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/validate"</span><span class="o">,</span> <span class="n">validateHandler</span><span class="o">,</span> <span class="n">roles</span><span class="o">(</span><span class="n">Roles</span><span class="o">.</span><span class="na">USER</span><span class="o">,</span> <span class="n">Roles</span><span class="o">.</span><span class="na">ADMIN</span><span class="o">));</span>
+<span class="n">app</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"/adminslounge"</span><span class="o">,</span> <span class="n">validateHandler</span><span class="o">,</span> <span class="n">roles</span><span class="o">(</span><span class="n">Roles</span><span class="o">.</span><span class="na">ADMIN</span><span class="o">));</span>
+</code></pre>
+</div>
+
+<p>Although generateHandler remains unchanged from the previous example, validateHandler
+is now more concise and focused. You no longer need to do user authorization in the
+handlers. To highlight that, the example shows that both <em>/validate</em> and <em>/adminlounge</em>
+have the same handler but different access roles.</p>
+
+    </div>
+    <h3>Thanks for reading</h3>
+    If you find any errors, please <a href="https://github.com/javalin/javalin.github.io/blob/master/_posts/tutorials/community/2018-09-11-javalin-jwt-example.md">edit this page on GitHub</a>.
+    <br>
+    
+</article>
+<style>
+    .social {
+        margin: 30px 0;
+        display: flex;
+    }
+    .social-btn {
+        text-align: center;
+        min-width: 240px;
+        padding: 10px 16px 8px;
+        font-size: 14px;
+        font-family: 'Roboto Slab', sans-serif;
+        font-weight: 600;
+        color: #fff;
+        background: #000;
+        border-radius: 50px;
+        box-shadow: 2px 2px red, -2px -2px cyan;
+    }
+    .social-btn + .social-btn {
+        margin-left: 24px;
+    }
+    .social-btn:hover {
+        background: #008ab4;
+    }
+    .social-btn img {
+        width: 24px;
+        display: inline;
+        vertical-align: middle;
+        margin-right: 12px;
+    }
+    @media (max-width: 480px) {
+        .social {
+            justify-content: space-between;
+        }
+        .social-btn {
+            min-width: 0;
+            width: calc(50% - 12px);
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+        .social-btn + .social-btn {
+            margin-left: 0;
+        }
+    }
+</style>
+<div class="social">
+    <a class="social-btn" href="https://twitter.com/intent/tweet?text=Using JWT with a Javalin application&url=/2018/09/11/javalin-jwt-example.html&via=javalin_io&related=javalin_io"
+       rel="nofollow"
+       title="Share on Twitter">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAM1BMVEUAAAD///////////////////////////////////////////////////////////////+3leKCAAAAEHRSTlMA8BDQwKCAMOBwYECwUCCQ27fl2AAAAW1JREFUWMPtltuOwyAMRLG5QxL8/1+7G6lKFApMaJ5W2/NIPCPAnlL15R+xRSM7ZPMnci5yYvxrNRt3VMRtpPdBLqR9MWkhPkpI80BPUpFy2dfiUbKK9B02kjbmrCkycNAdfeCqpuOQOnrye2teRS9LrxqEjn4tQSS/io7Fxg1Kn/MWjxX7dgw30NvGNkO9CQP1O8v7oGEDq07i9Uu+YxAvs1J91GmDBtdQLVKjYz6/YINNWujiVgsMet3CqAr7yICKn3XQF4N9gizJDAsIDMSBLkIyyDzkmjqmWb0GoYUUBVKLWFUF6yk9gccDYtU7bKabWBNv9yKoDunmTcSW2Im+uwNi1cBP5+DjUSAGrzgiVcLZSBmlHjnQBv7L4AOMYEdwiAGcFgK/A5BN9/WsMCs90nsjT/SrGd0fI3UJIIIdovtlAUnWftA5KwiKakg2Y7ljfPn9tzWkUw5GsHV059UEOVpDR2wXl1l9+RP8AHA4c7ljId3mAAAAAElFTkSuQmCC">Share on Twitter
+    </a>
+    <a class="social-btn" href="https://facebook.com/sharer.php?u=/2018/09/11/javalin-jwt-example.html"
+       rel="nofollow"
+       title="Share on Facebook">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUAAAD///////////////////////////////////////////////////////////87TQQwAAAAD3RSTlMAwIDwEEDgMKBgINBwUJA4su2wAAAAy0lEQVRIx2MYJICr+T9WkOQAVTD/Pw5gDpHn/I8TXAAriMetwAqsQB63gh9gBf/xgAFT8E0QCPJxK/ixACTqj1PB5wCwKD9OBbsY8Cv4XEBAwU8GAgoECCmYABTB5QuEUI2S0n4cCn6DRBzxhORHkMh5Qgr0h7eCjw6I/BiPTcEnBgRgxKbgK5ICPkIKmGij4C+yIwn5gg2bgm9ICuIHa2SNKqCZgs9gBf2YClBTkDNuBSlgBeyYCtDKzGJcCtKhyY+lH7sCIweGwQEAY2jNUu1+zZgAAAAASUVORK5CYII=">Share on Facebook
+    </a>
+</div>
+
+
+    </main>
+    <footer>
+        Javalin is a Java and Kotlin web framework, open sourced under the
+        <a href="https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)">Apache 2</a> license
+        | <a href="/download">Download</a>
+        | <a href="/about">About</a>
+        | <a href="/news">News</a>
+        | <a href="/about#contact">Contact</a>
+        | <a href="/for-educators">For educators</a>
+    </footer>
+    <div id="star-begging">
+    <style>
+        #star-begging {
+            transition: transform .25s;
+            transform: scale(0);
+            border-radius: 8px;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            padding: 20px 40px 16px 20px;
+            background: #fff;
+            box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15);
+            z-index: 9999998;
+        }
+        #star-begging.in {
+            transform: scale(1);
+        }
+        #star-begging.out {
+            transform: translateX(400px);
+        }
+        #star-begging p {
+            font-size: 16px;
+            margin: 0 0 15px;
+        }
+        #star-begging .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            height: 40px;
+            width: 40px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-family: arial, sans-serif;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+    </style>
+    <p>
+        Like Javalin?
+        <br>Star us 😊
+    </p>
+    <span class="close">×</span>
+    <iframe id="starFrame" class="githubStar" title="github-stars"
+            src="https://ghbtns.com/github-btn.html?user=javalin&amp;repo=javalin&amp;type=star&amp;count=true&size=large"
+            frameborder="0" scrolling="0" width="150px" height="30px">
+    </iframe>
+    <script>
+        if (localStorage.getItem("dismissed") !== "true" && document.getElementById("notification-banner") === null) {
+            setTimeout(function () {
+                document.querySelector("#star-begging").classList.add("in");
+            }, 15000);
+            document.querySelector("#star-begging .close").addEventListener("click", function () {
+                document.querySelector("#star-begging").classList.add("out");
+                localStorage.setItem("dismissed", "true");
+            });
+        }
+    </script>
+</div>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>

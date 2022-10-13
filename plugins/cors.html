@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54137818-11"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-54137818-11', {'anonymize_ip': true});
+</script>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen+Mono|Roboto+Slab:500,700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="CORS plugin documentation - Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:site_name" content="Javalin">
+    <meta property="og:url" content="https://javalin.io">
+    <meta property="og:description" content="Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:image" content="https://javalin.io/img/javalin.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="liMtSlffOZROWLqoiOZdSx-luH9_Siq5-Ot6xqHZwq8">
+    <title>
+        CORS plugin documentation - Javalin - A lightweight Java and Kotlin web framework
+    </title>
+    <meta name="description" content="Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <link rel="canonical" href="5//plugins/cors">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>/* Styles that affect the length of the document */
+p code,
+li code {
+    font-size: 90%;
+    letter-spacing: -0.5px;
+    border: 1px solid #ccd;
+    background: #f5f5f7;
+    padding: 1px 3px;
+}
+
+.multitab-code pre {
+    margin-top: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.multitab-code div[data-tab] {
+    display: none;
+}
+
+:target {
+    scroll-margin-top: 108px;
+}
+
+.anchorjs-link {
+    transition: all .25s linear;
+  }
+  
+*:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+ }</style>
+</head>
+<body>
+    <a id="fork-me" href="https://github.com/javalin/javalin" target="_blank">
+    <img style="position:fixed;top:0;right:0;border:0;z-index:99999" src="data:image/png;base64,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" alt="Fork me on GitHub">
+</a>
+    <header class="top-nav-header">
+        <nav class="width-limit">
+            <a id="logo" href="/" aria-label="Javalin">
+                <img src="/img/logo.svg" alt="Javalin">
+            </a>
+            <ul>
+                <li><a href="/documentation">Docs</a></li>
+                <li><a href="/tutorials">Tutorials</a></li>
+                <li><a href="/plugins">Plugins</a></li>
+                <li><a href="/community">Community</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="width-limit">
+                <div id="spy-nav" class="right-menu">
+  <ul>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#allowing-any-host">Allowing any host</a></li>
+    <li><a href="#subdomain-wildcard-support">Subdomain wildcard support</a></li>
+    <li><a href="#multiple-cors-configurations">Multiple CORS configurations</a></li>
+    <li><a href="#allowcredentials-and-exposeheader">allowCredentials and exposeHeader</a></li>
+  </ul>
+</div>
+
+<h1 class="no-margin-top">CORS plugin</h1>
+
+<p>The CORS plugin manages CORS related headers for you given some configuration such as allowed hosts.</p>
+
+<h2 id="getting-started">Getting started</h2>
+
+<p>You can enable the cors plugin through the <code class="highlighter-rouge">config.plugins</code> part of the config:</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">enableCors</span><span class="o">(</span><span class="n">cors</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="n">cors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">it</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">it</span><span class="o">.</span><span class="na">allowHost</span><span class="o">(</span><span class="s">"example.com"</span><span class="o">,</span> <span class="s">"javalin.io"</span><span class="o">);</span>
+        <span class="o">});</span>
+    <span class="o">});</span>
+<span class="o">});</span>
+</code></pre>
+</div>
+
+<p>This example would allow the origins <code class="highlighter-rouge">https://example.com</code> and <code class="highlighter-rouge">https://javalin.io</code>.</p>
+
+<p>The default scheme can be changed by setting it: <code class="highlighter-rouge">defaultScheme = "http"</code>, but you can also just specify it with your 
+<code class="highlighter-rouge">allowHost()</code> call: <code class="highlighter-rouge">allowHost("http://example.com")</code></p>
+
+<h2 id="allowing-any-host">Allowing any host</h2>
+
+<p>Allowing everybody by using can be done with <code class="highlighter-rouge">anyHost()</code>.
+<code class="highlighter-rouge">anyHost()</code> adds the special star origin <code class="highlighter-rouge">*</code>, allowing any host from a CORS standpoint. Do note that you can still
+deny via other means such as an access manager, but it is recommended to just allow the hosts that you need.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">enableCors</span><span class="o">(</span><span class="n">cors</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="n">cors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">it</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">it</span><span class="o">.</span><span class="na">anyHost</span><span class="o">();</span>
+        <span class="o">});</span>
+    <span class="o">});</span>
+<span class="o">});</span>
+</code></pre>
+</div>
+
+<p>Similar to <code class="highlighter-rouge">anyHost()</code> you can set <code class="highlighter-rouge">reflectClientOrigin = true</code> to reflect back the clients origin instead of the generic
+star. This has the same implications as <code class="highlighter-rouge">anyHost()</code>, so it should be considered carefully.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">enableCors</span><span class="o">(</span><span class="n">cors</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="n">cors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">it</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">it</span><span class="o">.</span><span class="na">reflectClientOrigin</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">});</span>
+    <span class="o">});</span>
+<span class="o">});</span>
+</code></pre>
+</div>
+
+<h2 id="subdomain-wildcard-support">Subdomain wildcard support</h2>
+
+<p>Special support for subdomains is added by allowing a single star as a wildcard.
+<code class="highlighter-rouge">allowHost("*.example.com")</code> would allow any subdomain of <code class="highlighter-rouge">example.com</code> to access your resources from a CORS standpoint.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">enableCors</span><span class="o">(</span><span class="n">cors</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="n">cors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">it</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">it</span><span class="o">.</span><span class="na">allowHost</span><span class="o">(</span><span class="s">"*.example.com"</span><span class="o">);</span>
+        <span class="o">});</span>
+    <span class="o">});</span>
+<span class="o">});</span>
+</code></pre>
+</div>
+
+<h2 id="multiple-cors-configurations">Multiple CORS configurations</h2>
+
+<p>It is also possible to have different cors configurations for different paths. 
+Take a look at the following example:</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">enableCors</span><span class="o">(</span><span class="n">cors</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="n">cors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">it</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">it</span><span class="o">.</span><span class="na">path</span> <span class="o">=</span> <span class="s">"images*"</span>
+            <span class="n">it</span><span class="o">.</span><span class="na">allowHost</span><span class="o">(</span><span class="s">"https://images.local"</span><span class="o">);</span>
+        <span class="o">});</span>
+        <span class="n">cors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">it</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">it</span><span class="o">.</span><span class="na">path</span> <span class="o">=</span> <span class="s">"videos*"</span>
+            <span class="n">it</span><span class="o">.</span><span class="na">allowHost</span><span class="o">(</span><span class="s">"https://videos.local"</span><span class="o">);</span>
+        <span class="o">});</span>
+        <span class="n">cors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">it</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">it</span><span class="o">.</span><span class="na">path</span> <span class="o">=</span> <span class="s">"music*"</span>
+            <span class="n">it</span><span class="o">.</span><span class="na">allowHost</span><span class="o">(</span><span class="s">"https://music.local"</span><span class="o">);</span>
+        <span class="o">});</span>
+    <span class="o">});</span>
+<span class="o">});</span>
+</code></pre>
+</div>
+
+<p>Everything listed under <code class="highlighter-rouge">images</code> would be only accessible by the host <code class="highlighter-rouge">images.local</code> and everything under <code class="highlighter-rouge">videos</code> 
+only to the host <code class="highlighter-rouge">videos.local</code>.</p>
+
+<h2 id="allowcredentials-and-exposeheader">allowCredentials and exposeHeader</h2>
+
+<p>For those who need it you can also set the <code class="highlighter-rouge">ACCESS_CONTROL_ALLOW_CREDENTIALS</code> header by setting <code class="highlighter-rouge">allowCredentials = true</code>
+and expose headers to the website’s JavaScript by using e.g. <code class="highlighter-rouge">exposeHeader("x-server")</code> to expose the <code class="highlighter-rouge">x-server</code> header.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Javalin</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">enableCors</span><span class="o">(</span><span class="n">cors</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="n">cors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">it</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">it</span><span class="o">.</span><span class="na">allowHost</span><span class="o">(</span><span class="s">"*.example.com"</span><span class="o">);</span>
+            <span class="n">it</span><span class="o">.</span><span class="na">allowCredentials</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+            <span class="n">it</span><span class="o">.</span><span class="na">exposeHeader</span><span class="o">(</span><span class="s">"x-server"</span><span class="o">);</span>
+        <span class="o">});</span>
+    <span class="o">});</span>
+<span class="o">});</span>
+</code></pre>
+</div>
+
+        <script src="/js/anchor.min.js"></script>
+        <script>
+            anchors.options.placement = 'left';
+            anchors.add();
+        </script>
+
+    </main>
+    <footer>
+        Javalin is a Java and Kotlin web framework, open sourced under the
+        <a href="https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)">Apache 2</a> license
+        | <a href="/download">Download</a>
+        | <a href="/about">About</a>
+        | <a href="/news">News</a>
+        | <a href="/about#contact">Contact</a>
+        | <a href="/for-educators">For educators</a>
+    </footer>
+    <div id="star-begging">
+    <style>
+        #star-begging {
+            transition: transform .25s;
+            transform: scale(0);
+            border-radius: 8px;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            padding: 20px 40px 16px 20px;
+            background: #fff;
+            box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15);
+            z-index: 9999998;
+        }
+        #star-begging.in {
+            transform: scale(1);
+        }
+        #star-begging.out {
+            transform: translateX(400px);
+        }
+        #star-begging p {
+            font-size: 16px;
+            margin: 0 0 15px;
+        }
+        #star-begging .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            height: 40px;
+            width: 40px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-family: arial, sans-serif;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+    </style>
+    <p>
+        Like Javalin?
+        <br>Star us 😊
+    </p>
+    <span class="close">×</span>
+    <iframe id="starFrame" class="githubStar" title="github-stars"
+            src="https://ghbtns.com/github-btn.html?user=javalin&amp;repo=javalin&amp;type=star&amp;count=true&size=large"
+            frameborder="0" scrolling="0" width="150px" height="30px">
+    </iframe>
+    <script>
+        if (localStorage.getItem("dismissed") !== "true" && document.getElementById("notification-banner") === null) {
+            setTimeout(function () {
+                document.querySelector("#star-begging").classList.add("in");
+            }, 15000);
+            document.querySelector("#star-begging .close").addEventListener("click", function () {
+                document.querySelector("#star-begging").classList.add("out");
+                localStorage.setItem("dismissed", "true");
+            });
+        }
+    </script>
+</div>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54137818-11"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-54137818-11', {'anonymize_ip': true});
+</script>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen+Mono|Roboto+Slab:500,700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Tracing Javalin Application - Javalin - A lightweight Java and Kotlin web framework. Create REST APIs in Java or Kotlin easily.">
+    <meta property="og:site_name" content="Javalin">
+    <meta property="og:url" content="https://javalin.io">
+    <meta property="og:description" content="What will you learn">
+    <meta property="og:image" content="https://javalin.io/img/javalin.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="liMtSlffOZROWLqoiOZdSx-luH9_Siq5-Ot6xqHZwq8">
+    <title>
+        Tracing Javalin Application - Javalin - A lightweight Java and Kotlin web framework
+    </title>
+    <meta name="description" content="What will you learn">
+    <link rel="canonical" href="5//tutorials/tracing-javalin">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>/* Styles that affect the length of the document */
+p code,
+li code {
+    font-size: 90%;
+    letter-spacing: -0.5px;
+    border: 1px solid #ccd;
+    background: #f5f5f7;
+    padding: 1px 3px;
+}
+
+.multitab-code pre {
+    margin-top: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.multitab-code div[data-tab] {
+    display: none;
+}
+
+:target {
+    scroll-margin-top: 108px;
+}
+
+.anchorjs-link {
+    transition: all .25s linear;
+  }
+  
+*:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+ }</style>
+</head>
+<body>
+    <a id="fork-me" href="https://github.com/javalin/javalin" target="_blank">
+    <img style="position:fixed;top:0;right:0;border:0;z-index:99999" src="data:image/png;base64,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" alt="Fork me on GitHub">
+</a>
+    <header class="top-nav-header">
+        <nav class="width-limit">
+            <a id="logo" href="/" aria-label="Javalin">
+                <img src="/img/logo.svg" alt="Javalin">
+            </a>
+            <ul>
+                <li><a href="/documentation">Docs</a></li>
+                <li><a href="/tutorials">Tutorials</a></li>
+                <li><a href="/plugins">Plugins</a></li>
+                <li><a href="/community">Community</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="width-limit">
+        <article class="tutorial" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="tutorial-header">
+        <h1 class="no-margin-top" itemprop="name headline">Tracing Javalin Application</h1>
+        <p class="notification">
+            <time datetime="2021-05-12T00:00:00+00:00" itemprop="datePublished">May 12, 2021</time>
+             
+                • Written by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><a href="https://twitter.com/aravindputrevu" target="_blank">Aravind Putrevu</a></span></span>
+            
+            <span id="timeToRead">Reading time: <b>0-0 min</b></span>
+            
+        </p>
+        
+    </div>
+    <div class="post-content" itemprop="articleBody">
+        <h2 id="what-will-you-learn">What will you learn</h2>
+
+<p>We’ll see how to get started on Elastic Java APM using a simple Java CRUD app.</p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Elasticsearch is a Java based distributed search engine used for building search engines, analyzing logs, storing metrics, security events, and even application traces, enabling distributing tracing for microservice environments.
+Elastic launched an Opensource Application Performance Monitoring (APM) in 2018 with Elasticsearch 6.2, enabling applications to ship their traces. APM today has many more features like correlations.</p>
+
+<p>We’ll look at how to configure tracing for a Java Application using Java Agent and spin required infrastructure for APM deployment on Cloud. Elastic APM also supports Open Telemetry, and there is an elastic exporter too. But, we’re focussing on the native Elastic APM Java language agent.</p>
+
+<h2 id="distributed-tracing">Distributed Tracing</h2>
+
+<p>Distributed tracing helps you to understand the flow of requests happening in distributed microservices-based applications. We can do performance profiling, root cause analysis, find failures, errors, and exceptions!</p>
+
+<p>Developers are intrigued by the microservices architecture with other ecosystem tools like Docker, Kubernetes, Java frameworks.</p>
+
+<blockquote>
+  <p>We replaced our monolith with micro services so that every outage could be more like a murder mystery. — <a href="https://twitter.com/honest_update/status/651897353889259520">@honest_update</a></p>
+</blockquote>
+
+<h2 id="high-level-architecture-of-elastic-apm">High-level Architecture of Elastic APM</h2>
+
+<p>Microservice applications can essentially contain services from different programming languages talking to each other, sharing information.</p>
+
+<p>Elastic APM agents are Java Jar’s, Nodejs packages, or Python packages, configured to collect data from applications. Below is the high-level architecture diagram of how the data flows.</p>
+
+<p><img src="/img/posts/apmExample/apm-architecture.png" alt="Application performance monitoring" class="bordered-image" /></p>
+
+<p>APM server receives all the data from various applications and creates the documents in Elasticsearch.</p>
+
+<h2 id="java-crud-application">Java CRUD Application</h2>
+
+<p>Java Application stores student details like Id, Name, Age. You can add additional properties if you wish you.</p>
+
+<p>The application has two endpoints:</p>
+
+<ul>
+  <li><em>/student</em> : GET, POST, PUT, DELETE</li>
+  <li><em>/school/_count</em> : finds the count of students.</li>
+</ul>
+
+<div class="comment">
+  <p><strong>Note</strong>: You could use VS Code or IntelliJ to add code. Either way, there is a pom.xml at the root of the project.</p>
+</div>
+
+<h2 id="creating-an-apm-deployment">Creating an APM deployment:</h2>
+
+<p>I’m using Elastic Cloud to deploy the Elastic APM deployment. You can <a href="https://cloud.elastic.co/registration">start a trial</a> and spin up a deployment. Alternatively, you could also deploy <a href="https://www.elastic.co/downloads/elasticsearch">Elasticsearch</a>, <a href="https://www.elastic.co/downloads/kibana">Kibana</a>, and <a href="https://www.elastic.co/downloads/apm">APM Server</a> by downloading binaries.</p>
+
+<p><img src="/img/posts/apmExample/apm-architecture.png" alt="APM Observability" class="bordered-image" /></p>
+
+<p><img src="/img/posts/apmExample/apm-console.png" alt="APM Console Create Deployment" class="bordered-image" /></p>
+
+<p>Choose any cloud vendor, preferably the latest version of Elastic Stack, and click <code class="highlighter-rouge">Create deployment</code>. Optionally, you can choose to click on Customize the deployment by adding additional hardware tiers (warm, cold).</p>
+
+<p>Once the deployment is created, you need to copy the APM server URL and the secret token.</p>
+
+<ul>
+  <li>Click on the “APM” link on the left menu</li>
+  <li>We will need the APM Server secret token:</li>
+</ul>
+
+<p><img src="/img/posts/apmExample/apm-secret-token.png" alt="APM Console Create Deployment" class="bordered-image" /></p>
+
+<h2 id="clone-the-repository">Clone the repository</h2>
+
+<pre><code class="language-git">git clone https://github.com/aravindputrevu/javalin-student.git
+</code></pre>
+
+<p>After cloning, notice the file under the resources folder. Add the APM Server URL, secret token copied from console to server_urls and secret_token.</p>
+
+<p><img src="/img/posts/apmExample/apm-intellij.png" alt="APM Console Create Deployment" class="bordered-image" /></p>
+
+<h3 id="elasticapmproperties">elasticapm.properties</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>service_name=javalin
+application_packages=com.example
+server_urls=
+secret_token=
+</code></pre>
+</div>
+
+<h2 id="building-application">Building application</h2>
+
+<h3 id="dependencies">Dependencies</h3>
+
+<p>In the root folder of the source, you can find the project. There are very few dependencies like Javalin, sl4j, and Jackson.</p>
+
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;dependencies&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>io.javalin<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>javalin<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>3.13.13<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>org.slf4j<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>slf4j-simple<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.7.30<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+     <span class="nt">&lt;dependency&gt;</span>
+         <span class="nt">&lt;groupId&gt;</span>com.fasterxml.jackson.core<span class="nt">&lt;/groupId&gt;</span>
+         <span class="nt">&lt;artifactId&gt;</span>jackson-databind<span class="nt">&lt;/artifactId&gt;</span>
+         <span class="nt">&lt;version&gt;</span>2.11.2<span class="nt">&lt;/version&gt;</span>
+     <span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;/dependencies&gt;</span>
+</code></pre>
+</div>
+
+<p>Execute <code class="highlighter-rouge">mvn clean</code> , <code class="highlighter-rouge">mvn install</code> to generate the jar under <code class="highlighter-rouge">target</code> folder.</p>
+
+<div class="comment">
+  <p><strong>Note</strong>: You need to have maven installed on your machine (which Java dev doesn’t have ant, maven, gradle on their laptop! 😉)</p>
+</div>
+
+<p>To start the application: <code class="highlighter-rouge">java -jar target/javalin-student-1.0-snapshot.jar</code></p>
+
+<p>You could use a REST client like <code class="highlighter-rouge">Postman</code> or a command-line tool like <code class="highlighter-rouge">cURL</code> to check the application endpoints.</p>
+
+<h4 id="create">Create:</h4>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>curl -X POST -H <span class="s2">"Content-Type: application/json"</span> http://localhost:8080/students -d <span class="s1">'{ "id": "003","name": "Javalin","age": 15}'</span>
+<span class="gp">$ </span>curl -X POST -H <span class="s2">"Content-Type: application/json"</span> http://localhost:8080/students -d <span class="s1">'{ "id": "005","name": "Micronaut","age": 12}'</span>
+<span class="gp">$ </span>curl -X POST -H <span class="s2">"Content-Type: application/json"</span> http://localhost:8080/students -d <span class="s1">'{ "id": "001","name": "Quarkus","age": 16}'</span>
+</code></pre>
+</div>
+
+<h4 id="read">Read:</h4>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>curl -X GET http://localhost:8080/students
+<span class="gp">$ </span>curl -X GET http://localhost:8080/students/003
+</code></pre>
+</div>
+
+<h4 id="update">Update:</h4>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>curl -X PATCH -H <span class="s2">"Content-Type: application/json"</span> http://localhost:8080/students -d <span class="s1">'{ "id": "001","name": "Quarkus","age": 32}'</span>
+</code></pre>
+</div>
+
+<h4 id="delete">Delete:</h4>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>curl -X DELETE http://localhost:8080/students/001
+</code></pre>
+</div>
+
+<h4 id="count">Count:</h4>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>curl -X GET http://locahost:8080/school/_count
+</code></pre>
+</div>
+
+<h2 id="tracing-the-application">Tracing the application</h2>
+
+<p>We have not started tracing our application yet. You need to download the Java agent from <a href="https://search.maven.org/search?q=g:co.elastic.apm%20AND%20a:elastic-apm-agent">maven central</a> and place it under the project’s root folder.</p>
+
+<p>There are three ways to set up the agent:</p>
+<ul>
+  <li>Using -javaagent flag.</li>
+  <li>Using apm-agent-attach-standalone.jar — Beta</li>
+  <li>Using programmatic attach. — Beta</li>
+</ul>
+
+<p>We’ll be using <code class="highlighter-rouge">Option#1</code>, javaagent method.</p>
+
+<p>You need to start the application with javaagent flag as shown in the example below.</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>java -javaagent:elastic-apm-agent-1.22.0.jar -jar target/javalin-student-1.0-SNAPSHOT.jar
+</code></pre>
+</div>
+
+<div class="comment">
+  <p><strong>Note:</strong> You can also configure supported application servers as mentioned in the documentation.</p>
+</div>
+
+<h3 id="viewing-application-traces-in-kibana">Viewing Application Traces in Kibana</h3>
+
+<p>When you start accessing the application endpoints, you should see data in the Kibana -&gt; Observability -&gt; APM (<code class="highlighter-rouge">https://&lt;kibana_host&gt;/app/apm</code>)</p>
+
+<p>You could observe the slower performance, error rate with specific fields using Correlations. It uses the <code class="highlighter-rouge">significant terms aggregation</code> of Elasticsearch under the hood to provide this information.</p>
+
+<p><img src="/img/posts/apmExample/apm-overview.png" alt="APM Kibana Overview" class="bordered-image" /></p>
+
+<p><img src="/img/posts/apmExample/apm-correlations.png" alt="APM Correlation" class="bordered-image" /></p>
+
+<p>This not it. You could create a specific threshold, latency alerts, find errors from the error panel, Create spans for specific methods using <code class="highlighter-rouge">@CaptureSpan</code> annotation.</p>
+
+<p>In addition to all this, you could enable log correlation to find logs belonging to a specific trace or vice versa. Elastic provides <a href="https://www.elastic.co/guide/en/ecs-logging/java/current/setup.html">ECS logging libraries</a> to do structured logging from your application and directly ingest it to Elasticsearch.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>It is easy to get started with Elastic Java APM. Most application servers and frameworks are supported. You could also use the <a href="https://www.elastic.co/guide/en/apm/agent/java/1.x/public-api.html">public API</a> to create traces, transactions manually.</p>
+
+<h2 id="resources">Resources:</h2>
+
+<ul>
+  <li><a href="https://www.elastic.co/training/apm-quick-start">APM Quick Start Training</a></li>
+  <li><a href="https://github.com/elastic/apm">Elastic Common APM Page</a></li>
+  <li><a href="https://github.com/elastic/apm-server">APM Server Source Code</a></li>
+  <li><a href="https://github.com/elastic/apm-agent-java">Java Agent Source code</a></li>
+</ul>
+
+<style>
+blockquote {
+    margin: 20px 0 !important;
+    font-size: 20px;
+    letter-spacing: -0.5px;
+}
+</style>
+
+
+    </div>
+    <h3>Thanks for reading</h3>
+    If you find any errors, please <a href="https://github.com/javalin/javalin.github.io/blob/master/_posts/tutorials/community/2021-05-12-javalin-tracing-example.md">edit this page on GitHub</a>.
+    <br>
+    
+</article>
+<style>
+    .social {
+        margin: 30px 0;
+        display: flex;
+    }
+    .social-btn {
+        text-align: center;
+        min-width: 240px;
+        padding: 10px 16px 8px;
+        font-size: 14px;
+        font-family: 'Roboto Slab', sans-serif;
+        font-weight: 600;
+        color: #fff;
+        background: #000;
+        border-radius: 50px;
+        box-shadow: 2px 2px red, -2px -2px cyan;
+    }
+    .social-btn + .social-btn {
+        margin-left: 24px;
+    }
+    .social-btn:hover {
+        background: #008ab4;
+    }
+    .social-btn img {
+        width: 24px;
+        display: inline;
+        vertical-align: middle;
+        margin-right: 12px;
+    }
+    @media (max-width: 480px) {
+        .social {
+            justify-content: space-between;
+        }
+        .social-btn {
+            min-width: 0;
+            width: calc(50% - 12px);
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+        .social-btn + .social-btn {
+            margin-left: 0;
+        }
+    }
+</style>
+<div class="social">
+    <a class="social-btn" href="https://twitter.com/intent/tweet?text=Tracing Javalin Application&url=/tutorials/tracing-javalin&via=javalin_io&related=javalin_io"
+       rel="nofollow"
+       title="Share on Twitter">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAM1BMVEUAAAD///////////////////////////////////////////////////////////////+3leKCAAAAEHRSTlMA8BDQwKCAMOBwYECwUCCQ27fl2AAAAW1JREFUWMPtltuOwyAMRLG5QxL8/1+7G6lKFApMaJ5W2/NIPCPAnlL15R+xRSM7ZPMnci5yYvxrNRt3VMRtpPdBLqR9MWkhPkpI80BPUpFy2dfiUbKK9B02kjbmrCkycNAdfeCqpuOQOnrye2teRS9LrxqEjn4tQSS/io7Fxg1Kn/MWjxX7dgw30NvGNkO9CQP1O8v7oGEDq07i9Uu+YxAvs1J91GmDBtdQLVKjYz6/YINNWujiVgsMet3CqAr7yICKn3XQF4N9gizJDAsIDMSBLkIyyDzkmjqmWb0GoYUUBVKLWFUF6yk9gccDYtU7bKabWBNv9yKoDunmTcSW2Im+uwNi1cBP5+DjUSAGrzgiVcLZSBmlHjnQBv7L4AOMYEdwiAGcFgK/A5BN9/WsMCs90nsjT/SrGd0fI3UJIIIdovtlAUnWftA5KwiKakg2Y7ljfPn9tzWkUw5GsHV059UEOVpDR2wXl1l9+RP8AHA4c7ljId3mAAAAAElFTkSuQmCC">Share on Twitter
+    </a>
+    <a class="social-btn" href="https://facebook.com/sharer.php?u=/tutorials/tracing-javalin"
+       rel="nofollow"
+       title="Share on Facebook">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEUAAAD///////////////////////////////////////////////////////////87TQQwAAAAD3RSTlMAwIDwEEDgMKBgINBwUJA4su2wAAAAy0lEQVRIx2MYJICr+T9WkOQAVTD/Pw5gDpHn/I8TXAAriMetwAqsQB63gh9gBf/xgAFT8E0QCPJxK/ixACTqj1PB5wCwKD9OBbsY8Cv4XEBAwU8GAgoECCmYABTB5QuEUI2S0n4cCn6DRBzxhORHkMh5Qgr0h7eCjw6I/BiPTcEnBgRgxKbgK5ICPkIKmGij4C+yIwn5gg2bgm9ICuIHa2SNKqCZgs9gBf2YClBTkDNuBSlgBeyYCtDKzGJcCtKhyY+lH7sCIweGwQEAY2jNUu1+zZgAAAAASUVORK5CYII=">Share on Facebook
+    </a>
+</div>
+
+
+    </main>
+    <footer>
+        Javalin is a Java and Kotlin web framework, open sourced under the
+        <a href="https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)">Apache 2</a> license
+        | <a href="/download">Download</a>
+        | <a href="/about">About</a>
+        | <a href="/news">News</a>
+        | <a href="/about#contact">Contact</a>
+        | <a href="/for-educators">For educators</a>
+    </footer>
+    <div id="star-begging">
+    <style>
+        #star-begging {
+            transition: transform .25s;
+            transform: scale(0);
+            border-radius: 8px;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            padding: 20px 40px 16px 20px;
+            background: #fff;
+            box-shadow: 0 1px 20px rgba(0, 0, 0, 0.15);
+            z-index: 9999998;
+        }
+        #star-begging.in {
+            transform: scale(1);
+        }
+        #star-begging.out {
+            transform: translateX(400px);
+        }
+        #star-begging p {
+            font-size: 16px;
+            margin: 0 0 15px;
+        }
+        #star-begging .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            height: 40px;
+            width: 40px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-family: arial, sans-serif;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+    </style>
+    <p>
+        Like Javalin?
+        <br>Star us 😊
+    </p>
+    <span class="close">×</span>
+    <iframe id="starFrame" class="githubStar" title="github-stars"
+            src="https://ghbtns.com/github-btn.html?user=javalin&amp;repo=javalin&amp;type=star&amp;count=true&size=large"
+            frameborder="0" scrolling="0" width="150px" height="30px">
+    </iframe>
+    <script>
+        if (localStorage.getItem("dismissed") !== "true" && document.getElementById("notification-banner") === null) {
+            setTimeout(function () {
+                document.querySelector("#star-begging").classList.add("in");
+            }, 15000);
+            document.querySelector("#star-begging .close").addEventListener("click", function () {
+                document.querySelector("#star-begging").classList.add("out");
+                localStorage.setItem("dismissed", "true");
+            });
+        }
+    </script>
+</div>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>
